@@ -24,7 +24,7 @@ FAQ:
 
    Use the following procedure to install:
    =======================================
-   cd ~ && git clone -- http://www.github.com/shri314/vim .
+   ( git clone -- http://www.github.com/shri314/bash-scripts && cd bash-scripts && ./install.sh && rm -rf bash-scripts )
    =======================================
 
    Your old setttings are in "sh-bak". You can review which changes you need and apply them manually.

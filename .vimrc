@@ -429,7 +429,7 @@ autocmd FileType sh   map <buffer> <F12>b :call BeautifyBash()<CR>
 "imap <TAB> <C-P>
 "autocmd FileType make unmap <TAB>
 
-"set diffopt+=iwhite
+set diffopt+=iwhite
 
 let Tlist_Process_File_Always = 1
 set statusline=%<%f\ %h%m%r%([%{Tlist_Get_Tagname_By_Line()}]%)%=%-14.(%l,%c%V%)\ %P
