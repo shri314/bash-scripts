@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -ne 4 ]
+then
+   echo "Usage: $(basename $0) <machine> <fromaddress> <toaddr> <file>" 1>&2
+   exit 1
+fi
+
+MACHINE=$1; shift;
+MAILFROM=$1; shift;
+RCPTTO=$1; shift;
+FILE=$1; shift;
+
+send()
+{
+   CMD=$1; shift;
+
+   echo $CMD
+   echo -en "$CMD\r\n" >&5
+}
+
+recv()
+{
+   local x;
+   read x <&5
+   echo $x
+}
+
+(
+   exec 5> /dev/tcp/$MACHINE/25
+
+   recv
+   send "HELO"
+   recv
+   send "MAIL FROM:<$MAILFROM>"
+   recv
+   send "RCPT TO:<$RCPTTO>"
+   recv
+   send "DATA"
+   recv
+   cat $FILE | unix2dos >&5
+   send "."
+   recv
+   send "QUIT"
+   recv
+
+   exec 5>&-
+)
+
+

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+main()
+{
+   local AST="$(\which \astyle 2>&-)"
+
+   for f in "$@"
+   do
+      if [ -f "$f" ]
+      then
+         \cp -f -a "$f" "$f.as.orig"
+         cat "$f.as.orig" | "$AST" --style=allman --indent=spaces=3 --attach-extern-c --indent-switches --indent-namespaces --indent-classes --indent-preproc-define --indent-col1-comments --max-instatement-indent=40 --pad-oper --keep-one-line-blocks --convert-tabs --max-code-length=180 --lineend=linux --unpad-paren --align-pointer=type --align-reference=type 2>/dev/null | sed -e :a -e '/^\n*$/{$d;N;};/\n$/ba' > "$f"
+         diff -q "$f" "$f.as.orig" >/dev/null && \rm -f "$f.as.orig"
+      fi
+   done
+}
+
+main "$@"

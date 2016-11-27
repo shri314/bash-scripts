@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#
+#Author   : Shriram V
+#Email    : shri314@yahoo.com
+#Comments : This is a script used to integrate make and project within vi and allows making
+#           of multiple targets.
+#
+
+unset CDPATH
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+export PATH="$SCRIPT_DIR:$(dirname "$SCRIPT_DIR"):$PATH"
+
+declare -a FORMATTER=( cat )
+
+TEMP_PIPE="$HOME/.pipeout.$$"
+
+trap "rm -f '$TEMP_PIPE'" EXIT TERM KILL QUIT INT
+
+mknod "$TEMP_PIPE" p
+
+cat "$TEMP_PIPE" | "${FORMATTER[@]}" | paint &
+
+\make "$@" > "$TEMP_PIPE" 2>&1; ES=$?
+
+wait
+
+exit $ES

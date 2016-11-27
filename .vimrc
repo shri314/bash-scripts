@@ -1,0 +1,440 @@
+" .vimrc file
+"
+" Author   : Shriram V
+" Email    : shri314@yahoo.com
+"
+" use Vim defaults be used for options that have a different Vi and Vim default value.
+set nocompatible
+
+set background=dark
+"set background=light
+
+" Turn on syntax highlighting
+syntax on
+
+" Enable loading the plugin files for specific file types
+filetype plugin on
+
+autocmd BufNewFile,BufRead *.cgi    setl filetype=perl
+autocmd BufNewFile,BufRead *.tt     setl filetype=html
+autocmd BufNewFile,BufRead *.strace setl filetype=strace
+autocmd BufNewFile,BufRead *.vim    setl filetype=vim
+autocmd BufNewFile,BufRead *.c,*.h,*.C,*.cc,*.cpp,*.hpp,*.cxx,*.hxx,*.hh,*.ipp  setl filetype=cpp
+"autocmd BufNewFile,BufRead makefile*,Makefile*,*.mk  setl filetype=make
+autocmd BufNewFile,BufRead *.am  setl filetype=automake
+
+"Syntax & highlighting extensions
+highlight Comment        term=bold ctermfg=lightblue guifg=#8000ff gui=bold
+highlight StatusLine     ctermfg=lightblue ctermbg=white
+highlight StatusLineNC   ctermfg=gray      ctermbg=black
+
+autocmd FileType cpp setl syntax=cpp11
+autocmd FileType cpp highlight Member term=bold ctermfg=white gui=bold
+autocmd FileType cpp syntax match Member /\<m_[_A-Za-z0-9]*\>/
+
+" FOLD CONFIG
+if exists("&fdm")
+   set fdm=marker
+   set fmr={,}
+   set nofen
+endif
+
+" Ignore case in search patterns
+set ignorecase
+
+" Incremental Search
+set incsearch
+
+" Highlight search
+set hlsearch
+
+" Show ruler
+set ruler
+
+" Set the shell to use
+"set shell=C:\windows\command.com
+"set shell=C:\winnt\cmd.exe
+set shell=bash
+
+" Show brace matching as you edit
+set showmatch
+
+set matchpairs+=<:>
+"set matchpairs+==:;
+
+" Show working mode
+set showmode
+
+" Show the command
+set showcmd
+
+" Number of screen lines to use for the command-line
+set cmdheight=1
+
+" Number of screen lines to use for the command-line
+"set winminwidth=0
+
+" Number of screen lines to use for the command-line
+"set winminheight=0
+
+" Shift width when you press << or >> to indent a line.
+set shiftwidth=3
+autocmd FileType java setl shiftwidth=3
+
+" Set Shift rounding off
+set shiftround
+
+" Patten matching
+set magic
+
+" Switch buffer to edit a new file, and use open file if it already open
+set switchbuf=useopen,split
+
+" Make program to use
+if $ENV_MAKE_PRG != ""
+   set makeprg=$ENV_MAKE_PRG
+else
+   set makeprg=make\ -s\ -w\ $*
+endif
+
+" Grep program to use
+if $ENV_GREP_PRG != ""
+   set grepprg=$ENV_GREP_PRG
+else
+   set grepprg=grep\ -HIn\ $*\ /dev/null
+endif
+
+" working directory settings
+"set autochdir
+
+" Changes how backspace works.
+set bs=eol,indent,start
+"set bs=start
+
+" Expand Tab
+set expandtab
+"set noexpandtab
+autocmd FileType make setl noexpandtab
+
+" Number of spaces for a tab
+set tabstop=8
+autocmd FileType java setl tabstop=8
+
+"Error formats
+autocmd FileType cpp  setl errorformat=#%m
+autocmd FileType cpp  setl errorformat+=%f:%l:%c:\ %m,%f:%l:\ %m
+autocmd FileType cpp  setl errorformat+=make:\ ***\ %m,In\ file\ included\ from\ %f:%l:
+autocmd FileType cpp  setl errorformat+=%f:\ In[%*\\d]'%m':
+autocmd FileType cpp  setl errorformat+=\^I\^Ifrom\ %f:%l%m
+autocmd FileType cpp  setl errorformat+=%Dmake[%*\\d]:\ Entering\ directory\ `%f'
+autocmd FileType cpp  setl errorformat+=%Xmake[%*\\d]:\ Leaving\ directory\ `%f'
+
+autocmd FileType java setl errorformat=##%m(%f:%l)
+autocmd FileType java setl errorformat+=#%m
+autocmd FileType java setl errorformat+=make:\ ***\ %m
+autocmd FileType java setl errorformat+=%A%f:%l:\ %msymbol\ ,
+autocmd FileType java setl errorformat+=%A%f:%l:\ %m
+autocmd FileType java setl errorformat+=%-Z%p^
+autocmd FileType java setl errorformat+=%Clocation%m
+autocmd FileType java setl errorformat+=%Csymbol\ %#%m
+autocmd FileType java setl errorformat+=%-G%.%#
+
+" lines longer than the width of the window will not wrap
+set nowrap
+
+" Searches does not wrap around the end of the file
+set nowrapscan
+
+"Not always equal
+set noequalalways
+
+" Directory for backup files
+set backupdir=$TEMP
+
+" Directory for swap files
+set directory=$TEMP
+
+" warn when a shell command is used while the buffer has changed
+set warn
+
+" Does not allows writing to any file with no need for "!" override
+set nowriteany
+
+" viminfo settings
+set viminfo='1000,f1,<500,:500,@50,/100,h
+
+" Set smart indent
+set smartindent
+
+" cindent will be on for all file types
+autocmd BufNewFile,BufRead * set autoindent
+autocmd BufNewFile,BufRead * set cindent
+"autocmd BufNewFile,GUIEnter * simalt~x
+
+set listchars=tab:>-,trail:-
+
+" man page support
+source $HOME/.vim/manual.vim
+
+" mouse settings
+if exists("&mouse")
+   set mouse=a
+   set mousemodel=popup
+endif
+
+" (Internal)
+" Function to toggle the window size.
+let g:ScrTog=0
+function ToggleScreenSize()
+   if g:ScrTog == 1
+      execute "normal \<C-W>="
+      let g:ScrTog=0
+   else
+      vertical resize
+      resize
+      let g:ScrTog=1
+   endif
+endfunction
+
+" (Internal)
+function QuickfixOpen()
+   top copen 5
+   setl wrap
+endfunction
+
+" (Internal)
+" Function to toggle the window size.
+let g:ErrTog=0
+function ToggleQuickFix()
+   if g:ErrTog == 0
+      call QuickfixOpen()
+      let g:ErrTog=1
+   else
+      call QuickfixOpen()
+      q
+      let g:ErrTog=0
+   endif
+endfunction
+
+" Search path for opening files.
+if $ENV_SEARCH_PATH != ""
+   set path=$ENV_SEARCH_PATH
+else
+   set path=,,.,..,./include,../include,./src,../src,/usr/local/include,/usr/include/g++-3,/usr/include
+endif
+
+let g:explVertical=1 "split vertically the explorer Window
+
+"F2 to Save file
+nmap <F2> :w<CR>
+imap <F2> <Esc>:w<CR><Esc>a
+
+"F4 to list files in the project with the word under the cursor
+map <F4>  :silent grep! -e "\<"<cword>"\>" *<CR>:call QuickfixOpen()<CR>:<BS><C-L>
+
+"Shift-F4 to list files in the project with the word under the cursor ignoring the case
+map <S-F4> :silent grep! -i -e "\<"<cword>"\>" *<CR>:call QuickfixOpen()<CR>:<BS><C-L>
+
+"F5 to Stop highlighting words
+map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:TlistUpdate<CR>:nohl<CR>
+
+"Ctrl-F5 to stop highlighting words, and reload file (discard editing).
+map <C-F5> :diffupdate<CR>:syntax sync fromstart<CR>:nohl<CR><Esc>:e!<CR>
+
+"F6 to switch window
+map <F6> <C-W>w<C-G>
+
+"Shift-F6 to toggle window size
+map <S-F6> :call ToggleScreenSize()<CR><C-G>
+
+"- to decrease the current window height
+map - <C-W>-
+
+"= to increase the current window height
+map = <C-W>+
+
+"_ to decrease the current window width
+map _ <C-W><
+
+"+ to increase the current window width
+map + <C-W>>
+
+"F8 to Go to next error
+map <F8>   :cn<CR>m'z.`'
+
+"F7 to Go to previous error
+map <F7>   :cp<CR>m'z.`'
+
+"F11 to comment current line and go to next line
+map <F11> 0i#<Esc>j
+autocmd FileType vim  map <buffer> <F11> 0i"<Esc>j
+autocmd FileType cpp  map <buffer> <F11> 0i//<Esc>j
+autocmd FileType java map <buffer> <F11> 0i//<Esc>j
+
+function HLWord() 
+   if !exists("s:highlightword") 
+      execute "syn match HL \"\\\<" . expand("<cword>") . "\\\>\""
+      highlight HL term=bold,reverse cterm=bold,reverse ctermfg=4 ctermbg=7
+      let s:highlightword = 1
+   else 
+      syntax clear HL
+      unlet s:highlightword 
+   endif 
+endfunction 
+
+" Highlight all instances of word under cursor, when idle.
+" Useful when studying strange source code.
+function! AutoHighlightToggle()
+  let @/ = ''
+  if exists('#auto_highlight')
+    au! auto_highlight
+    augroup! auto_highlight
+    setl updatetime=4000
+    echo 'Highlight current word: off'
+    return 0
+  else
+    augroup auto_highlight
+      au!
+      au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
+    augroup end
+    setl updatetime=500
+    echo 'Highlight current word: ON'
+    return 1
+  endif
+endfunction
+
+function StubBeautify()
+   echohl ErrorMsg | echo "Beautifier not configured..." | echohl None
+endfunction
+
+function BeautifyUsingBcpp()
+   if executable('bcpp')
+      normal msHmt
+      undojoin | %!bcpp -bnl -s -tbnl -i 3 -na -ylcnc -cc 33 2>/dev/null
+      normal 'tzt`sa
+   else
+      call StubBeautify()
+   endif
+endfunction
+
+function BeautifyUsingAstyle()
+   if executable('astyle')
+      normal msHmt
+      undojoin | %!astyle --style=allman --indent=spaces=3 --attach-extern-c --indent-switches --indent-namespaces --indent-classes --indent-preproc-define --indent-col1-comments --max-instatement-indent=40 --pad-oper --keep-one-line-blocks --convert-tabs --max-code-length=180 --lineend=linux --unpad-paren --align-pointer=type --align-reference=type 2>/dev/null | sed -e :a -e '/^\n*$/{$d;N;};/\n$/ba'
+      normal 'tzt`sa
+   else
+      call StubBeautify()
+   endif
+endfunction
+
+function BeautifyPhp()
+   if executable('/usr/local/beautifyphp/beautify_php') && executable('_pindent')
+      normal msHmt
+      undojoin | %!_pindent 2>/dev/null
+      normal 'tzt`sa
+   else
+      call StubBeautify()
+   endif
+endfunction
+
+function BeautifyBash()
+   if executable('/usr/local/bin/beautify_bash.rb') && executable('ruby')
+      normal msHmt
+      undojoin | %!/usr/local/bin/beautify_bash.rb - 2>/dev/null
+      normal 'tzt`sa
+   else
+      call StubBeautify()
+   endif
+endfunction
+
+function BeautifyHtml()
+   if executable('hindent') && executable('_hindent')
+      normal msHmt
+      undojoin | %!_hindent
+      normal 'tzt`sa
+   else
+      call StubBeautify()
+   endif
+endfunction
+
+function BeautifyPerl()
+   if executable('perltidy')
+      normal msHmt
+      undojoin | %!perltidy -i=3 -nt -fnl -anl -bl -l=250 -bbs -bbc -bbb -mbl=2
+      normal 'tzt`sa
+   else
+      call StubBeautify()
+   endif
+endfunction
+
+function ToggleSwitchBuffer() 
+   if !exists("s:buffswitched") 
+      set switchbuf=useopen
+      let s:buffswitched = 1
+   else 
+      set switchbuf=useopen,split
+      unlet s:buffswitched 
+   endif 
+endfunction 
+
+function F12Help()
+   echo "b   - beautify action\n"
+   echo "e   - beautify action (using astyle)\n"
+   echo "f   - beautify action (using bcpp)\n"
+   echo "c   - toggle ignorecase\n"
+   echo "F12 - show F12 help\n"
+   echo "h   - toggle wordhighlight\n"
+   echo "i   - toggle paste\n"
+   echo "l   - toggle list\n"
+   echo "n   - toggle number\n"
+   echo "q   - toggle quickfix\n"
+   echo "s   - toggle switchbuf\n"
+   echo "/   - toggle autohighlight\n"
+   echo "t   - toggle show code listing\n"
+endfunction
+
+" Interesting customizations
+" use qa to close all windows individually with q
+cmap qa windo q
+
+" use xa to save and close all windows individually with x
+cmap xa windo x
+
+" always keep the next word to be found at the center of the screen
+"set scrolloff=5
+map n nm'z.`'
+map N Nm'z.`'
+
+"F12<key> to apply special properties
+map <F12><F12> :call F12Help()<CR>
+map <F12>n :setl number!<CR>:echo 'number ='&number<CR>
+map <F12>i :setl paste!<CR>:echo 'paste ='&paste<CR>i
+map <F12>l :setl list!<CR>:echo 'list ='&list<CR>
+map <F12>c :setl ignorecase!<CR>:echo 'ignorecase ='&ignorecase<CR>
+map <F12>s :call ToggleSwitchBuffer()<CR>:echo 'switchbuf ='&switchbuf<CR>
+map <F12>q :call ToggleQuickFix()<CR>:<BS><C-L>
+map <F12>t :TlistToggle<CR>
+map <F12>h :call HLWord()<CR>:<BS><C-L>
+map <F12>/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
+
+map <F12>b :call StubBeautify()<CR>
+autocmd FileType cpp  map <buffer> <F12>e :call BeautifyUsingAstyle()<CR>
+autocmd FileType cpp  map <buffer> <F12>f :call BeautifyUsingBcpp()<CR>
+autocmd FileType java map <buffer> <F12>b :call BeautifyUsingAstyle()<CR>
+autocmd FileType perl map <buffer> <F12>b :call BeautifyPerl()<CR>
+autocmd FileType html map <buffer> <F12>b :call BeautifyHtml()<CR>
+autocmd FileType php  map <buffer> <F12>b :call BeautifyPhp()<CR>
+autocmd FileType sh   map <buffer> <F12>b :call BeautifyBash()<CR>
+
+"imap <TAB> <C-P>
+"autocmd FileType make unmap <TAB>
+
+"set diffopt+=iwhite
+
+let Tlist_Process_File_Always = 1
+set statusline=%<%f\ %h%m%r%([%{Tlist_Get_Tagname_By_Line()}]%)%=%-14.(%l,%c%V%)\ %P
+
+" Always show status line
+set laststatus=2
+
+autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif

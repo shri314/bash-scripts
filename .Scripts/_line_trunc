@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cut -c -$(( $(tput cols) - 1 ))

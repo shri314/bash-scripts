@@ -1,0 +1,16 @@
+#!/bin/bash
+
+T=
+[ "$1" == "input"  ] && T=0
+[ "$1" == "output" ] && T=1
+[ "$1" == "error"  ] && T=2
+
+if [ "$T" ]
+then
+   R=0 && [ -t "$T" ] && R=1
+   exit $R
+else
+   [ -t 0 ] && echo "tty input"
+   [ -t 1 ] && echo "tty output"
+   [ -t 2 ] && echo "tty error"
+fi

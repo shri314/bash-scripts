@@ -1,0 +1,17 @@
+#!/bin/bash
+
+show_progress()
+{
+   local count=${1-10}
+   local char=${2-.}
+   local interval=${3-1}
+
+   for (( i = 0 ; i < $count ; ++i ))
+   do
+      echo -n "$char"
+      sleep $interval
+   done
+   echo
+}
+
+show_progress "$@"

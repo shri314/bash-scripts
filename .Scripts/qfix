@@ -1,0 +1,27 @@
+#!/bin/bash
+
+EFILE=~/.errors.$$.cpp
+
+trap "rm -f $EFILE" EXIT QUIT KILL TERM
+
+OP=()
+
+if [ "$1" == "--no-split" ]
+then
+   OP=( '+set switchbuf-=split' )
+fi
+
+if which paint 1>/dev/null 2>/dev/null
+then
+   ( cat | tee "$EFILE" | paint )
+else
+   ( cat | tee "$EFILE" )
+fi
+
+# Regular expression to find pattern ':<digits>:'
+if grep -q -e "\:[[:digit:]]\+\:" $EFILE
+then
+  [ $(cat "$EFILE" | sed -e "/^ *$/d" | wc -l) -gt 0 ] && ( exec </dev/tty ; ${EDITOR-vim} "${OP[@]}" +copen -q "$EFILE"; ) && exit 1
+fi
+
+exit 0

@@ -1,0 +1,64 @@
+#!/bin/bash
+
+mkdir -p $HOME/.display
+
+_LoadDisp()
+{
+   if [ "$STY" ]
+   then
+      if [ ! "$VNCDESKTOP" ]
+      then
+         if [ -f $HOME/.display/$STY ]
+         then
+            local OLDDISPLAY="$DISPLAY"
+            export DISPLAY="$(cat $HOME/.display/$STY)"
+
+            if [ "$DISPLAY" != "$OLDDISPLAY" ]
+            then
+               echo "bash: DISPLAY changed to $DISPLAY, old value was $OLDDISPLAY" 1>&2
+            fi
+         fi
+      fi
+   fi
+}
+
+_RemoveDisp()
+{
+   local TYPE_SCREEN=`\which screen`
+   if [ "$TYPE_SCREEN" != "" ]
+   then
+      \screen -wipe -q 2>/dev/null 1>&2
+      mkdir -p $HOME/.display
+      find $HOME/.display -type f | grep -v -f <(\screen -ls | grep "([AD]" | awk '{ print "'"$HOME"'/.display/" $1 }') | xargs -r rm -f
+   fi
+}
+
+rs()
+{
+   local TYPE_SCREEN=`\which screen`
+   if [ "$TYPE_SCREEN" != "" ]
+   then
+      if [ -z "$STY" ]
+      then
+         if [ $# -eq 0 ]
+         then
+            local DETACHED_SCREEN=$(\screen -ls | grep '(Detached)' | tac | awk 'NR == 1 { print $1; }');
+            ARGS=( -r "$DETACHED_SCREEN" "$@" )
+         else
+            ARGS=( "$@" )
+         fi
+
+         local SINGLE_TARGET_SCREEN=$(\screen "${ARGS[@]}" -ls 2>/dev/null | grep '([AD]' | awk 'NR == 1 { S=$1; } END { if(NR == 1) print S; }')
+
+         [ "$SINGLE_TARGET_SCREEN" ] && mkdir -p "$HOME/.display" && echo "$DISPLAY" > "$HOME/.display/$SINGLE_TARGET_SCREEN"
+
+         $EXEC \screen -T $TERM -a -h 10000 "${ARGS[@]}"
+      else
+         echo "rs: disallowed - ALREADY INSIDE SCREEN"
+      fi
+   fi
+}
+
+PROMPT_COMMAND="_LoadDisp;$PROMPT_COMMAND"
+
+alias screen=rs

@@ -1,0 +1,64 @@
+#!/bin/bash
+
+#
+#Author   : Shriram V
+#Email    : shri314@yahoo.com
+#Comments : This is a script used to integrate grep within vi
+#
+
+(
+   test -f $HOME/.grp.conf || cp -a $HOME/.grp.conf.template $HOME/.grp.conf
+
+   source $HOME/.grp.conf
+
+   if [ $# -eq 0 ]
+   then
+      cat<<EOM
+Usage: grp <regex>
+
+Examples: 
+   #General example:
+   grp domain
+
+   #External filtering example:
+   grp_EXCLUDE_DIR=test grp domain
+
+Also see: $HOME/.grp.conf to configure additional directories
+EOM
+
+      exit 1
+   fi
+
+   for bt in "${BASE_TYPE[@]}"
+   do
+      if [ "$(grep -e "/$bt" <(echo "$PWD"))" ]
+      then
+         T="$(echo "$bt" | sed -e 's/[-.]/_/g')"
+         break;
+      fi
+   done
+
+   if [ "$T" ]
+   then
+      isatty output || COLOR_OPT="--color=always"
+      
+      (
+         set -f
+         EXC_DIR=( $( set -f ; eval "set -f; V=(\"\${${T}_EXCLUDE_DIR[@]}\")" && [ ${#V[@]} -gt 0 ] && printf -- " %s " "${V[@]}" ) )
+         FIL_EXT=( $( set -f ; eval "set -f; V=(\"\${${T}_FILE_EXT[@]}\")"    && [ ${#V[@]} -gt 0 ] && printf -- " %s " "${V[@]}" ) )
+
+         list.pl \
+            --exclude-dirs "${EXC_DIR[@]}" \
+            --file-exts "${FIL_EXT[@]}"
+      ) \
+      | xargs -r grep -nHI "$@" $COLOR_OPT \
+      | sort \
+      | uniq \
+      | paint
+
+      exit $?
+   else
+      echo "directory '$(basename "$PWD")' not configured in $HOME/.grp.conf"
+      exit 1
+   fi
+)

@@ -1,0 +1,17 @@
+#!/bin/bash  
+
+if [ $# -ne 2 ]
+then
+   echo "Usage: $(basename "$0") <target-ip> <target-user>";
+   echo "Ex:    $(basename "$0") 10.0.5.20 root"
+   exit 1;
+fi
+
+TARGET_HOST=$1; shift;
+TARGET_USER=$1; shift;
+
+mkdir -p ~/.ssh \
+   && ( cd ~/.ssh && [ ! -f id_rsa.pub ] && ssh-keygen -t rsa )
+
+[ -f ~/.ssh/id_rsa.pub ] \
+   && ( cat ~/.ssh/id_rsa.pub | ssh $TARGET_USER@$TARGET_HOST 'mkdir -p .ssh; chmod 700 .ssh; cat >> .ssh/authorized_keys; chmod 640 .ssh/authorized_keys' )

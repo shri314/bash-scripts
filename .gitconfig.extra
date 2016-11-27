@@ -1,0 +1,9 @@
+[alias]
+	st = status
+	br = branch -v
+	lg = log --graph
+	di = diff -w -b --no-prefix
+[color]
+	ui = auto
+[help]
+	autocorrect = 1

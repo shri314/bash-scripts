@@ -1,0 +1,13 @@
+#
+# view config using:
+#    git config -l
+#    git config -l -f ~/.gitconfig.user
+#
+# edit user config using:
+#    git config -e -f ~/.gitconfig.user
+#
+# please put your personal configurations in ~/.gitconfig.user
+#
+[include]
+	path = ~/.gitconfig.user
+	path = ~/.gitconfig.extra

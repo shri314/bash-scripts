@@ -1,0 +1,7 @@
+#!/bin/bash
+
+RHS=$1; shift;
+LHS=$1; shift;
+FMT=${1-"+%F %T"}; shift;
+
+TZ=UTC date -d "$LHS $(date -d "$RHS" "+%s") sec ago" "$FMT"
