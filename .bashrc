@@ -48,6 +48,8 @@ then
    if [ "$OS" = "Windows_NT" ]
    then
       export FIX_PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/sbin:/usr/sbin:/cygdrive/c/Program Files/Internet Explorer:$PATH"
+   else
+      export TEMP=/tmp/
    fi
 fi
 
