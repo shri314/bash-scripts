@@ -16,6 +16,9 @@ then
       if [ "$i" == ".git" ]
       then
          :
+      elif [ "$i" == ".gitignore" ]
+      then
+         :
       elif [ "$i" == ".bin" ]
       then
          if [ ! -d ~/.bin ]; then mkdir -p ~/.bin; fi
