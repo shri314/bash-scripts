@@ -35,9 +35,11 @@ then
 
 
   ***********************************
-   Installed!
+   Installed into ~/.env-scripts!
+
    For updates: ( cd ~/.env-scripts && git pull origin master )
-   You can delete this directory.
+
+   You can now delete the bash-scripts directory.
   ***********************************
 
 EOM
