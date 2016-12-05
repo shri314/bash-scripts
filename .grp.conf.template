@@ -1,17 +1,12 @@
-BASE_TYPE=(smCore sm-installer sm-svcpack)
+# THIS IS AN EXAMPLE TEMPLATE FILE
 
-std_FILE_EXT=($grp_FILE_EXT '*.cpp' '*.h' '*.hpp' '*.java' '*.am' '*.mk' '*.conf' '*.cfg' '*.pl' '*.cgi' '*.pm' '*.ac' '*.xml' '*.xsl' '*.txt' '*.sql')
-std_EXCLUDE_DIR=($grp_EXCLUDE_DIR '.svn' 'CVS' 'smThirdParty' 'debug' 'profile' 'normal' 'downloads' 'WebHelp' 'thirdparty' 'geography')
-std_INCLUDE_DIR=($grp_INCLUDE_DIR)
+BASE_TYPE=(xxx yyy)
 
-smCore_FILE_EXT=("${std_FILE_EXT[@]}")
-smCore_EXCLUDE_DIR=("${std_EXCLUDE_DIR[@]}")
-smCore_INCLUDE_DIR=("${std_INCLUDE_DIR[@]}")
+std_FILE_EXT=($grp_FILE_EXT '*.c' '*.cpp' '*.h' '*.hpp' '*.java' '*.am' '*.mk' '*.conf' '*.cfg' '*.pl' '*.cgi' '*.pm' '*.ac' '*.xml' '*.xsl' '*.txt' '*.sql')
+std_EXCLUDE_DIR=($grp_EXCLUDE_DIR '.svn' '.git' 'CVS' 'autom4te*')
 
-sm_installer_FILE_EXT=("${std_FILE_EXT[@]}" '*akefile')
-sm_installer_EXCLUDE_DIR=("${std_EXCLUDE_DIR[@]}")
-sm_installer_INCLUDE_DIR=("${std_INCLUDE_DIR[@]}")
+xxx_FILE_EXT=("${std_FILE_EXT[@]}")
+xxx_EXCLUDE_DIR=("${std_EXCLUDE_DIR[@]}" build)
 
-sm_svcpack_FILE_EXT=("${std_FILE_EXT[@]}" '*akefile')
-sm_svcpack_EXCLUDE_DIR=("${std_EXCLUDE_DIR[@]}")
-sm_svcpack_INCLUDE_DIR=("${std_INCLUDE_DIR[@]}")
+yyy_FILE_EXT=("${std_FILE_EXT[@]}")
+yyy_EXCLUDE_DIR=("${std_EXCLUDE_DIR[@]}" temporary-stage)
