@@ -31,6 +31,17 @@ FAQ:
    Your old setttings are in "~/.old-env-scripts". You can delete it or reapply your customizations.
    You can remove the bash-scripts directory after installation.
 
+   Use the following procedure to convert to password-less push if you have enabled it:
+   =======================================
+   (
+      cd ~/.env-scripts &&
+         git config user.name 'Shriram V'
+         git config user.email 'shri314@yahoo.com'
+         git remote rm origin
+         git remote add origin 'git@github.com:shri314/bash-scripts.git'
+   )
+   =======================================
+
 3. How can I try it without getting disripted?
 
    Create a user on your system, and install shell-customizations on that.
