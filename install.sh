@@ -6,7 +6,15 @@ set -e
 
 if [ ! -d ~/.env-scripts ]
 then
-   ( set -e; cd ~ && rm -rf .env-scripts.tmp && git clone https://github.com/shri314/bash-scripts .env-scripts.tmp )
+   (
+      set -e;
+      cd ~
+      rm -rf .env-scripts.tmp
+      git clone https://github.com/shri314/bash-scripts .env-scripts.tmp
+      cd .env-scripts.tmp
+      git config user.name 'Shriram V'
+      git config user.email 'shri314@yahoo.com'
+   )
 
    [ -d ~/.old-env-scripts ] && mv ~/.old-env-scripts ~/.old-env-scripts.$(date +%s)
    mkdir -p ~/.old-env-scripts
