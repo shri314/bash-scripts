@@ -166,6 +166,9 @@ set viminfo='1000,f1,<500,:500,@50,/100,h
 " Set smart indent
 set smartindent
 
+" Set cryptmethod
+set cryptmethod=blowfish
+
 " cindent will be on for all file types
 autocmd BufNewFile,BufRead * set autoindent
 autocmd BufNewFile,BufRead * set cindent
