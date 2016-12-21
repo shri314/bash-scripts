@@ -39,7 +39,7 @@ fi
 if [ "$RUNONCE" = "" ]
 then
    #This is run only once!
-   export LANG=en_US
+   source <(LANG=C locale)
    export RUNONCE=1
    export FIX_PATH=".:$HOME/.usr/local/bin:$HOME/.local/bin:/sbin:/usr/sbin:$PATH"
    export FIX_LD_LIBRARY_PATH=".:$HOME/.usr/local/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"

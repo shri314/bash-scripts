@@ -1,0 +1,9 @@
+#!/bin/bash
+
+F="$(\which "$1")"
+
+if [ -f "$F" ]
+then
+   ( exec </dev/tty ; ${EDITOR-vim} "$F"; )
+fi
+
