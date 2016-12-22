@@ -1,0 +1,169 @@
+#!/bin/bash
+
+###############################################################################
+
+Input1() {
+   cat << "EOM"
+line I
+
+foo() {
+   line 1
+   baz() {
+      line 2
+   }
+}
+
+line I
+EOM
+}
+
+Exp1()
+{
+   cat <<"EOM"
+foo() {
+   line 1
+   baz() {
+      line 2
+   }
+}
+EOM
+}
+
+###############################################################################
+
+Input2()
+{
+   cat <<"EOM"
+line I
+bar() {
+   line I
+   foo()   {
+      line 3
+      line 4
+   }
+   line I
+}
+line I
+EOM
+}
+
+Exp2()
+{
+   cat <<"EOM"
+   foo()   {
+      line 3
+      line 4
+   }
+EOM
+}
+
+###############################################################################
+
+Input3()
+{
+   cat <<"EOM"
+line I
+bar() {
+   line I
+   foo()  
+ {  
+      line 3
+      line 4
+   }
+   line I
+}
+line I
+EOM
+}
+
+Exp3()
+{
+   cat <<"EOM"
+   foo()  
+ {  
+      line 3
+      line 4
+   }
+EOM
+}
+
+###############################################################################
+
+Input4()
+{
+   cat <<"EOM"
+line I
+bar() {
+   foo()  
+   line I
+   foo()  
+ {  
+      line 3
+      line 4
+   }
+   line I
+}
+line I
+EOM
+}
+
+Exp4()
+{
+   cat <<"EOM"
+   foo()  
+ {  
+      line 3
+      line 4
+   }
+EOM
+}
+
+###############################################################################
+
+Input5()
+{
+   cat <<"EOM"
+line I
+bar() {
+   foo()  
+
+   foo()  
+ {  
+      line 3
+      line 4
+   }
+   line I
+}
+line I
+EOM
+}
+
+Exp5()
+{
+   cat <<"EOM"
+   foo()  
+ {  
+      line 3
+      line 4
+   }
+EOM
+}
+
+###############################################################################
+
+if [ $# == 1 ]
+then
+   Input$1
+   exit 1
+fi
+
+
+(
+   i=0
+
+   ((++i)); diff -u <(Input$i | block_grep 'foo()') <(Exp$i) && echo TEST$i PASS || echo TEST$i FAIL
+   ((++i)); diff -u <(Input$i | block_grep 'foo()') <(Exp$i) && echo TEST$i PASS || echo TEST$i FAIL
+   ((++i)); diff -u <(Input$i | block_grep 'foo()') <(Exp$i) && echo TEST$i PASS || echo TEST$i FAIL
+   ((++i)); diff -u <(Input$i | block_grep 'foo()') <(Exp$i) && echo TEST$i PASS || echo TEST$i FAIL
+   ((++i)); diff -u <(Input$i | block_grep 'foo()') <(Exp$i) && echo TEST$i PASS || echo TEST$i FAIL
+)

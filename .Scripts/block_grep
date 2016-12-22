@@ -2,6 +2,13 @@
 
 use strict;
 
+if ( @ARGV != 1 )
+{
+   print "Usage: $0 '<regex>'\n";
+   exit 1;
+}
+
+
 my $regexp   = $ARGV[0] || "^main";
 my $qregexp1 = qr/$regexp/ . qr/[^{]*[{][ ]*$/;
 my $qregexp2 = qr/$regexp/ . qr/[^{]*[ ]*$/;
