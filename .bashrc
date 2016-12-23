@@ -186,7 +186,11 @@ then
   . ~/.git-completion.bash
 fi
 
-# http://code-worrier.com/blog/git-branch-in-bash-prompt/
+if [ ! -f ~/.git-prompt.sh ] && [ ! -z "$(\which curl 2>/dev/null)" ]
+then
+   curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.env-scripts/.git-prompt.sh
+fi
+
 if [ -f ~/.git-prompt.sh ]
 then
   export GIT_PS1_SHOWUPSTREAM=verbose
