@@ -20,8 +20,8 @@ autocmd BufNewFile,BufRead *.tt     setl filetype=html
 autocmd BufNewFile,BufRead *.strace setl filetype=strace
 autocmd BufNewFile,BufRead *.vim    setl filetype=vim
 autocmd BufNewFile,BufRead *.c,*.h,*.C,*.cc,*.cpp,*.hpp,*.cxx,*.hxx,*.hh,*.ipp  setl filetype=cpp
-"autocmd BufNewFile,BufRead makefile*,Makefile*,*.mk  setl filetype=make
-autocmd BufNewFile,BufRead *.am  setl filetype=automake
+autocmd BufNewFile,BufRead makefile*,Makefile*,*.mk  setl filetype=make
+autocmd BufNewFile,BufRead *.am     setl filetype=automake
 
 "Syntax & highlighting extensions
 highlight Comment        term=bold ctermfg=lightblue guifg=#8000ff gui=bold
@@ -52,9 +52,15 @@ set hlsearch
 set ruler
 
 " Set the shell to use
-"set shell=C:\windows\command.com
-"set shell=C:\winnt\cmd.exe
-set shell=bash
+if has("win32")
+   if executable('bash.exe')
+      set shell=bash.exe
+   else
+      set shell=cmd.exe
+   endif
+else
+   set shell=bash
+endif
 
 " Show brace matching as you edit
 set showmatch
@@ -163,16 +169,17 @@ set nowriteany
 " viminfo settings
 set viminfo='1000,f1,<500,:500,@50,/100,h
 
-" Set smart indent
+" Set indent
 set smartindent
+set autoindent
+autocmd FileType cpp  set cindent
 
 " Set cryptmethod
 set cryptmethod=blowfish
 
-" cindent will be on for all file types
-autocmd BufNewFile,BufRead * set autoindent
-autocmd BufNewFile,BufRead * set cindent
-"autocmd BufNewFile,GUIEnter * simalt~x
+if has("win32")
+   autocmd BufNewFile,GUIEnter * simalt~x
+endif
 
 set listchars=tab:>-,trail:-
 
