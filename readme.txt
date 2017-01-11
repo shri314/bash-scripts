@@ -49,7 +49,7 @@ FAQ:
 
 4. How do I get updates?
 
-   ( cd ~/.env-scripts && git pull origin master )
+   ( cd ~/.env-scripts && install.sh )
 
 5. How do I contribute?
 

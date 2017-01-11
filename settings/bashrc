@@ -54,7 +54,7 @@ then
 fi
 
 # System Variable Initialization
-export FIX_PATH_1=:~/.bin:~/.Scripts/bin:~/.Scripts/mkutils:~/.Scripts/bzutils:~/.Scripts:$FIX_PATH:/usr/local/sbin:/usr/sbin
+export FIX_PATH_1=:~/.bin:~/.contrib/bin:~/.Scripts/bin:~/.Scripts/mkutils:~/.Scripts/bzutils:~/.Scripts:$FIX_PATH:/usr/local/sbin:/usr/sbin
 export PATH="$FIX_PATH_1"
 export LD_LIBRARY_PATH=$FIX_LD_LIBRARY_PATH
 export CDPATH=:..:$MYCDPATH
@@ -180,18 +180,12 @@ Swap12()
    exec 3>&-
 }
 
-# http://code-worrier.com/blog/autocomplete-git/
-if [ -f ~/.git-completion.bash ]
+if [ -f ~/.contrib/bin/git-completion.bash ]
 then
-  . ~/.git-completion.bash
+  . ~/.contrib/bin/git-completion.bash
 fi
 
-if [ ! -f ~/.git-prompt.sh ] && [ "$(\which curl 2>/dev/null)" ]
-then
-   curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.env-scripts/.git-prompt.sh
-fi
-
-if [ -f ~/.git-prompt.sh ]
+if [ -f ~/.contrib/bin/git-prompt.sh ]
 then
   export GIT_PS1_SHOWUPSTREAM=verbose
   export GIT_PS1_SHOWCOLORHINTS=true
@@ -201,7 +195,7 @@ then
   #export GIT_PS1_SHOWUNTRACKEDFILES=true
   #export GIT_PS1_STATESEPARATOR=" "
 
-  . ~/.git-prompt.sh
+  . ~/.contrib/bin/git-prompt.sh
 fi
 
 if [ -f ~/.handle_ssh ]

@@ -4,6 +4,15 @@ CDPATH=
 
 set -e
 
+cat <<EOM
+  ***********************************
+   Installing/Updating into ~/.env-scripts!
+  ***********************************
+
+EOM
+
+[ ! "$(\which curl 2>/dev/null)" ] && echo "curl not found - install curl\n" && exit 1;
+
 if [ ! -d ~/.env-scripts ]
 then
    (
@@ -21,40 +30,89 @@ then
 
    for i in $(ls -A ~/.env-scripts.tmp/)
    do
-      if [ "$i" == ".git" ]
+      if [[ "$i" =~ ^[.][a-z] ]]   #only process files beginning with . (this is temp fix)
       then
-         :
-      elif [ "$i" == ".gitignore" ]
-      then
-         :
-      elif [ "$i" == ".bin" ]
-      then
-         if [ ! -d ~/.bin ]; then mkdir -p ~/.bin; fi
-         ( set -e; cd ~/.bin && ln -fs ../.env-scripts/.bin/.readme.txt )
-      elif [ "$i" == "readme.txt" ]
-      then
-         ( set -e; cd ~ && ln -fs .env-scripts/readme.txt .readme.txt )
-      elif [ "$i" == "install.sh" ]
-      then
-         ( set -e; cd ~ && ln -fs .env-scripts/install.sh .install.sh )
-      else
-         ( set -e; cd ~ && ( if [ -e "$i" -o -h "$i" ]; then mv "$i" .old-env-scripts; fi ) && ln -s .env-scripts/"$i" )
+         if [ "$i" == ".git" ]
+         then
+            :
+         elif [ "$i" == ".gitignore" ]
+         then
+            :
+         elif [ "$i" == ".bin" ]
+         then
+            if [ ! -d ~/.bin ]; then mkdir -p ~/.bin; fi
+            ( set -e; cd ~/.bin && ln -fs ../.env-scripts/.bin/.readme.txt )
+         else
+            ( set -e; cd ~ && ( if [ -e "$i" -o -h "$i" ]; then mv "$i" .old-env-scripts; fi ) && ln -s .env-scripts/"$i" )
+         fi
       fi
    done
 
-   mv ~/.env-scripts.tmp ~/.env-scripts && cat <<EOM
-
-
-  ***********************************
-   Installed into ~/.env-scripts!
-
-   For updates: ( cd ~/.env-scripts && git pull origin master )
-
-   You can now delete the bash-scripts directory.
-  ***********************************
-
-EOM
-
+   mv ~/.env-scripts.tmp ~/.env-scripts
 else
+
    ( set -e; cd ~/.env-scripts && git pull origin master )
 fi
+
+put_item()
+{
+   fname="$1"; shift;
+
+   if [ ! -f ~/."$fname" ] || [ ! -L ~/."$fname" ] || [ "$(realpath ~/.$fname)" != "$(realpath ~/.env-scripts/settings/$fname)" ]
+   then
+      ( set -e; cd ~ && ln -v -s -f -T ".env-scripts/settings/$fname" ".$fname" )
+   fi
+}
+
+# install/upgrade steps
+echo
+echo "Setting up links..."
+
+[ -L ~/.install.sh          ] && rm -f ~/.install.sh
+[ -L ~/.readme.txt          ] && rm -f ~/.readme.txt
+[ -L ~/.git-completion.bash ] && rm -f ~/.git-completion.bash
+[ -L ~/.git-prompt.sh       ] && rm -f ~/.git-prompt.sh
+
+put_item bashrc
+put_item vim
+put_item vimrc
+put_item tmux.conf
+put_item screenrc
+
+# get external tools
+CONTRIBS=(
+   "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
+   "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
+   "https://raw.githubusercontent.com/ewiger/beautify_bash/master/beautify_bash.py"
+);
+
+for i in "${CONTRIBS[@]}"
+do
+   BN="$(basename "$i")";
+   mkdir -p ~/.contrib/bin
+   if [ ! -f ~/.contrib/bin/$BN ]
+   then
+      echo Getting $BN...
+      curl --silent "$i" -o ~/.contrib/bin/"$BN"
+   fi
+done
+
+chmod +x ~/.contrib/bin/beautify_bash.py
+
+# set version - we plan to use this for upgrades
+if [ ! -f ~/.version-env-scripts ]
+then
+   (set -e; cd ~/.env-scripts && git log -n1 --pretty=%H) > ~/.version-env-scripts
+fi
+
+cat <<EOM
+
+  ***********************************
+   Installed/Updated into ~/.env-scripts!
+
+   For updates run: ~/.env-scripts/install.sh
+
+   You might have to relogin for new settings to take effect.
+   You can now delete the bash-scripts directory.
+  ***********************************
+EOM

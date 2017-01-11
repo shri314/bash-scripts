@@ -348,9 +348,9 @@ function BeautifyPhp()
 endfunction
 
 function BeautifyBash()
-   if executable('/usr/local/bin/beautify_bash.rb') && executable('ruby')
+   if executable('beautify_bash.py') && executable('python')
       normal msHmt
-      undojoin | %!/usr/local/bin/beautify_bash.rb - 2>/dev/null
+      undojoin | %!beautify_bash.py - 2>/dev/null
       normal 'tzt`sa
    else
       call StubBeautify()
