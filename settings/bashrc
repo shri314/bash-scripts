@@ -94,6 +94,7 @@ alias astyle='_astyle'
 alias man='man -a -S2:3:1:8:5:4:6:7:9'
 alias top='top -d 1'
 alias pstree='pstree -Gah'
+alias tmux='tmux -u'
 
 _LoadENV()
 {
