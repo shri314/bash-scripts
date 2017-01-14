@@ -86,6 +86,7 @@ set cmdheight=1
 " Shift width when you press << or >> to indent a line.
 set shiftwidth=3
 autocmd FileType java setl shiftwidth=3
+autocmd FileType python setl shiftwidth=4
 
 " Set Shift rounding off
 set shiftround
