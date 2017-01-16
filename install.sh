@@ -58,7 +58,7 @@ put_item()
 {
    fname="$1"; shift;
 
-   if [ ! -f ~/."$fname" ] || [ ! -L ~/."$fname" ] || [ "$(realpath ~/.$fname)" != "$(realpath ~/.env-scripts/settings/$fname)" ]
+   if [ ! -e ~/."$fname" ] || [ ! -L ~/."$fname" ] || [ "$(realpath ~/.$fname)" != "$(realpath ~/.env-scripts/settings/$fname)" ]
    then
       ( set -e; cd ~ && ln -v -s -f -T ".env-scripts/settings/$fname" ".$fname" )
    fi
@@ -83,18 +83,15 @@ put_item screenrc
 CONTRIBS=(
    "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
    "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
-   "https://raw.githubusercontent.com/ewiger/beautify_bash/master/beautify_bash.py"
+   "https://raw.githubusercontent.com/shri314/beautify_bash/dev/beautify_bash.py"
 );
 
 for i in "${CONTRIBS[@]}"
 do
    BN="$(basename "$i")";
    mkdir -p ~/.contrib/bin
-   if [ ! -f ~/.contrib/bin/$BN ]
-   then
-      echo Getting $BN...
-      curl --silent "$i" -o ~/.contrib/bin/"$BN"
-   fi
+   echo Getting $BN...
+   curl --silent "$i" -o ~/.contrib/bin/"$BN"
 done
 
 chmod +x ~/.contrib/bin/beautify_bash.py

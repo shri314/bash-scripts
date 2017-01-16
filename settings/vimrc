@@ -351,7 +351,7 @@ endfunction
 function BeautifyBash()
    if executable('beautify_bash.py') && executable('python')
       normal msHmt
-      undojoin | %!beautify_bash.py - 2>/dev/null
+      undojoin | %!beautify_bash.py -t3 - 2>/dev/null
       normal 'tzt`sa
    else
       call StubBeautify()
