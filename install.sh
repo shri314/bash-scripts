@@ -4,6 +4,7 @@ CDPATH=
 
 set -e
 
+unset GIT_SSH
 cat <<EOM
   ***********************************
    Installing/Updating into ~/.env-scripts!
@@ -19,10 +20,10 @@ then
       set -e;
       cd ~
       rm -rf .env-scripts.tmp
-      git clone https://github.com/shri314/bash-scripts .env-scripts.tmp
+      \git clone https://github.com/shri314/bash-scripts .env-scripts.tmp
       cd .env-scripts.tmp
-      git config user.name 'Shriram V'
-      git config user.email 'shri314@yahoo.com'
+      \git config user.name 'Shriram V'
+      \git config user.email 'shri314@yahoo.com'
    )
 
    [ -d ~/.old-env-scripts ] && mv ~/.old-env-scripts ~/.old-env-scripts.$(date +%s)
@@ -51,7 +52,7 @@ then
    mv ~/.env-scripts.tmp ~/.env-scripts
 else
 
-   ( set -e; cd ~/.env-scripts && git pull origin master )
+   ( set -e; cd ~/.env-scripts && \git pull origin master )
 fi
 
 put_item()
@@ -78,6 +79,7 @@ put_item vim
 put_item vimrc
 put_item tmux.conf
 put_item screenrc
+put_item Scripts
 
 # get external tools
 CONTRIBS=(
@@ -99,7 +101,7 @@ chmod +x ~/.contrib/bin/beautify_bash.py
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]
 then
-   (set -e; cd ~/.env-scripts && git log -n1 --pretty=%H) > ~/.version-env-scripts
+   (set -e; cd ~/.env-scripts && \git log -n1 --pretty=%H) > ~/.version-env-scripts
 fi
 
 cat <<EOM
