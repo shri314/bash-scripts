@@ -44,10 +44,12 @@ then
    export FIX_PATH=".:$HOME/.usr/local/bin:$HOME/.local/bin:/sbin:/usr/sbin:$PATH"
    export FIX_LD_LIBRARY_PATH=".:$HOME/.usr/local/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"
    export FIX_MANPATH="$HOME/.local/man:$(manpath)"
+   export FIX_CDPATH=
 
    if [ "$OS" = "Windows_NT" ]
    then
       export FIX_PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/sbin:/usr/sbin:/cygdrive/c/Program Files/Internet Explorer:$PATH"
+      export FIX_CDPATH="$(cygpath -w "$USERPROFILE")"
    else
       export TEMP=/tmp/
    fi
@@ -57,7 +59,7 @@ fi
 export FIX_PATH_1=:~/.bin:~/.contrib/bin:~/.Scripts/bin:~/.Scripts/mkutils:~/.Scripts/bzutils:~/.Scripts:$FIX_PATH:/usr/local/sbin:/usr/sbin
 export PATH="$FIX_PATH_1"
 export LD_LIBRARY_PATH=$FIX_LD_LIBRARY_PATH
-export CDPATH=:..:$MYCDPATH
+export CDPATH=:..:$FIX_CDPATH
 export MANPATH=$FIX_MANPATH
 
 export SEARCH_PATH=",,.,..,./include,../include,./src,../src,~/.local/include,/usr/local/include,/usr/include/g++-3,/usr/include"
