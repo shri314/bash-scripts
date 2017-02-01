@@ -28,31 +28,9 @@ then
 
    [ -d ~/.old-env-scripts ] && mv ~/.old-env-scripts ~/.old-env-scripts.$(date +%s)
    mkdir -p ~/.old-env-scripts
-
-   for i in $(ls -A ~/.env-scripts.tmp/)
-   do
-      if [[ "$i" =~ ^[.][a-z] ]]   #only process files beginning with . (this is temp fix)
-      then
-         if [ "$i" == ".git" ]
-         then
-            :
-         elif [ "$i" == ".gitignore" ]
-         then
-            :
-         elif [ "$i" == ".bin" ]
-         then
-            if [ ! -d ~/.bin ]; then mkdir -p ~/.bin; fi
-            ( set -e; cd ~/.bin && ln -fs ../.env-scripts/.bin/.readme.txt )
-         else
-            ( set -e; cd ~ && ( if [ -e "$i" -o -h "$i" ]; then mv "$i" .old-env-scripts; fi ) && ln -s .env-scripts/"$i" )
-         fi
-      fi
-   done
-
    mv ~/.env-scripts.tmp ~/.env-scripts
 else
-
-   ( set -e; cd ~/.env-scripts && \git pull origin master )
+   ( set -e; cd ~/.env-scripts && \git pull --ff-only origin master )
 fi
 
 put_item()
@@ -69,17 +47,27 @@ put_item()
 echo
 echo "Setting up links..."
 
-[ -L ~/.install.sh          ] && rm -f ~/.install.sh
-[ -L ~/.readme.txt          ] && rm -f ~/.readme.txt
 [ -L ~/.git-completion.bash ] && rm -f ~/.git-completion.bash
 [ -L ~/.git-prompt.sh       ] && rm -f ~/.git-prompt.sh
+[ -L ~/.install.sh          ] && rm -f ~/.install.sh
+[ -L ~/.misc                ] && rm -f ~/.misc
+[ -L ~/.readme.txt          ] && rm -f ~/.readme.txt
+[ -L ~/.bin/.readme.txt     ] && rm -f ~/.bin/.readme.txt
 
+put_item Scripts
+put_item bash_logout
+put_item bash_profile
 put_item bashrc
+put_item gdbinit
+put_item gitconfig
+put_item gitconfig.extra
+put_item grp.conf.template
+put_item handle_screen
+put_item handle_ssh
+put_item screenrc
+put_item tmux.conf
 put_item vim
 put_item vimrc
-put_item tmux.conf
-put_item screenrc
-put_item Scripts
 
 # get external tools
 CONTRIBS=(
@@ -97,6 +85,14 @@ do
 done
 
 chmod +x ~/.contrib/bin/beautify_bash.py
+
+# put the ~/.bin folder
+if [ ! -d ~/.bin ]
+then
+   [ -e ~/.bin ] && rm -f ~/.bin
+   mkdir -p ~/.bin
+   echo "Put your private scripts here" > ~/.bin/readme.txt
+fi
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]
