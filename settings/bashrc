@@ -101,8 +101,8 @@ _LoadENV()
 {
    #Usage: - Add _LoadENV to PROMPT_COMMAND inside your .bashrc.custom
    #
-   #PROMPT_COMMAND="_LoadENV <proj1.dir.basename> <proj1.rel-env-script-path>; $PROMPT_COMMAND";
-   #PROMPT_COMMAND="_LoadENV <proj2.dir.basename> <proj2.rel-env-script-path>; $PROMPT_COMMAND"; 
+   #export PROMPT_COMMAND="_LoadENV <proj1.dir.basename> <proj1.rel-env-script-path>; $PROMPT_COMMAND";
+   #export PROMPT_COMMAND="_LoadENV <proj2.dir.basename> <proj2.rel-env-script-path>; $PROMPT_COMMAND"; 
 
    local MODULE="$1"; shift
    local ENVFILE="$1"; shift
