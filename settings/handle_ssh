@@ -1,7 +1,11 @@
 #!/bin/bash
 
 mkdir -p ~/.ssh
+
 [ -f ~/.ssh/environment ]      || touch -a ~/.ssh/environment
 [ -f ~/.ssh/authorized_keys ]  || touch -a ~/.ssh/authorized_keys
 [ -f ~/.ssh/environment_temp ] || touch -a ~/.ssh/environment_temp
-chmod 755 ~ ~/.ssh ~/.ssh/authorized_keys
+
+chmod u=rwx,go=rx ~
+chmod u=rwx,go=   ~/.ssh
+chmod u=rw,go=    ~/.ssh/*
