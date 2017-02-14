@@ -348,6 +348,16 @@ function BeautifyPhp()
    endif
 endfunction
 
+function BeautifyXml()
+   if executable('xmllint')
+      normal msHmt
+      undojoin | %!xmllint --xmlout --format - 2>/dev/null
+      normal 'tzt`sa
+   else
+      call StubBeautify()
+   endif
+endfunction
+
 function BeautifyBash()
    if executable('beautify_bash.py') && executable('python')
       normal msHmt
@@ -436,6 +446,7 @@ autocmd FileType perl map <buffer> <F12>b :call BeautifyPerl()<CR>
 autocmd FileType html map <buffer> <F12>b :call BeautifyHtml()<CR>
 autocmd FileType php  map <buffer> <F12>b :call BeautifyPhp()<CR>
 autocmd FileType sh   map <buffer> <F12>b :call BeautifyBash()<CR>
+autocmd FileType xml,ant  map <buffer> <F12>b :call BeautifyXml()<CR>
 
 "imap <TAB> <C-P>
 "autocmd FileType make unmap <TAB>
