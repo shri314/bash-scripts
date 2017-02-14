@@ -178,22 +178,21 @@ xhistory()
 {
    if [ $# -lt 1 ]
    then
-      echo "Usage: _history_trim <num>" 1>&2
+      echo "Usage: xhistory <num>" 1>&2
       return
    fi
 
-   local allargs=( "$@" );
-
    history -w
 
-   NUM="$1"; shift;
-   HIST_SZ="$(cat ~/.bash_history | wc -l)"
+   local ALL_ARGS=( "$@" );
+   local ARG_NUM="$1"; shift;
+   local HIST_SZ="$(cat ~/.bash_history | uniq | grep -v '^xhistory' -c)"
 
-   if [ "$HIST_SZ" -gt "$((NUM+1))" ]
+   if [ "$HIST_SZ" -gt "$ARG_NUM" ]
    then
-      cat ~/.bash_history | uniq | head -n$(( HIST_SZ - NUM - 2 )) > ~/.bash_history.1
+      cat ~/.bash_history | uniq | grep -v '^xhistory' | head -n$(( HIST_SZ - ARG_NUM )) > ~/.bash_history.1
       cat ~/.bash_history.1 > ~/.bash_history
-      echo xhistory "${allargs[@]}" >> ~/.bash_history
+      echo xhistory "${ALL_ARGS[@]}" >> ~/.bash_history
       \rm -f ~/.bash_history.1
       history -r
    fi
