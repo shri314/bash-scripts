@@ -338,6 +338,31 @@ function BeautifyUsingAstyle()
    endif
 endfunction
 
+function BeautifyUsingClangFormat()
+   if executable('clang-format')
+      normal msHmt
+      undojoin | %!clang-format -style="{
+         \BasedOnStyle: Google,
+         \AccessModifierOffset: '-3',
+         \AlignConsecutiveAssignments: 'true',
+         \AlignConsecutiveDeclarations: 'true',
+         \AlignEscapedNewlinesLeft: 'true',
+         \AlignOperands: 'true',
+         \BreakBeforeBraces: Allman,
+         \BreakConstructorInitializersBeforeComma: 'true',
+         \ColumnLimit: '180',
+         \ConstructorInitializerAllOnOneLineOrOnePerLine: 'false',
+         \IndentWidth: '3',
+         \MaxEmptyLinesToKeep: '2',
+         \NamespaceIndentation: Inner,
+         \UseTab: Never
+         \}"
+      normal 'tzt`sa
+   else
+      call StubBeautify()
+   endif
+endfunction
+
 function BeautifyPhp()
    if executable('/usr/local/beautifyphp/beautify_php') && executable('_pindent')
       normal msHmt
@@ -400,8 +425,9 @@ endfunction
 
 function F12Help()
    echo "b   - beautify action\n"
-   echo "e   - beautify action (using astyle)\n"
-   echo "f   - beautify action (using bcpp)\n"
+   echo "b1  - beautify action for cpp (using clang)\n"
+   echo "b2  - beautify action for cpp (using astyle)\n"
+   echo "b3  - beautify action for cpp (using bcpp)\n"
    echo "c   - toggle ignorecase\n"
    echo "F12 - show F12 help\n"
    echo "h   - toggle wordhighlight\n"
@@ -439,8 +465,10 @@ map <F12>h :call HLWord()<CR>:<BS><C-L>
 map <F12>/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 
 map <F12>b :call StubBeautify()<CR>
-autocmd FileType cpp  map <buffer> <F12>e :call BeautifyUsingAstyle()<CR>
-autocmd FileType cpp  map <buffer> <F12>f :call BeautifyUsingBcpp()<CR>
+autocmd FileType cpp  map <buffer> <F12>b  :call BeautifyUsingClangFormat()<CR>
+autocmd FileType cpp  map <buffer> <F12>b1 :call BeautifyUsingClangFormat()<CR>
+autocmd FileType cpp  map <buffer> <F12>b2 :call BeautifyUsingAstyle()<CR>
+autocmd FileType cpp  map <buffer> <F12>b3 :call BeautifyUsingBcpp()<CR>
 autocmd FileType java map <buffer> <F12>b :call BeautifyUsingAstyle()<CR>
 autocmd FileType perl map <buffer> <F12>b :call BeautifyPerl()<CR>
 autocmd FileType html map <buffer> <F12>b :call BeautifyHtml()<CR>
