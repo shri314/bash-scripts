@@ -39,7 +39,7 @@ put_item()
 
    if [ ! -e ~/."$fname" ] || [ ! -L ~/."$fname" ] || [ "$(realpath ~/.$fname)" != "$(realpath ~/.env-scripts/settings/$fname)" ]
    then
-      ( set -e; cd ~ && ln -v -s -f -T ".env-scripts/settings/$fname" ".$fname" )
+      ( set -e; cd ~ && rm -f ".$fname" && ln -v -s -f ".env-scripts/settings/$fname" ".$fname" )
    fi
 }
 
