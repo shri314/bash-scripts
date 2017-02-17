@@ -196,7 +196,7 @@ endif
 " (Internal)
 " Function to toggle the window size.
 let g:ScrTog=0
-function ToggleScreenSize()
+function! ToggleScreenSize()
    if g:ScrTog == 1
       execute "normal \<C-W>="
       let g:ScrTog=0
@@ -208,7 +208,7 @@ function ToggleScreenSize()
 endfunction
 
 " (Internal)
-function QuickfixOpen()
+function! QuickfixOpen()
    top copen 5
    setl wrap
 endfunction
@@ -216,7 +216,7 @@ endfunction
 " (Internal)
 " Function to toggle the window size.
 let g:ErrTog=0
-function ToggleQuickFix()
+function! ToggleQuickFix()
    if g:ErrTog == 0
       call QuickfixOpen()
       let g:ErrTog=1
@@ -282,7 +282,7 @@ autocmd FileType vim  map <buffer> <F11> 0i"<Esc>j
 autocmd FileType cpp  map <buffer> <F11> 0i//<Esc>j
 autocmd FileType java map <buffer> <F11> 0i//<Esc>j
 
-function HLWord() 
+function! HLWord()
    if !exists("s:highlightword") 
       execute "syn match HL \"\\\<" . expand("<cword>") . "\\\>\""
       highlight HL term=bold,reverse cterm=bold,reverse ctermfg=4 ctermbg=7
@@ -314,11 +314,11 @@ function! AutoHighlightToggle()
   endif
 endfunction
 
-function StubBeautify()
+function! StubBeautify()
    echohl ErrorMsg | echo "Beautifier not configured..." | echohl None
 endfunction
 
-function BeautifyUsingBcpp()
+function! BeautifyUsingBcpp()
    if executable('bcpp')
       normal msHmt
       undojoin | %!bcpp -bnl -s -tbnl -i 3 -na -ylcnc -cc 33 2>/dev/null
@@ -328,7 +328,7 @@ function BeautifyUsingBcpp()
    endif
 endfunction
 
-function BeautifyUsingAstyle()
+function! BeautifyUsingAstyle()
    if executable('astyle')
       normal msHmt
       undojoin | %!astyle --style=allman --indent=spaces=3 --attach-extern-c --indent-switches --indent-namespaces --indent-classes --indent-preproc-define --indent-col1-comments --max-instatement-indent=40 --pad-oper --keep-one-line-blocks --convert-tabs --max-code-length=180 --lineend=linux --unpad-paren --align-pointer=type --align-reference=type 2>/dev/null | sed -e :a -e '/^\n*$/{$d;N;};/\n$/ba'
@@ -338,7 +338,7 @@ function BeautifyUsingAstyle()
    endif
 endfunction
 
-function BeautifyUsingClangFormat()
+function! BeautifyUsingClangFormat()
    if executable('clang-format')
       normal msHmt
       undojoin | %!clang-format -style="{
@@ -368,7 +368,7 @@ function BeautifyUsingClangFormat()
    endif
 endfunction
 
-function BeautifyPhp()
+function! BeautifyPhp()
    if executable('/usr/local/beautifyphp/beautify_php') && executable('_pindent')
       normal msHmt
       undojoin | %!_pindent 2>/dev/null
@@ -378,7 +378,7 @@ function BeautifyPhp()
    endif
 endfunction
 
-function BeautifyXml()
+function! BeautifyXml()
    if executable('xmllint')
       normal msHmt
       undojoin | %!xmllint --xmlout --format - 2>/dev/null
@@ -388,7 +388,7 @@ function BeautifyXml()
    endif
 endfunction
 
-function BeautifyBash()
+function! BeautifyBash()
    if executable('beautify_bash.py') && executable('python')
       normal msHmt
       undojoin | %!beautify_bash.py -t3 - 2>/dev/null
@@ -398,7 +398,7 @@ function BeautifyBash()
    endif
 endfunction
 
-function BeautifyHtml()
+function! BeautifyHtml()
    if executable('hindent') && executable('_hindent')
       normal msHmt
       undojoin | %!_hindent
@@ -408,7 +408,7 @@ function BeautifyHtml()
    endif
 endfunction
 
-function BeautifyPerl()
+function! BeautifyPerl()
    if executable('perltidy')
       normal msHmt
       undojoin | %!perltidy -i=3 -nt -fnl -anl -bl -l=250 -bbs -bbc -bbb -mbl=2
@@ -418,7 +418,7 @@ function BeautifyPerl()
    endif
 endfunction
 
-function ToggleSwitchBuffer() 
+function! ToggleSwitchBuffer()
    if !exists("s:buffswitched") 
       set switchbuf=useopen
       let s:buffswitched = 1
@@ -428,7 +428,7 @@ function ToggleSwitchBuffer()
    endif 
 endfunction 
 
-function F12Help()
+function! F12Help()
    echo "b   - beautify action\n"
    echo "b1  - beautify action for cpp (using clang)\n"
    echo "b2  - beautify action for cpp (using astyle)\n"
@@ -493,3 +493,10 @@ set statusline=%<%f\ %h%m%r%([%{Tlist_Get_Tagname_By_Line()}]%)%=%-14.(%l,%c%V%)
 set laststatus=2
 
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+
+" Autoload .vimrc
+" http://stackoverflow.com/questions/2400264/is-it-possible-to-apply-vim-configurations-without-restarting
+augroup my_vimrc_hooks
+   au!
+   autocmd bufwritepost .vimrc echo 'sourcing .vimrc' | source ~/.vimrc
+augroup end
