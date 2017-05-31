@@ -419,14 +419,28 @@ function! BeautifyPerl()
 endfunction
 
 function! ToggleSwitchBuffer()
-   if !exists("s:buffswitched") 
+   if !exists("s:buffswitched")
       set switchbuf=useopen
       let s:buffswitched = 1
    else 
       set switchbuf=useopen,split
       unlet s:buffswitched 
    endif 
+   echo 'switchbuf ='&switchbuf
 endfunction 
+
+function! ToggleSwitchIgnoreCase()
+   if !exists("s:ignorecaseswitched")
+      setl ignorecase
+      set diffopt+=iwhite
+      let s:ignorecaseswitched = 1
+   else
+      setl noignorecase
+      set diffopt-=iwhite
+      unlet s:ignorecaseswitched
+   endif
+   echo 'ignorecase ='&ignorecase
+endfunction
 
 function! F12Help()
    echo "b   - beautify action\n"
@@ -462,8 +476,8 @@ map <F12><F12> :call F12Help()<CR>
 map <F12>n :setl number!<CR>:echo 'number ='&number<CR>
 map <F12>i :setl paste!<CR>:echo 'paste ='&paste<CR>i
 map <F12>l :setl list!<CR>:echo 'list ='&list<CR>
-map <F12>c :setl ignorecase!<CR>:echo 'ignorecase ='&ignorecase<CR>
-map <F12>s :call ToggleSwitchBuffer()<CR>:echo 'switchbuf ='&switchbuf<CR>
+map <F12>c :call ToggleSwitchIgnoreCase()<CR>
+map <F12>s :call ToggleSwitchBuffer()<CR>
 map <F12>q :call ToggleQuickFix()<CR>:<BS><C-L>
 map <F12>t :TlistToggle<CR>
 map <F12>h :call HLWord()<CR>:<BS><C-L>
