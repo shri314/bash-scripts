@@ -25,7 +25,12 @@ FAQ:
 
    Use the following procedure to install:
    =======================================
-   ( git clone http://www.github.com/shri314/bash-scripts && cd bash-scripts && ./install.sh )
+   ( cd ~ && git clone http://www.github.com/shri314/bash-scripts && cd bash-scripts && ./install.sh )
+   =======================================
+
+   Or if you have ssh-key access:
+   =======================================
+   ( cd ~ && git clone git@github.com:shri314/bash-scripts.git && cd bash-scripts && ./install.sh )
    =======================================
 
    Your old setttings are in "~/.old-env-scripts". You can delete it or reapply your customizations.
@@ -37,8 +42,7 @@ FAQ:
       cd ~/.env-scripts &&
          git config user.name 'Shriram V'
          git config user.email 'shri314@yahoo.com'
-         git remote rm origin
-         git remote add origin 'git@github.com:shri314/bash-scripts.git'
+         git remote set-url origin 'git@github.com:shri314/bash-scripts.git'
    )
    =======================================
 
