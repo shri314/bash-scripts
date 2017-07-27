@@ -24,7 +24,7 @@ _LoadDisp()
 
 _RemoveDisp()
 {
-   local TYPE_SCREEN=`\which screen`
+   local TYPE_SCREEN=`\which screen 2>/dev/null`
    if [ "$TYPE_SCREEN" != "" ]
    then
       \screen -wipe -q 2>/dev/null 1>&2
@@ -35,7 +35,7 @@ _RemoveDisp()
 
 rs()
 {
-   local TYPE_SCREEN=`\which screen`
+   local TYPE_SCREEN=`\which screen 2>/dev/null`
    if [ "$TYPE_SCREEN" != "" ]
    then
       if [ -z "$STY" ]
