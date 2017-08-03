@@ -74,6 +74,7 @@ CONTRIBS=(
    "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
    "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
    "https://raw.githubusercontent.com/shri314/beautify_bash/dev/beautify_bash.py"
+   "https://raw.githubusercontent.com/buzztaiki/tmux-mouse/master/tmux-mouse"
 );
 
 for i in "${CONTRIBS[@]}"
@@ -84,7 +85,7 @@ do
    curl --silent "$i" -o ~/.contrib/bin/"$BN"
 done
 
-chmod +x ~/.contrib/bin/beautify_bash.py
+chmod -R +x ~/.contrib/bin/
 
 # put the ~/.bin folder
 if [ ! -d ~/.bin ]
