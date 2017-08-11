@@ -1,0 +1,86 @@
+#!/bin/bash
+
+MODE=status
+ARGS=()
+
+RunGitOverDirs()
+{
+   local C=0;
+   local T=0;
+
+   export GIT_PAGER=cat
+   for i in $(find "$@" -maxdepth 2 -type d -path '*/.git' 2> /dev/null -exec dirname '{}' \;)
+   do
+      (( ++T ))
+      if ! awk 'BEGIN { E=0 } NR == 1 && /\[/ { ++E; last; } NR > 1 { ++E; last; } END { exit E; }' <(git -C "$i" status --porcelain -b --short)
+      then
+         (( ++C ))
+         echo "-----------------------"
+         [ "$i" != "." ] && echo "$i:";
+
+         if [ "$MODE" == "status" ]
+         then
+            git -C "$i" status --porcelain -b --short
+         fi
+
+         if [ "$MODE" == "diff" ]
+         then
+            echo "$i"
+            git -C "$i" diff $(git -C "$i" status --porcelain -b --short | head -1 | sed -e 's/.*[.][.][.]//' -e 's/ .*//') --
+         fi
+
+         if [ "$MODE" == "log" ]
+         then
+            git -C "$i" log -2 --oneline
+         fi
+      fi
+   done
+
+   echo "-----------------------"
+   echo
+   echo "$C of $T git repos require attention"
+
+   if [ $T -eq 0 ] || [ $C -ne 0 ]
+   then
+      exit 1
+   fi
+}
+
+main()
+{
+   for i in $@
+   do
+      if [[ "$i" =~ ^-*-h ]]
+      then
+         echo "Usage: $(basename "$0") [--diff|--log|--status] [<search-base-path> ...]"
+         echo "       $(basename "$0") --help"
+         echo
+         echo "Finds all git repositories in specified path and prints git status / git diff / git log"
+         exit 1;
+      fi
+
+      if [[ "$i" =~ ^-*-d ]] # --diff
+      then
+         MODE=diff
+         continue
+      fi
+
+      if [[ "$i" =~ ^-*-l ]] # --log
+      then
+         MODE=log
+         continue
+      fi
+
+      if [[ "$i" =~ ^-*-s ]] # --status
+      then
+         MODE=status
+         continue
+      fi
+
+      ARGS+=( "$i" );
+   done
+
+   RunGitOverDirs "${ARGS[@]}"
+}
+
+main "$@"
