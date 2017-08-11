@@ -25,7 +25,6 @@ RunGitOverDirs()
 
          if [ "$MODE" == "diff" ]
          then
-            echo "$i"
             git -C "$i" diff $(git -C "$i" status --porcelain -b --short | head -1 | sed -e 's/.*[.][.][.]//' -e 's/ .*//') --
          fi
 
