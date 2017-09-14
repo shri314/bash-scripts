@@ -73,7 +73,7 @@ put_item vimrc
 CONTRIBS=(
    "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
    "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
-   "https://raw.githubusercontent.com/shri314/beautify_bash/dev/beautify_bash.py"
+   "https://raw.githubusercontent.com/shri314/beautify_bash/master/beautify_bash.py"
    "https://raw.githubusercontent.com/buzztaiki/tmux-mouse/master/tmux-mouse"
 );
 
