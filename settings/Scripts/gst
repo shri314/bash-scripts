@@ -12,6 +12,12 @@ RunGitOverDirs()
    for i in $(find "$@" -maxdepth 2 -type d -path '*/.git' 2> /dev/null -exec dirname '{}' \;)
    do
       (( ++T ))
+
+      if [ "$MODE" == "fetch" ]
+      then
+         git -C "$i" fetch --all
+      fi
+
       if ! awk 'BEGIN { E=0 } NR == 1 && /\[/ { ++E; last; } NR > 1 { ++E; last; } END { exit E; }' <(git -C "$i" status --porcelain -b --short) \
          || grep -q -w -e 'ahead' -e 'behind' <(git -C "$i" branch -v)
       then
@@ -76,6 +82,12 @@ main()
       if [[ "$i" =~ ^-*-s ]] # --status
       then
          MODE=status
+         continue
+      fi
+
+      if [[ "$i" =~ ^-*-f ]] # --fetch
+      then
+         MODE=fetch
          continue
       fi
 
