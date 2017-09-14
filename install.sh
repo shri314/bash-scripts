@@ -81,7 +81,7 @@ for i in "${CONTRIBS[@]}"
 do
    BN="$(basename "$i")";
    mkdir -p ~/.contrib/bin
-   echo Getting $BN...
+   echo Getting $BN ...
    curl --silent "$i" -o ~/.contrib/bin/"$BN"
 done
 
@@ -109,6 +109,6 @@ cat <<EOM
    For updates run: ~/.env-scripts/install.sh
 
    You might have to relogin for new settings to take effect.
-   You can now delete the bash-scripts directory.
+   You can now delete the ~/bash-scripts directory.
   ***********************************
 EOM
