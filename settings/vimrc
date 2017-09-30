@@ -155,11 +155,13 @@ set nowrapscan
 "Not always equal
 set noequalalways
 
-" Directory for backup files
-set backupdir=$TEMP
+if $TEMP != ""
+   " Directory for backup files
+   set backupdir=$TEMP
 
-" Directory for swap files
-set directory=$TEMP
+   " Directory for swap files
+   set directory=$TEMP
+endif
 
 " warn when a shell command is used while the buffer has changed
 set warn
