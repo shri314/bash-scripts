@@ -68,6 +68,11 @@ set showmatch
 set matchpairs+=<:>
 "set matchpairs+==:;
 
+" Don't consider : as part of words
+set iskeyword-=:
+autocmd FileType make setl iskeyword-=:
+autocmd FileType perl setl iskeyword-=:
+
 " Show working mode
 set showmode
 
