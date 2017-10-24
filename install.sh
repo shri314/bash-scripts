@@ -1,16 +1,19 @@
 #!/bin/bash
 
-CDPATH=
-
-set -e
-
+unset CDPATH
 unset GIT_SSH
+SCRIPT_PATH=$(cd "$(dirname "$0")" && pwd)
+
+set -eu
+
 cat <<EOM
   ***********************************
    Installing/Updating into ~/.env-scripts!
   ***********************************
 
 EOM
+
+REPO_URL=$(cd "$SCRIPT_PATH" && \git remote -v | awk '{ print $2; exit }')
 
 [ ! "$(\which curl 2>/dev/null)" ] && echo "curl not found - install curl\n" && exit 1;
 
@@ -20,7 +23,7 @@ then
       set -e;
       cd ~
       rm -rf .env-scripts.tmp
-      \git clone https://github.com/shri314/bash-scripts .env-scripts.tmp
+      \git clone "$REPO_URL" .env-scripts.tmp
       cd .env-scripts.tmp
       \git config user.name 'Shriram V'
       \git config user.email 'shri314@yahoo.com'
