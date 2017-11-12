@@ -46,6 +46,30 @@ put_item()
    fi
 }
 
+RawGetTool()
+{
+   local DEST=$1; shift;
+   local URL=$1; shift;
+
+   local BN="$(basename "$URL")";
+   echo Getting $BN ...
+
+   mkdir -p "$DEST"
+   curl --silent "$URL" -o "$DEST/$BN"
+}
+
+# Get external tools
+RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
+RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
+RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/shri314/beautify_bash/master/beautify_bash.py"
+RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/buzztaiki/tmux-mouse/master/tmux-mouse"
+
+chmod -R +x ~/.contrib/bin/
+
+# Vim Plugins
+RawGetTool ~/.vim/autoload "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
+git clone https://github.com/zirrostig/vim-schlepp.git ~/.vim/bundle/vim-schlepp
+
 # install/upgrade steps
 echo
 echo "Setting up links..."
@@ -71,24 +95,6 @@ put_item screenrc
 put_item tmux.conf
 put_item vim
 put_item vimrc
-
-# get external tools
-CONTRIBS=(
-   "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
-   "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
-   "https://raw.githubusercontent.com/shri314/beautify_bash/master/beautify_bash.py"
-   "https://raw.githubusercontent.com/buzztaiki/tmux-mouse/master/tmux-mouse"
-);
-
-for i in "${CONTRIBS[@]}"
-do
-   BN="$(basename "$i")";
-   mkdir -p ~/.contrib/bin
-   echo Getting $BN ...
-   curl --silent "$i" -o ~/.contrib/bin/"$BN"
-done
-
-chmod -R +x ~/.contrib/bin/
 
 # put the ~/.bin folder
 if [ ! -d ~/.bin ]
