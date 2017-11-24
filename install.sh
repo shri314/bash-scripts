@@ -15,7 +15,18 @@ EOM
 
 REPO_URL=$(cd "$SCRIPT_PATH" && \git remote -v | awk '{ print $2; exit }')
 
-[ ! "$(\which curl 2>/dev/null)" ] && echo "curl not found - install curl\n" && exit 1;
+check_util()
+{
+   util_name="$1"; shift;
+
+   if [ ! "$(\which $util_name 2>/dev/null)" ]
+   then
+      echo "$util_name not found - install it first\n" && exit 1;
+   fi
+}
+
+check_util curl
+check_util realpath
 
 if [ ! -d ~/.env-scripts ]
 then
