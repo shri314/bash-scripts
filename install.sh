@@ -105,7 +105,11 @@ chmod -R +x ~/.contrib/bin/
 
 # Vim Plugins
 RawGetTool ~/.vim/autoload "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
-git clone https://github.com/zirrostig/vim-schlepp.git ~/.vim/bundle/vim-schlepp
+
+if [ ! -d ~/.vim/bundle/vim-schlepp ]
+then
+   git clone https://github.com/zirrostig/vim-schlepp.git ~/.vim/bundle/vim-schlepp
+fi
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]
