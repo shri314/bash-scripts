@@ -42,6 +42,10 @@ put_item()
 
    if [ ! -e ~/."$fname" ] || [ ! -L ~/."$fname" ] || [ "$(realpath ~/.$fname)" != "$(realpath ~/.env-scripts/settings/$fname)" ]
    then
+      # if ~/.$fname its a directory, move it out of the way
+      ( set -e; cd ~ && [ -d ".$fname" ] && mv ".$fname" ".$fname.$(date +%s)"; exit 0 )
+
+      # create a symbolic link inside .env-scripts
       ( set -e; cd ~ && rm -f ".$fname" && ln -v -s -f ".env-scripts/settings/$fname" ".$fname" )
    fi
 }
@@ -57,18 +61,6 @@ RawGetTool()
    mkdir -p "$DEST"
    curl --silent "$URL" -o "$DEST/$BN"
 }
-
-# Get external tools
-RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
-RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
-RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/shri314/beautify_bash/master/beautify_bash.py"
-RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/buzztaiki/tmux-mouse/master/tmux-mouse"
-
-chmod -R +x ~/.contrib/bin/
-
-# Vim Plugins
-RawGetTool ~/.vim/autoload "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
-git clone https://github.com/zirrostig/vim-schlepp.git ~/.vim/bundle/vim-schlepp
 
 # install/upgrade steps
 echo
@@ -103,6 +95,17 @@ then
    mkdir -p ~/.bin
    echo "Put your private scripts here" > ~/.bin/readme.txt
 fi
+
+# Get external tools
+RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
+RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
+RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/shri314/beautify_bash/master/beautify_bash.py"
+RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/buzztaiki/tmux-mouse/master/tmux-mouse"
+chmod -R +x ~/.contrib/bin/
+
+# Vim Plugins
+RawGetTool ~/.vim/autoload "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
+git clone https://github.com/zirrostig/vim-schlepp.git ~/.vim/bundle/vim-schlepp
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]
