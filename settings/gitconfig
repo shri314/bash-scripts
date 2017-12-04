@@ -9,5 +9,8 @@
 # please put your personal configurations in ~/.gitconfig.user
 #
 [include]
-	path = ~/.gitconfig.user
-	path = ~/.gitconfig.extra
+   path = ~/.gitconfig.user
+   path = ~/.gitconfig.extra
+
+[core]
+   autocrlf = false
