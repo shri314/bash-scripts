@@ -122,6 +122,11 @@ then
    git clone https://github.com/zirrostig/vim-schlepp.git ~/.vim/bundle/vim-schlepp
 fi
 
+if [ ! -d ~/.vim/bundle/vim-javacomplete2 ]
+then
+   git clone https://github.com/artur-shaik/vim-javacomplete2 ~/.vim/bundle/vim-javacomplete2
+fi
+
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]
 then

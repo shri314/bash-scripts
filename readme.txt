@@ -63,3 +63,13 @@ FAQ:
 6. How can I make it better?
 
    Overtime things can evolve. We can categorize scrits, and evolve conventions.
+
+7. Consider using latest Vim - for omni autocomplete with Java8 (i.e. C-X C-O)
+
+   (For ubuntu folks)
+   sudo tee /etc/apt/sources.list.d/vim.list <<EOM
+   deb http://ppa.launchpad.net/laurent-boulard/vim/ubuntu $(cat /etc/lsb-release | sed -n '/CODENAME/s/.*=//p') main
+   EOM
+   sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F82D365
+   sudo apt-get update
+   sudo apt-get install vim
