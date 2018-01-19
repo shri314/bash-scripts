@@ -195,7 +195,7 @@ endif
 set listchars=tab:>-,trail:-
 
 " auto complete
-autocmd FileType java setlocal omnifunc=javacomplete#Complete
+"autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
 " man page support
 source $HOME/.vim/manual.vim
