@@ -4,6 +4,17 @@ mkdir -p $HOME/.display
 
 _LoadDisp()
 {
+   if [ "$TMUX" ]
+   then
+      local OLDDISPLAY="$DISPLAY"
+      export "$(tmux showenv DISPLAY)"
+
+      if [ "$DISPLAY" != "$OLDDISPLAY" ]
+      then
+         echo "bash: DISPLAY changed to $DISPLAY, old value was $OLDDISPLAY" 1>&2
+      fi
+   fi
+
    if [ "$STY" ]
    then
       if [ ! "$VNCDESKTOP" ]
