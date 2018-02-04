@@ -1,0 +1,5 @@
+#!/bin/bash
+
+pane_pid="$1"; shift;
+
+ps --no-headers -o 's,cmd' --ppid ${pane_pid} | sed -n -e '/^[^T]/{s/^..//;p;q}'
