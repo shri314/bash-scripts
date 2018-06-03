@@ -244,7 +244,7 @@ endfunction
 if $ENV_SEARCH_PATH != ""
    set path=$ENV_SEARCH_PATH
 else
-   set path=,,.,..,./include,../include,./src,../src,/usr/local/include,/usr/include/g++-3,/usr/include
+   set path=,,.,..,../../,./include,../include,./src,../src,/usr/local/include,/usr/include/g++-3,/usr/include
 endif
 
 let g:explVertical=1 "split vertically the explorer Window
@@ -442,17 +442,15 @@ function! ToggleSwitchBuffer()
    echo 'switchbuf ='&switchbuf
 endfunction 
 
-function! ToggleSwitchIgnoreCase()
-   if !exists("s:ignorecaseswitched")
-      setl ignorecase
+function! ToggleSwitchDiffIWhite()
+   if !exists("s:diffiwhiteswitched")
       set diffopt+=iwhite
-      let s:ignorecaseswitched = 1
+      let s:diffiwhiteswitched = 1
    else
-      setl noignorecase
       set diffopt-=iwhite
-      unlet s:ignorecaseswitched
+      unlet s:diffiwhiteswitched
    endif
-   echo 'ignorecase ='&ignorecase
+   echo 'diffopt ='&diffopt
 endfunction
 
 function! F12Help()
@@ -460,7 +458,6 @@ function! F12Help()
    echo "b1  - beautify action for cpp (using clang)\n"
    echo "b2  - beautify action for cpp (using astyle)\n"
    echo "b3  - beautify action for cpp (using bcpp)\n"
-   echo "c   - toggle ignorecase\n"
    echo "F12 - show F12 help\n"
    echo "h   - toggle wordhighlight\n"
    echo "i   - toggle paste\n"
@@ -469,6 +466,7 @@ function! F12Help()
    echo "q   - toggle quickfix\n"
    echo "s   - toggle switchbuf\n"
    echo "/   - toggle autohighlight\n"
+   echo "c   - toggle diff iwhite\n"
    echo "t   - toggle show code listing\n"
 endfunction
 
@@ -489,7 +487,7 @@ map <F12><F12> :call F12Help()<CR>
 map <F12>n :setl number!<CR>:echo 'number ='&number<CR>
 map <F12>i :setl paste!<CR>:echo 'paste ='&paste<CR>i
 map <F12>l :setl list!<CR>:echo 'list ='&list<CR>
-map <F12>c :call ToggleSwitchIgnoreCase()<CR>
+map <F12>c :call ToggleSwitchDiffIWhite()<CR>
 map <F12>s :call ToggleSwitchBuffer()<CR>
 map <F12>q :call ToggleQuickFix()<CR>:<BS><C-L>
 map <F12>t :TlistToggle<CR>
@@ -511,7 +509,7 @@ autocmd FileType xml,ant  map <buffer> <F12>b :call BeautifyXml()<CR>
 "imap <TAB> <C-P>
 "autocmd FileType make unmap <TAB>
 
-set diffopt+=iwhite
+set diffopt-=iwhite
 
 let Tlist_Process_File_Always = 1
 set statusline=%<%f\ %h%m%r%([%{Tlist_Get_Tagname_By_Line()}]%)%=%-14.(%l,%c%V%)\ %P
