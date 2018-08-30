@@ -2,14 +2,18 @@
 	st = status
 	br = branch -v
 	lg = log --graph
-	di = diff -w -b --no-prefix
+	di = diff -w -b
 [color]
 	ui = auto
+[diff]
+	context = 5
+	noprefix = true
+	algorithm = histogram
 [help]
 	autocorrect = 0
 [merge]
 	tool = vimdiff
-        conflictstyle = diff3
+	conflictstyle = diff3
 [mergetool]
-        prompt = true
-        keepbackup = true
+	prompt = true
+	keepbackup = true
