@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [ $# -ne 3 ]
+then
+   echo "Usage: $0 <image1> <image2> <out-tar-file>"
+   exit 1;
+fi
+
+
+IMAGE_1="$1"; shift;
+IMAGE_2="$1"; shift;
+TAR_OUT="$1"; shift;
+
+TMP_DIR=/tmp/docker-diff-$$/
+trap "rm -rf /tmp/docker-diff-$$" EXIT QUIT ERR KILL TERM
+
+mkdir -p "$TMP_DIR/saves"
+mkdir -p "$TMP_DIR/extract"
+
+echo "Processing $IMAGE_1" && docker save -o "$TMP_DIR/saves/one.tar" "$IMAGE_1"
+echo "Processing $IMAGE_2" && docker save -o "$TMP_DIR/saves/two.tar" "$IMAGE_2"
+echo "Calculating delta.." && tar -C "$TMP_DIR/extract" -xf "$TMP_DIR/saves/two.tar" -X <(tar tf "$TMP_DIR/saves/one.tar" | sed -ne '/layer.tar/s,/.*,,p')
+echo "Generating $TAR_OUT" && tar -C "$TMP_DIR/extract" -cf "$TAR_OUT" -T <(\ls -A "$TMP_DIR/extract")
