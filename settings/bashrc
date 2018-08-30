@@ -61,6 +61,7 @@ export PATH="$FIX_PATH_1"
 export LD_LIBRARY_PATH=$FIX_LD_LIBRARY_PATH
 export CDPATH=:..:$FIX_CDPATH
 export MANPATH=$FIX_MANPATH
+export HISTCONTROL=ignorespace:ignoredups:erasedups
 
 export SEARCH_PATH=",,.,..,./include,../include,./src,../src,~/.local/include,/usr/local/include,/usr/include/g++-3,/usr/include"
 export HOSTFILESIZE=300000
