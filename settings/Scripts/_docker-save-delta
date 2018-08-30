@@ -22,4 +22,4 @@ mkdir -p "$TMP_DIR/extract"
 echo "Processing $IMAGE_1" && docker save -o "$TMP_DIR/saves/one.tar" "$IMAGE_1"
 echo "Processing $IMAGE_2" && docker save -o "$TMP_DIR/saves/two.tar" "$IMAGE_2"
 echo "Calculating delta.." && tar -C "$TMP_DIR/extract" -xf "$TMP_DIR/saves/two.tar" -X <(tar tf "$TMP_DIR/saves/one.tar" | sed -ne '/layer.tar/s,/.*,,p')
-echo "Generating $TAR_OUT" && tar -C "$TMP_DIR/extract" -cf "$TAR_OUT" -T <(\ls -A "$TMP_DIR/extract")
+echo "Generating $TAR_OUT" && tar -C "$TMP_DIR/extract" -cf "$TAR_OUT" -T <(\ls -A "$TMP_DIR/extract") --numeric-owner --owner root --group root
