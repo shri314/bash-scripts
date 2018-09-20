@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cat "$@" | tr -d '\n'
+
+# sed -e ':a; N; s/\n//; ta;' "$@"
