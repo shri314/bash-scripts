@@ -11,6 +11,3 @@
 [include]
    path = ~/.gitconfig.user
    path = ~/.gitconfig.extra
-
-[core]
-   autocrlf = false

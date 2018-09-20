@@ -17,3 +17,5 @@
 [mergetool]
 	prompt = true
 	keepbackup = true
+[core]
+	autocrlf = false
