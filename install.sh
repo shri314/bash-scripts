@@ -73,6 +73,20 @@ RawGetTool()
    curl --silent "$URL" -o "$DEST/$BN"
 }
 
+VimBundle()
+{
+   local URL="$1"; shift;
+
+   local BASE_NAME="${URL##*/}";
+   local NAME="${BASE_NAME%%.git}";
+
+   if [ ! -d ~/.vim/bundle/"$NAME" ]
+   then
+      echo Getting vim bundle $NAME ...
+      git clone "$URL" ~/.vim/bundle/"$NAME"
+   fi
+}
+
 # install/upgrade steps
 echo
 echo "Setting up links..."
@@ -117,15 +131,9 @@ chmod -R +x ~/.contrib/bin/
 # Vim Plugins
 RawGetTool ~/.vim/autoload "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
 
-if [ ! -d ~/.vim/bundle/vim-schlepp ]
-then
-   git clone https://github.com/zirrostig/vim-schlepp.git ~/.vim/bundle/vim-schlepp
-fi
-
-#if [ ! -d ~/.vim/bundle/vim-javacomplete2 ]
-#then
-#   git clone https://github.com/artur-shaik/vim-javacomplete2 ~/.vim/bundle/vim-javacomplete2
-#fi
+VimBundle https://github.com/zirrostig/vim-schlepp.git
+VimBundle https://github.com/airblade/vim-gitgutter.git
+#VimBundle https://github.com/artur-shaik/vim-javacomplete2
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]
