@@ -70,6 +70,11 @@ rs()
    fi
 }
 
-PROMPT_COMMAND="_LoadDisp;$PROMPT_COMMAND"
+if [ "$PROMPT_COMMAND" ]
+then
+   PROMPT_COMMAND="_LoadDisp;$PROMPT_COMMAND"
+else
+   PROMPT_COMMAND="_LoadDisp"
+fi
 
 alias screen=rs

@@ -69,7 +69,7 @@ export HISTSIZE=30000
 export HOSTNAME="$(hostname)"
 export UQHOSTNAME=$(hostname | sed -e 's/[.].*//')
 export EDITOR='vim -fX'
-export PS1='\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\] [\[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\]] \[\e[33m\]\jj\[\e[1;36m\]$( $(declare -F __git_ps1 || echo "echo -n") )\[\e[0m\]\n${PS1POSTFIX}\[\e[1;36m\]${PS1POSTFIX2}\[\e[0m\]\$ '
+export PS1='\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\] [${__shell_last_cmd_time-0}s] [\[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\]] \[\e[33m\]\jj\[\e[1;36m\]$( $(declare -F __git_ps1 || echo "echo -n") )\[\e[0m\]\n${PS1POSTFIX}\[\e[1;36m\]${PS1POSTFIX2}\[\e[0m\]\$ '
 export PS1SEARCH="$ "
 export GIT_SSH="$HOME/.Scripts/_git_ssh"
 
@@ -246,4 +246,22 @@ fi
 if [ -f ~/.bashrc.custom ]
 then
    . ~/.bashrc.custom
+fi
+
+__shell_timer_start() {
+   __shell_last_cmd_time_begin=${__shell_last_cmd_time_begin:-$SECONDS}
+}
+
+__shell_timer_stop() {
+   __shell_last_cmd_time=$(( $SECONDS - $__shell_last_cmd_time_begin ))
+   unset __shell_last_cmd_time_begin
+}
+
+trap '__shell_timer_start' DEBUG
+
+if [ "$PROMPT_COMMAND" ]
+then
+   export PROMPT_COMMAND="$PROMPT_COMMAND; __shell_timer_stop";
+else
+   export PROMPT_COMMAND="__shell_timer_stop";
 fi
