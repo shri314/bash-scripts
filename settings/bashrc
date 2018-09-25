@@ -45,6 +45,7 @@ then
    export FIX_LD_LIBRARY_PATH=".:$HOME/.usr/local/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"
    export FIX_MANPATH="$HOME/.local/man:$(manpath)"
    export FIX_CDPATH=
+   export FIX_PROMPT_COMMAND=""
 
    if [[ "$(uname -s)" =~ CYGWIN ]]
    then
@@ -62,6 +63,7 @@ export LD_LIBRARY_PATH=$FIX_LD_LIBRARY_PATH
 export CDPATH=:..:$FIX_CDPATH
 export MANPATH=$FIX_MANPATH
 export HISTCONTROL=ignorespace:ignoredups:erasedups
+export PROMPT_COMMAND="$FIX_PROMPT_COMMAND"
 
 export SEARCH_PATH=",,.,..,./include,../include,./src,../src,~/.local/include,/usr/local/include,/usr/include/g++-3,/usr/include"
 export HOSTFILESIZE=300000
