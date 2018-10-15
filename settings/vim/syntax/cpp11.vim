@@ -36,7 +36,7 @@ syn keyword cppStatement	new delete this friend using static_assert noexcept
 syn keyword cppAccess		public protected private
 syn keyword cppType		inline virtual explicit export bool wchar_t char16_t char32_t decltype
 syn keyword cppExceptions	throw try catch
-syn keyword cppOperator		operator typeid alignof alignas
+syn keyword cppOperator		operator typeid alignof alignas co_await co_yield co_return
 syn keyword cppOperator		and bitor or xor compl bitand and_eq or_eq xor_eq not not_eq
 syn keyword cppVirtual          override final contained containedin=cppVirtualContext
 syn keyword cppStorageClass	mutable constexpr thread_local
