@@ -6,12 +6,15 @@ SCRIPT_PATH=$(cd "$(dirname "$0")" && pwd)
 
 set -eu
 
-cat <<EOM
+if [ "${SELF_EXEC:-x}" == "x" ]
+then
+   cat <<EOM
   ***********************************
    Installing/Updating into ~/.env-scripts!
   ***********************************
 
 EOM
+fi
 
 REPO_URL=$(cd "$SCRIPT_PATH" && \git remote -v | awk '{ print $2; exit }')
 
@@ -44,7 +47,17 @@ then
    mkdir -p ~/.old-env-scripts
    mv ~/.env-scripts.tmp ~/.env-scripts
 else
-   ( set -e; cd ~/.env-scripts && \git pull --ff-only origin master )
+   if [ "${SELF_EXEC:-x}" == "x" ]
+   then
+      ( set -e; cd ~/.env-scripts && \git pull --ff-only origin master )
+   fi
+fi
+
+if [ "${SELF_EXEC:-x}" == "x" ]
+then
+   SELF_EXEC=1 exec "$0" "$@"
+else
+   :
 fi
 
 put_item()
