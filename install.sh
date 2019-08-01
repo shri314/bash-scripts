@@ -146,7 +146,8 @@ RawGetTool ~/.vim/autoload "https://raw.githubusercontent.com/tpope/vim-pathogen
 
 VimBundle https://github.com/zirrostig/vim-schlepp.git
 VimBundle https://github.com/airblade/vim-gitgutter.git
-#VimBundle https://github.com/artur-shaik/vim-javacomplete2
+#VimBundle https://github.com/artur-shaik/vim-javacomplete2.git
+#VimBundle https://github.com/mzlogin/vim-markdown-toc.git
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]
