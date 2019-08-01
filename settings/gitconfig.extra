@@ -1,21 +1,39 @@
 [alias]
 	st = status
-	br = branch -v
+	br = branch -vv
 	lg = log --graph
 	di = diff -w -b
 [color]
 	ui = auto
+
+###############################
 [diff]
 	context = 5
 	noprefix = true
 	algorithm = histogram
-[help]
-	autocorrect = 0
+	tool = vimdiff
+[difftool]
+        prompt = false
+[difftool "bcomp"]
+  trustExitCode = true
+  cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\"
+
+###############################
 [merge]
 	tool = vimdiff
 	conflictstyle = diff3
 [mergetool]
 	prompt = true
 	keepbackup = true
+[mergetool "vimdiff"]
+        trustExitCode = false
+[mergetool "bcomp"]
+        trustExitCode = true
+        cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+
+[help]
+	autocorrect = 0
 [core]
 	autocrlf = false
+[status]
+	relativePaths = true
