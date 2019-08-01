@@ -23,8 +23,9 @@ use Data::Dumper;
 
 my @exclude_dirs;
 my @file_extensions;
+my $search_base = ".";
 
-if ( GetOptions( 'exclude-dirs:s{,}' => \@exclude_dirs, 'file-exts:s{,}' => \@file_extensions ) )
+if ( GetOptions( 'exclude-dirs:s{,}' => \@exclude_dirs, 'file-exts:s{,}' => \@file_extensions, 'search-base:s' => \$search_base ) )
 {
    my @re_exclude_dirs    = map { glob2pat($_) } @exclude_dirs;
    my @re_file_extensions = map { glob2pat($_) } @file_extensions;
@@ -80,6 +81,6 @@ if ( GetOptions( 'exclude-dirs:s{,}' => \@exclude_dirs, 'file-exts:s{,}' => \@fi
             }
            }
       },
-      '.'
+      $search_base
    );
 }

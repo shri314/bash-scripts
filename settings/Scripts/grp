@@ -14,7 +14,7 @@
    if [ $# -eq 0 ]
    then
       cat<<EOM
-Usage: grp <regex>
+Usage: grp [<dir>] [-X <dir>] <regex>
 
 Examples: 
    #General example:
@@ -42,14 +42,34 @@ EOM
    then
       isatty output || COLOR_OPT="--color=always"
       
+      DIR="."
+      if [ $# -gt 1 ]
+      then
+         if [ -d "$1" ]
+         then
+            DIR="$1"; shift;
+         fi
+      fi
+
+      EXTRA_EX=()
+      if [ $# -gt 2 ]
+      then
+         if [ "$1" == "-X" ]
+         then
+            shift;
+            EXTRA_EX=("$1"); shift;
+         fi
+      fi
+
       (
          set -f
          EXC_DIR=( $( set -f ; eval "set -f; V=(\"\${${T}_EXCLUDE_DIR[@]}\")" && [ ${#V[@]} -gt 0 ] && printf -- " %s " "${V[@]}" ) )
          FIL_EXT=( $( set -f ; eval "set -f; V=(\"\${${T}_FILE_EXT[@]}\")"    && [ ${#V[@]} -gt 0 ] && printf -- " %s " "${V[@]}" ) )
 
          list.pl \
-            --exclude-dirs "${EXC_DIR[@]}" \
-            --file-exts "${FIL_EXT[@]}"
+            --exclude-dirs "${EXC_DIR[@]}" "${EXTRA_EX[@]}" \
+            --file-exts "${FIL_EXT[@]}" \
+            --search-base "$DIR" \
       ) \
       | xargs -r grep -nHI "$@" $COLOR_OPT \
       | sort \
@@ -58,7 +78,7 @@ EOM
 
       exit $?
    else
-      echo "directory '$(basename "$PWD")' not configured in $HOME/.grp.conf"
+      echo "directory '$(basename "$PWD")' not configured in $HOME/.grp.conf, or \${BASE_TYPE[@]} not set"
       exit 1
    fi
 )
