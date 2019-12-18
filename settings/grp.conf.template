@@ -1,12 +1,9 @@
 # THIS IS AN EXAMPLE TEMPLATE FILE
 
-BASE_TYPE=(xxx yyy)
+BASE_TYPE=(foghorn-edgestack)
 
 std_FILE_EXT=($grp_FILE_EXT '*.c' '*.cpp' '*.cc' '*.inl' '*.h' '*.hpp' '*.hh' '*.fwd' '*.java' '*.am' '*.mk' '*.conf' '*.cfg' '*.pl' '*.cgi' '*.pm' '*.ac' '*.xml' '*.xsl' '*.txt' '*.sql')
-std_EXCLUDE_DIR=($grp_EXCLUDE_DIR '.svn' '.git' 'CVS' 'autom4te*' 'build' 'out' 'tests')
+std_EXCLUDE_DIR=($grp_EXCLUDE_DIR '.svn' '.git' 'CVS' 'autom4te*' 'build' 'out' 'ext')
 
-xxx_FILE_EXT=("${std_FILE_EXT[@]}")
-xxx_EXCLUDE_DIR=("${std_EXCLUDE_DIR[@]}" build)
-
-yyy_FILE_EXT=("${std_FILE_EXT[@]}")
-yyy_EXCLUDE_DIR=("${std_EXCLUDE_DIR[@]}" temporary-stage)
+foghorn_edgestack_FILE_EXT=("${std_FILE_EXT[@]}" '*.gradle')
+foghorn_edgestack_EXCLUDE_DIR=("${std_EXCLUDE_DIR[@]}" tests)
