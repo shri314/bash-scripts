@@ -3,6 +3,7 @@
 	br = branch -vv
 	lg = log --graph
 	di = diff -w -b
+	sh = show -w -b
 [color]
 	ui = auto
 
@@ -14,9 +15,11 @@
 	tool = vimdiff
 [difftool]
         prompt = false
-[difftool "bcomp"]
-  trustExitCode = true
-  cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\"
+[difftool "bcompare"]
+	trustExitCode = true
+	cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\"
+[difftool "meld"]
+        cmd = meld "$LOCAL" "$REMOTE"
 
 ###############################
 [merge]
@@ -26,10 +29,13 @@
 	prompt = true
 	keepbackup = true
 [mergetool "vimdiff"]
-        trustExitCode = false
-[mergetool "bcomp"]
-        trustExitCode = true
-        cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+	trustExitCode = false
+[mergetool "bcompare"]
+	trustExitCode = true
+	cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+[mergetool "meld"]
+#        cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
+        cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
 
 [help]
 	autocorrect = 0
