@@ -240,6 +240,21 @@ function! ToggleQuickFix()
    endif
 endfunction
 
+" (Internal)
+" Function to toggle the window size.
+let g:GutTog=0
+function! ToggleGutter()
+   if g:GutTog == 0
+      set signcolumn=no
+      let g:GutTog=1
+      echo 'gutter ='&signcolumn
+   else
+      set signcolumn=auto
+      let g:GutTog=0
+      echo 'gutter ='&signcolumn
+   endif
+endfunction
+
 " Search path for opening files.
 if $ENV_SEARCH_PATH != ""
    set path=$ENV_SEARCH_PATH
@@ -468,6 +483,7 @@ function! F12Help()
    echo "l   - toggle list\n"
    echo "n   - toggle number\n"
    echo "q   - toggle quickfix\n"
+   echo "g   - toggle gutter\n"
    echo "s   - toggle switchbuf\n"
    echo "/   - toggle autohighlight\n"
    echo "c   - toggle diff iwhite\n"
@@ -494,6 +510,7 @@ map <F12>l :setl list!<CR>:echo 'list ='&list<CR>
 map <F12>c :call ToggleSwitchDiffIWhite()<CR>
 map <F12>s :call ToggleSwitchBuffer()<CR>
 map <F12>q :call ToggleQuickFix()<CR>:<BS><C-L>
+map <F12>g :call ToggleGutter()<CR>
 map <F12>t :TlistToggle<CR>
 map <F12>h :call HLWord()<CR>:<BS><C-L>
 map <F12>/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
