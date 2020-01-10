@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+   echo "Usage: $0 <expression>"
+   exit 1
+fi
+
+docker images | awk '{ print $1 ":" $2 }' | exec -a "$0" grep "$@"
