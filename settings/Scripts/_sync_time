@@ -6,4 +6,14 @@ then
    exit $?
 fi
 
-( /etc/init.d/ntp stop; until ping -nq -c3 8.8.8.8; do echo "Waiting for network..."; done; ntpdate -s time.nist.gov; /etc/init.d/ntp start )
+(
+   date
+   /etc/init.d/ntp stop;
+   until ping -nq -c3 8.8.8.8
+   do
+      echo "Waiting for network...";
+   done
+   ntpdate -s time.nist.gov
+   /etc/init.d/ntp start
+   date
+)
