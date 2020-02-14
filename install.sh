@@ -149,6 +149,7 @@ VimBundle https://github.com/airblade/vim-gitgutter.git
 VimBundle https://github.com/arecarn/vim-crunch.git
 #VimBundle https://github.com/artur-shaik/vim-javacomplete2.git
 #VimBundle https://github.com/mzlogin/vim-markdown-toc.git
+VimBundle https://github.com/vim-scripts/pylint.vim.git
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]

@@ -6,7 +6,7 @@
 " use Vim defaults be used for options that have a different Vi and Vim default value.
 set nocompatible
 
-set background=dark
+"set background=dark
 "set background=light
 
 execute pathogen#infect()
@@ -154,6 +154,8 @@ autocmd FileType java setl errorformat+=%Clocation%m
 autocmd FileType java setl errorformat+=%Csymbol\ %#%m
 autocmd FileType java setl errorformat+=%-G%.%#
 
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
+
 " lines longer than the width of the window will not wrap
 set nowrap
 
@@ -192,6 +194,7 @@ if has("win32")
    autocmd BufNewFile,GUIEnter * simalt~x
 endif
 
+set list
 set listchars=tab:>-,trail:-
 
 " auto complete
@@ -263,6 +266,11 @@ else
 endif
 
 let g:explVertical=1 "split vertically the explorer Window
+
+if has("gui_running")
+   set guifont=Monospace\ Italic\ 11
+   colorscheme desert
+endif
 
 "F2 to Save file
 nmap <F2> :w<CR>
@@ -505,7 +513,7 @@ map N Nm'z.`'
 "F12<key> to apply special properties
 map <F12><F12> :call F12Help()<CR>
 map <F12>n :setl number!<CR>:echo 'number ='&number<CR>
-map <F12>i :setl paste!<CR>:echo 'paste ='&paste<CR>i
+map <F12>i :setl paste!<CR>:echo 'paste ='&paste<CR>
 map <F12>l :setl list!<CR>:echo 'list ='&list<CR>
 map <F12>c :call ToggleSwitchDiffIWhite()<CR>
 map <F12>s :call ToggleSwitchBuffer()<CR>
