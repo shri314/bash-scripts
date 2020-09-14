@@ -96,6 +96,9 @@ set shiftwidth=3
 autocmd FileType java setl shiftwidth=3
 autocmd FileType python setl shiftwidth=4
 
+" Number of spaces for a tab only for editing purpose
+set softtabstop=-1
+
 " Set Shift rounding off
 set shiftround
 
