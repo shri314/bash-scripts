@@ -1,4 +1,5 @@
 [alias]
+	ci = commit -v
 	st = status
 	br = branch -vv
 	lg = log --graph

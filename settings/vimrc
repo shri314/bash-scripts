@@ -34,6 +34,7 @@ highlight StatusLineNC   ctermfg=gray      ctermbg=black
 autocmd FileType cpp setl syntax=cpp11
 autocmd FileType cpp highlight Member term=bold ctermfg=white gui=bold
 autocmd FileType cpp syntax match Member /\<m_[_A-Za-z0-9]*\>/
+"autocmd FileType python compiler pylint
 
 " FOLD CONFIG
 if exists("&fdm")
@@ -246,6 +247,8 @@ function! ToggleQuickFix()
    endif
 endfunction
 
+let g:gitgutter_max_signs=3000  "allow a max of 3000 diffs in the gutter
+
 " (Internal)
 " Function to toggle the window size.
 let g:GutTog=0
@@ -271,8 +274,9 @@ endif
 let g:explVertical=1 "split vertically the explorer Window
 
 if has("gui_running")
-   set guifont=Monospace\ Italic\ 11
-   colorscheme desert
+   set guifont=Monospace\ Regular\ 11
+   "set guifont=Monospace\ Italic\ 11
+   "colorscheme desert
 endif
 
 "F2 to Save file
@@ -324,11 +328,14 @@ autocmd FileType java map <buffer> <F11> 0i//<Esc>j
 function! HLWord()
    if !exists("s:highlightword") 
       execute "syn match HL \"\\\<" . expand("<cword>") . "\\\>\""
-      highlight HL term=bold,reverse cterm=bold,reverse ctermfg=4 ctermbg=7
+      "highlight HL term=bold,reverse cterm=bold,reverse ctermfg=4 ctermbg=7
+      highlight HL term=bold,reverse cterm=bold ctermfg=0 ctermbg=10 gui=bold guifg=bg guibg=LightGreen
       let s:highlightword = 1
+      echo 's:highlightword=1'
    else 
       syntax clear HL
       unlet s:highlightword 
+      echo 's:highlightword=0'
    endif 
 endfunction 
 
@@ -340,7 +347,7 @@ function! AutoHighlightToggle()
     au! auto_highlight
     augroup! auto_highlight
     setl updatetime=4000
-    echo 'Highlight current word: off'
+    echo 'Auto highlight current word: off'
     return 0
   else
     augroup auto_highlight
@@ -348,7 +355,7 @@ function! AutoHighlightToggle()
       au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
     augroup end
     setl updatetime=500
-    echo 'Highlight current word: ON'
+    echo 'Auto highlight current word: ON'
     return 1
   endif
 endfunction
@@ -523,7 +530,7 @@ map <F12>s :call ToggleSwitchBuffer()<CR>
 map <F12>q :call ToggleQuickFix()<CR>:<BS><C-L>
 map <F12>g :call ToggleGutter()<CR>
 map <F12>t :TlistToggle<CR>
-map <F12>h :call HLWord()<CR>:<BS><C-L>
+map <F12>h :call HLWord()<CR>
 map <F12>/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 
 map <F12>b :call StubBeautify()<CR>

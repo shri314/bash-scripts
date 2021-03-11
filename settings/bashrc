@@ -105,6 +105,7 @@ alias vim='$EDITOR'
 alias bperl='perltidy -i=3 -nt -fnl -anl -bl -l=250 -bbs -bbc -bbb -mbl=2'
 alias astyle='_astyle'
 alias man='man -a -S2:3:1:8:5:4:6:7:9'
+alias curl='curl -# -D /dev/stderr'
 alias top='top -d 1'
 alias pstree='pstree -Aah'
 
