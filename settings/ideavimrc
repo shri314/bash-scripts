@@ -1,0 +1,15 @@
+set nocompatible
+set nowrapscan
+set nowrap
+set list
+set hlsearch
+set incsearch
+set ignorecase
+set ruler
+set showmatch
+set showmode
+set showcmd
+set bs=eol,indent,start
+set listchars=tab:>-,trail:-
+
+map <F12>b :action ReformatCode<CR>

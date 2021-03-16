@@ -124,6 +124,7 @@ put_item screenrc
 put_item tmux.conf
 put_item vim
 put_item vimrc
+put_item ideavimrc
 
 # put the ~/.bin folder
 if [ ! -d ~/.bin ]

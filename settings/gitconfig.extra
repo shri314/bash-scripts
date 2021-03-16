@@ -3,8 +3,7 @@
 	st = status
 	br = branch -vv
 	lg = log --graph
-	di = diff -w -b
-	sh = show -w -b
+	di = diff --color-words
 [color]
 	ui = auto
 
