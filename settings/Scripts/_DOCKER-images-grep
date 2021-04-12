@@ -8,6 +8,15 @@ fi
 
 E="$1"; shift
 
+RM=0
+if [ $# -gt 0 ]
+then
+   if [ "$1" == "--rm" ]
+   then
+      RM="1";
+   fi
+fi
+
 docker images | awk '/'"$E"'/ {
                         if($2 == "<none>") {
                            print $3
@@ -15,4 +24,11 @@ docker images | awk '/'"$E"'/ {
                         else {
                            print $1 ":" $2
                         }
-                     }'
+                     }' | (
+                             if [ "$RM" == 1 ]
+                             then
+                                xargs docker rmi -f
+                             else
+                                cat
+                             fi
+                          )
