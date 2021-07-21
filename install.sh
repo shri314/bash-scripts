@@ -118,7 +118,9 @@ put_item bashrc
 put_item gdbinit
 put_item gitconfig
 put_item gitconfig.extra
-put_item handle_screen
+put_item handle_display
+put_item handle_timer
+put_item handle_env
 put_item handle_ssh
 put_item screenrc
 put_item tmux.conf

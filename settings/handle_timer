@@ -1,0 +1,19 @@
+#!/bin/bash
+
+__shell_timer_start() {
+   __shell_last_cmd_time_begin=${__shell_last_cmd_time_begin:-$SECONDS}
+}
+
+__shell_timer_stop() {
+   __shell_last_cmd_time=$(( $SECONDS - $__shell_last_cmd_time_begin ))
+   unset __shell_last_cmd_time_begin
+}
+
+trap '__shell_timer_start' DEBUG
+
+if [ "$PROMPT_COMMAND" ]
+then
+   export PROMPT_COMMAND="$PROMPT_COMMAND; __shell_timer_stop";
+else
+   export PROMPT_COMMAND="__shell_timer_stop";
+fi

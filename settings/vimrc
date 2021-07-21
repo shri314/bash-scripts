@@ -408,40 +408,10 @@ function! BeautifyUsingClangFormat()
    endif
 endfunction
 
-function! BeautifyPhp()
-   if executable('/usr/local/beautifyphp/beautify_php') && executable('_pindent')
-      normal msHmt
-      undojoin | %!_pindent 2>/dev/null
-      normal 'tzt`sa
-   else
-      call StubBeautify()
-   endif
-endfunction
-
 function! BeautifyXml()
    if executable('xmllint')
       normal msHmt
       undojoin | %!xmllint --xmlout --format - 2>/dev/null
-      normal 'tzt`sa
-   else
-      call StubBeautify()
-   endif
-endfunction
-
-function! BeautifyBash()
-   if executable('beautify_bash.py') && executable('python')
-      normal msHmt
-      undojoin | %!beautify_bash.py -t3 - 2>/dev/null
-      normal 'tzt`sa
-   else
-      call StubBeautify()
-   endif
-endfunction
-
-function! BeautifyHtml()
-   if executable('hindent') && executable('_hindent')
-      normal msHmt
-      undojoin | %!_hindent
       normal 'tzt`sa
    else
       call StubBeautify()
@@ -524,16 +494,13 @@ map <F12>h :call HLWord()<CR>
 map <F12>/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 
 map <F12>b :call StubBeautify()<CR>
-autocmd FileType cpp  map <buffer> <F12>b  :call BeautifyUsingClangFormat()<CR>
-autocmd FileType cpp  map <buffer> <F12>b1 :call BeautifyUsingClangFormat()<CR>
-autocmd FileType cpp  map <buffer> <F12>b2 :call BeautifyUsingAstyle()<CR>
-autocmd FileType cpp  map <buffer> <F12>b3 :call BeautifyUsingBcpp()<CR>
-autocmd FileType java map <buffer> <F12>b :call BeautifyUsingAstyle()<CR>
-autocmd FileType perl map <buffer> <F12>b :call BeautifyPerl()<CR>
-autocmd FileType html map <buffer> <F12>b :call BeautifyHtml()<CR>
-autocmd FileType php  map <buffer> <F12>b :call BeautifyPhp()<CR>
-autocmd FileType sh   map <buffer> <F12>b :call BeautifyBash()<CR>
-autocmd FileType xml,ant  map <buffer> <F12>b :call BeautifyXml()<CR>
+autocmd FileType cpp      map <buffer> <F12>b  :call BeautifyUsingClangFormat()<CR>
+autocmd FileType cpp      map <buffer> <F12>b1 :call BeautifyUsingClangFormat()<CR>
+autocmd FileType cpp      map <buffer> <F12>b2 :call BeautifyUsingAstyle()<CR>
+autocmd FileType cpp      map <buffer> <F12>b3 :call BeautifyUsingBcpp()<CR>
+autocmd FileType java     map <buffer> <F12>b  :call BeautifyUsingAstyle()<CR>
+autocmd FileType perl     map <buffer> <F12>b  :call BeautifyPerl()<CR>
+autocmd FileType xml,ant  map <buffer> <F12>b  :call BeautifyXml()<CR>
 
 "imap <TAB> <C-P>
 "autocmd FileType make unmap <TAB>

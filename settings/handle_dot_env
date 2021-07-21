@@ -1,0 +1,73 @@
+#!/bin/bash
+
+_LoadENV()
+{
+   #Usage: - Add _LoadENV to PROMPT_COMMAND inside your .bashrc.custom
+   #
+   #export PROMPT_COMMAND="_LoadENV <proj1.dir.basename> <proj1.rel-env-script-path>; $PROMPT_COMMAND";
+   #export PROMPT_COMMAND="_LoadENV <proj2.dir.basename> <proj2.rel-env-script-path>; $PROMPT_COMMAND";
+
+   local MODULE="$1"; shift
+   local ENVFILE="$1"; shift
+   local TYPE="$1"; shift
+
+   if [ "$LOADED_MODULE" ] && [ "$LOADED_MODULE" != "$MODULE" ]
+   then
+      return
+   fi
+
+   local MODULE_DIR="$(echo "$PWD/" | sed -n -e 's@\(/[^._-]*[._-]\?\<'"$MODULE"'\>[._-]\?[^/]*\)/.*@\1@ip')"
+
+   if [ "$MODULE_DIR" ]
+   then
+      if [ "$LOADED_MODULE" != "$MODULE" ]
+      then
+         if [ "$LOADED_MODULE_DIR" == "" ] && [ -f "$MODULE_DIR/${ENVFILE}" ]
+         then
+            LOADED_MODULE="$LOADED_MODULE"
+            LOADED_MODULE_DIR="$LOADED_MODULE_DIR"
+            PS1POSTFIX2="$PS1POSTFIX2"
+
+            set | sed \
+                     -e '/^_=/d' \
+                     -e '/^UID=/d' \
+                     -e '/^PWD=/d' \
+                     -e '/^PPID=/d' \
+                     -e '/^EUID=/d' \
+                     -e '/^OLDPWD=/d' \
+                     -e '/^FUNCNAME=/d' \
+            > /tmp/.$$.$MODULE.env
+
+            env_list()
+            {
+               alias -p   | sed -n -e '/^alias/s/alias \([^=]*\).*/\1/p'
+               declare -F | sed -n -e '/^declare/s/declare .. \([^=]*\).*/\1/p'
+               declare -x | sed -n -e '/^declare/s/declare .. \([^=]*\).*/\1/p'
+            }
+
+            env_list | sort > /tmp/.$$.$MODULE.env.L
+
+            echo "bash: SOURCING ENV from $MODULE_DIR/${ENVFILE}"
+            source "$MODULE_DIR/${ENVFILE}"
+            hash -r
+
+            LOADED_MODULE="$MODULE"
+            LOADED_MODULE_DIR="$MODULE_DIR"
+            PS1POSTFIX2="($LOADED_MODULE)"
+         fi
+      fi
+   else
+      if [ "$LOADED_MODULE" ]
+      then
+         local MODULE=$LOADED_MODULE
+
+         echo "bash: RESTORING ENV before loading $LOADED_MODULE"
+
+         for i in $(\diff <(env_list | sort) /tmp/.$$.$MODULE.env.L | sed -ne '/^< /s/..//p'); do unalias "$i" 2>&-; unset "$i" 2>&-; done
+         source /tmp/.$$.$MODULE.env 2>/dev/null
+         ls /tmp/.*.env* | grep -f <(pgrep 'ba[s]h') -v | xargs rm -f
+         \rm -f /tmp/.$$.$MODULE.env{,.L}
+      fi
+   fi
+}
+

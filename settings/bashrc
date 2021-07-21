@@ -16,10 +16,7 @@ shopt -s cdspell
 
 ulimit -c unlimited
 
-if [ "$DISPLAY" == "" ]
-then
-   export DISPLAY=localhost:0.0
-fi
+[ "$DISPLAY" == "" ] && export DISPLAY=localhost:0.0
 
 if [ "${XAUTHORITY}" ]
 then
@@ -41,31 +38,23 @@ then
    #This is run only once!
    source <(LANG=C locale)
    export RUNONCE=1
-   export FIX_PATH=".:$HOME/.usr/local/bin:$HOME/.local/bin:/sbin:/usr/sbin:$PATH"
-   export FIX_LD_LIBRARY_PATH=".:$HOME/.usr/local/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"
-   export FIX_MANPATH="$HOME/.local/man:$(manpath)"
+   export FIX_PATH=".:/usr/local/sbin:/usr/sbin:/sbin:$PATH"
+   export FIX_LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH"
+   export FIX_MANPATH="$(manpath 2>&-)"
    export FIX_CDPATH=
    export FIX_PROMPT_COMMAND=""
-
-   if [[ "$(uname -s)" =~ CYGWIN ]]
-   then
-      export FIX_PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/sbin:/usr/sbin:/cygdrive/c/Program Files/Internet Explorer:$PATH"
-      export FIX_CDPATH="$(cygpath -w "$USERPROFILE")"
-   else
-      export TEMP=/tmp/
-   fi
+   export TEMP=/tmp/
 fi
 
 # System Variable Initialization
-export FIX_PATH_1=:~/.bin:~/.contrib/bin:~/.Scripts/bin:~/.Scripts/mkutils:~/.Scripts/bzutils:~/.Scripts:$FIX_PATH:/usr/local/sbin:/usr/sbin
-export PATH="$FIX_PATH_1"
+export PATH=:~/.bin:~/.contrib/bin:~/.Scripts:$FIX_PATH
 export LD_LIBRARY_PATH=$FIX_LD_LIBRARY_PATH
 export CDPATH=:..:$FIX_CDPATH
 export MANPATH=$FIX_MANPATH
 export HISTCONTROL=ignorespace:ignoredups:erasedups
 export PROMPT_COMMAND="$FIX_PROMPT_COMMAND"
 
-export SEARCH_PATH=",,.,..,./include,../include,./src,../src,~/.local/include,/usr/local/include,/usr/include/g++-3,/usr/include"
+export SEARCH_PATH=",,.,..,./include,../include,./src,../src,/usr/local/include,/usr/include"
 export HOSTFILESIZE=300000
 export HISTSIZE=30000
 export HOSTNAME="$(hostname)"
@@ -75,10 +64,8 @@ export PS1='\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\] [${__shell_last_cmd_time-0}s
 export PS1SEARCH="$ "
 export GIT_SSH="$HOME/.Scripts/_git_ssh"
 
-if [[ "$(uname -s)" =~ Linux ]] || [[ "$(uname -s)" =~ CYGWIN ]]
+if [[ "$(uname -s)" =~ Linux ]]
 then
-   export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jpg=01;35:*.png=01;35:*.gif=01;35:*.bmp=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.png=01;35:*.mpg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:';
-
    alias ls="ls -F -h --color"
    alias ll="ls -F -h -l --color"
 else
@@ -109,107 +96,6 @@ alias curl='curl -# -D /dev/stderr'
 alias top='top -d 1'
 alias pstree='pstree -Aah'
 
-_LoadENV()
-{
-   #Usage: - Add _LoadENV to PROMPT_COMMAND inside your .bashrc.custom
-   #
-   #export PROMPT_COMMAND="_LoadENV <proj1.dir.basename> <proj1.rel-env-script-path>; $PROMPT_COMMAND";
-   #export PROMPT_COMMAND="_LoadENV <proj2.dir.basename> <proj2.rel-env-script-path>; $PROMPT_COMMAND"; 
-
-   local MODULE="$1"; shift
-   local ENVFILE="$1"; shift
-   local TYPE="$1"; shift
-
-   if [ "$LOADED_MODULE" ] && [ "$LOADED_MODULE" != "$MODULE" ]
-   then
-      return
-   fi
-
-   local MODULE_DIR="$(echo "$PWD/" | sed -n -e 's@\(/[^._-]*[._-]\?\<'"$MODULE"'\>[._-]\?[^/]*\)/.*@\1@ip')"
-
-   if [ "$MODULE_DIR" ]
-   then
-      if [ "$LOADED_MODULE" != "$MODULE" ]
-      then
-         if [ "$LOADED_MODULE_DIR" == "" ] && [ -f "$MODULE_DIR/${ENVFILE}" ]
-         then
-            LOADED_MODULE="$LOADED_MODULE"
-            LOADED_MODULE_DIR="$LOADED_MODULE_DIR"
-            PS1POSTFIX2="$PS1POSTFIX2"
-
-            set | sed \
-                     -e '/^_=/d' \
-                     -e '/^UID=/d' \
-                     -e '/^PWD=/d' \
-                     -e '/^PPID=/d' \
-                     -e '/^EUID=/d' \
-                     -e '/^OLDPWD=/d' \
-                     -e '/^FUNCNAME=/d' \
-            > /tmp/.$$.$MODULE.env
-
-            env_list()
-            {
-               alias -p   | sed -n -e '/^alias/s/alias \([^=]*\).*/\1/p'
-               declare -F | sed -n -e '/^declare/s/declare .. \([^=]*\).*/\1/p'
-               declare -x | sed -n -e '/^declare/s/declare .. \([^=]*\).*/\1/p'
-            }
-
-            env_list | sort > /tmp/.$$.$MODULE.env.L
-
-            echo "bash: SOURCING ENV from $MODULE_DIR/${ENVFILE}"
-            source "$MODULE_DIR/${ENVFILE}"
-            hash -r
-
-            LOADED_MODULE="$MODULE"
-            LOADED_MODULE_DIR="$MODULE_DIR"
-            PS1POSTFIX2="($LOADED_MODULE)"
-         fi
-      fi
-   else
-      if [ "$LOADED_MODULE" ]
-      then
-         local MODULE=$LOADED_MODULE
-
-         echo "bash: RESTORING ENV before loading $LOADED_MODULE"
-
-         for i in $(\diff <(env_list | sort) /tmp/.$$.$MODULE.env.L | sed -ne '/^< /s/..//p'); do unalias "$i" 2>&-; unset "$i" 2>&-; done
-         source /tmp/.$$.$MODULE.env 2>/dev/null
-         ls /tmp/.*.env* | grep -f <(pgrep 'ba[s]h') -v | xargs rm -f
-         \rm -f /tmp/.$$.$MODULE.env{,.L}
-      fi
-   fi
-}
-
-chexp()
-{
-   echo -n sudo chmod $(stat "$1" | sed -n -e '/^Access:/s@Access: *(\(....\).*$@\1@p') "\"$1\" ; " #(
-   echo    sudo chown $(stat "$1" | sed -n -e '/^Access:/s@.*Uid: *([^/]*/ *\([^)]*\)).*Gid: *([^/]*/ *\([^)]*\))@\1.\2@p') "\"$1\" ; "
-}
-
-xhistory()
-{
-   if [ $# -lt 1 ]
-   then
-      echo "Usage: xhistory <num>" 1>&2
-      return
-   fi
-
-   history -w
-
-   local ALL_ARGS=( "$@" );
-   local ARG_NUM="$1"; shift;
-   local HIST_SZ="$(cat ~/.bash_history | uniq | grep -v '^xhistory' -c)"
-
-   if [ "$HIST_SZ" -gt "$ARG_NUM" ]
-   then
-      cat ~/.bash_history | uniq | grep -v '^xhistory' | head -n$(( HIST_SZ - ARG_NUM )) > ~/.bash_history.1
-      cat ~/.bash_history.1 > ~/.bash_history
-      echo xhistory "${ALL_ARGS[@]}" >> ~/.bash_history
-      \rm -f ~/.bash_history.1
-      history -r
-   fi
-}
-
 Swap12()
 {
    exec 3>&1
@@ -218,10 +104,7 @@ Swap12()
    exec 3>&-
 }
 
-if [ -f ~/.contrib/bin/git-completion.bash ]
-then
-  . ~/.contrib/bin/git-completion.bash
-fi
+[ -f ~/.contrib/bin/git-completion.bash ] && . ~/.contrib/bin/git-completion.bash
 
 if [ -f ~/.contrib/bin/git-prompt.sh ]
 then
@@ -236,35 +119,8 @@ then
   . ~/.contrib/bin/git-prompt.sh
 fi
 
-if [ -f ~/.handle_ssh ]
-then
-   . ~/.handle_ssh
-fi
-
-if [ -f ~/.handle_screen ]
-then
-   . ~/.handle_screen
-fi
-
-if [ -f ~/.bashrc.custom ]
-then
-   . ~/.bashrc.custom
-fi
-
-__shell_timer_start() {
-   __shell_last_cmd_time_begin=${__shell_last_cmd_time_begin:-$SECONDS}
-}
-
-__shell_timer_stop() {
-   __shell_last_cmd_time=$(( $SECONDS - $__shell_last_cmd_time_begin ))
-   unset __shell_last_cmd_time_begin
-}
-
-trap '__shell_timer_start' DEBUG
-
-if [ "$PROMPT_COMMAND" ]
-then
-   export PROMPT_COMMAND="$PROMPT_COMMAND; __shell_timer_stop";
-else
-   export PROMPT_COMMAND="__shell_timer_stop";
-fi
+[ -f ~/.handle_ssh     ] && . ~/.handle_ssh
+[ -f ~/.handle_timer   ] && . ~/.handle_timer
+[ -f ~/.handle_display ] && . ~/.handle_display
+[ -f ~/.handle_dot_env ] && . ~/.handle_dot_env
+[ -f ~/.bashrc.custom  ] && . ~/.bashrc.custom

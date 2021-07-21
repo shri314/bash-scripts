@@ -1,5 +1,0 @@
-#!/bin/bash
-
-cat "$@" | sed -e 's/[?]PHP/?php/i' \
-       | /usr/local/beautifyphp/beautify_php -l -i 3 -m 240 -b 0 \
-       | /usr/local/beautifyphp/beautify_php -l -i 3 -m 240 -b 1
