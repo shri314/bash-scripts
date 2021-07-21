@@ -26,7 +26,7 @@ else
    PS1THRESHOLD=1
 fi
 
-if [ "$SHLVL" -gt "$PS1THRESHOLD"  ]
+if [ "$SHLVL" -gt "$PS1THRESHOLD" ]
 then
    PS1POSTFIX="["$(expr $SHLVL - $PS1THRESHOLD)"]"
 else
