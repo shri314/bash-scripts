@@ -1,4 +1,4 @@
-#FAQ:
+# FAQ
 
 1. What's this all about?
 
