@@ -1,5 +1,4 @@
-FAQ:
-====
+#FAQ:
 
 1. What's this all about?
 
@@ -24,27 +23,27 @@ FAQ:
    From then on, you can change the files to your own liking, and also get updates.
 
    Use the following procedure to install:
-   =======================================
+   ```
    ( cd ~ && git clone http://www.github.com/shri314/bash-scripts && cd bash-scripts && ./install.sh )
-   =======================================
+   ```
 
    Or if you have ssh-key access:
-   =======================================
+   ```
    ( cd ~ && git clone git@github.com:shri314/bash-scripts.git && cd bash-scripts && ./install.sh )
-   =======================================
+   ```
 
    Your old setttings are in "~/.old-env-scripts". You can delete it or reapply your customizations.
    You can remove the bash-scripts directory after installation.
 
    Use the following procedure to convert to password-less push if you have enabled it:
-   =======================================
+   ```
    (
       cd ~/.env-scripts &&
          git config user.name 'Shriram V'
          git config user.email 'shri314@yahoo.com'
          git remote set-url origin 'git@github.com:shri314/bash-scripts.git'
    )
-   =======================================
+   ```
 
 3. How can I try it without getting disripted?
 
@@ -53,7 +52,9 @@ FAQ:
 
 4. How do I get updates?
 
+   ```
    ( cd ~/.env-scripts && install.sh )
+   ```
 
 5. How do I contribute?
 
@@ -67,9 +68,11 @@ FAQ:
 7. Consider using latest Vim - for omni autocomplete with Java8 (i.e. C-X C-O)
 
    (For ubuntu folks)
+   ```
    sudo tee /etc/apt/sources.list.d/vim.list <<EOM
    deb http://ppa.launchpad.net/laurent-boulard/vim/ubuntu $(cat /etc/lsb-release | sed -n '/CODENAME/s/.*=//p') main
    EOM
    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F82D365
    sudo apt-get update
    sudo apt-get install vim
+   ```
