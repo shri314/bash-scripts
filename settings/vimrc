@@ -532,3 +532,8 @@ vmap Dk <Plug>SchleppDupLeft
 vmap Dj <Plug>SchleppDupDown
 vmap Dh <Plug>SchleppDupLeft
 vmap Dl <Plug>SchleppDupRight
+
+" Ignore some paths
+:set wildignore+=**/build/**
+:set wildignore+=**/temp/**
+:set wildignore+=**/libs/**
