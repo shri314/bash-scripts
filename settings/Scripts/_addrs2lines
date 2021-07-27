@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+import os
+import re
+import sys
+import subprocess
+
+if len(sys.argv) != 3:
+    print("Usage: %s <path-to-symbol-file> <symbol-base-name>" % sys.argv[0])
+    print("")
+    print("Example:")
+    print("   ./publisher-main 2>&1 | tee sanitizer.tmp")
+    print("   cat sanitizer.tmp | %s ./publisher-main.debug publisher-main > sanitizer.out" % sys.argv[0])
+    sys.exit(1)
+
+symbol_file = sys.argv[1]
+symbol_base = sys.argv[2]
+
+if not os.path.exists(symbol_file):
+    print("symbol file '%s' not found" % symbol_file)
+    sys.exit(1)
+
+address_regex = re.compile(symbol_base + '[+](0x[0-9a-fA-F][0-9a-fA-F]*)')
+
+addr2line_cache = {}
+
+with subprocess.Popen(['addr2line', '-e', symbol_file], stdout = subprocess.PIPE, stdin = subprocess.PIPE) as addr2line:
+
+    def translate(addr):
+        tname = addr2line_cache.get(addr)
+        if tname is None:
+            addr2line.stdin.write(addr.encode('utf-8'))
+            addr2line.stdin.write(b'\n')
+            addr2line.stdin.flush()
+            line_info = addr2line.stdout.readline().decode('utf-8').rstrip()
+            if line_info.startswith('?'):
+                tname = symbol_base + '+' + addr
+            else:
+                tname = addr2line_cache[addr] = line_info
+        return '(' + tname + ')'
+
+    lsep = ''
+    for line in sys.stdin:
+        line = line.rstrip()
+        sys.stdout.write(lsep)
+        words = line.split(' ')
+        wsep = ''
+        for word in words:
+            match = re.search(address_regex, word)
+            if match:
+                tword = translate(match.group(1))
+            else:
+                tword = word
+            sys.stdout.write(wsep)
+            sys.stdout.write(tword)
+            wsep = ' '
+        lsep = '\n'
+
+    addr2line.stdin.close()
+    print('')
