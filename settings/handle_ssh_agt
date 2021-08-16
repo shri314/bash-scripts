@@ -2,7 +2,7 @@
 
 _LoadAgent()
 {
-   if [ ! -v $SSH_AGENT_PID ]
+   if [ ! -v SSH_AGENT_PID ]
    then
       if [ -f ~/.ssh-agent-env ]
       then
