@@ -9,7 +9,7 @@ _LoadDisp()
       local OLDDISPLAY="$DISPLAY"
       local XHOST=$(if [ -z "${SSH_TTY}" ] && grep -q microsoft <(uname -a); then echo $(sed -n '/nameserver/{s/.* //;p;q;}' /etc/resolv.conf); else echo localhost; fi)
 
-      export "$(tmux showenv DISPLAY | sed -e "s/localhost/$XHOST/")"
+      export "$(tmux showenv DISPLAY | sed -e "s/localhost/$XHOST/" | sed -e 's/^-//')"
 
       if [ "$DISPLAY" != "$OLDDISPLAY" ]
       then
