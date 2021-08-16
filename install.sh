@@ -139,7 +139,7 @@ fi
 # Get external tools
 RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
 RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh"
-RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/shri314/beautify_bash/master/beautify_bash.py"
+#RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/shri314/beautify_bash/master/beautify_bash.py"
 RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/buzztaiki/tmux-mouse/master/tmux-mouse"
 chmod -R +x ~/.contrib/bin/
 
@@ -148,10 +148,10 @@ RawGetTool ~/.vim/autoload "https://raw.githubusercontent.com/tpope/vim-pathogen
 
 VimBundle https://github.com/zirrostig/vim-schlepp.git
 VimBundle https://github.com/airblade/vim-gitgutter.git
-VimBundle https://github.com/arecarn/vim-crunch.git
+#VimBundle https://github.com/arecarn/vim-crunch.git
 #VimBundle https://github.com/artur-shaik/vim-javacomplete2.git
 #VimBundle https://github.com/mzlogin/vim-markdown-toc.git
-VimBundle https://github.com/vim-scripts/pylint.vim.git
+#VimBundle https://github.com/vim-scripts/pylint.vim.git
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]
