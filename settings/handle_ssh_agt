@@ -1,0 +1,29 @@
+#!/bin/bash
+
+_LoadAgent()
+{
+   if [ ! -v $SSH_AGENT_PID ]
+   then
+      if [ -f ~/.ssh-agent-env ]
+      then
+         source ~/.ssh-agent-env > /dev/null
+         if ! grep -q "$SSH_AGENT_PID" <(pgrep -fl ssh-agent)
+         then
+            rm -f ~/.ssh-agent-env
+         fi
+      fi
+
+      if [ ! -f ~/.ssh-agent-env ]
+      then
+         ssh-agent -s > ~/.ssh-agent-env
+      fi
+      source ~/.ssh-agent-env
+   fi
+}
+
+if [ "$PROMPT_COMMAND" ]
+then
+   PROMPT_COMMAND="_LoadAgent;$PROMPT_COMMAND"
+else
+   PROMPT_COMMAND="_LoadAgent"
+fi

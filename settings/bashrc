@@ -120,6 +120,7 @@ then
 fi
 
 [ -f ~/.handle_ssh     ] && . ~/.handle_ssh
+[ -f ~/.handle_ssh_agt ] && . ~/.handle_ssh_agt
 [ -f ~/.handle_timer   ] && . ~/.handle_timer
 [ -f ~/.handle_display ] && . ~/.handle_display
 [ -f ~/.handle_dot_env ] && . ~/.handle_dot_env
