@@ -124,4 +124,6 @@ fi
 [ -f ~/.handle_timer   ] && . ~/.handle_timer
 [ -f ~/.handle_display ] && . ~/.handle_display
 [ -f ~/.handle_dot_env ] && . ~/.handle_dot_env
+
+[ ! -v BASE_PATH ] && export PATH_SAVED="$PATH"
 [ -f ~/.bashrc.custom  ] && . ~/.bashrc.custom
