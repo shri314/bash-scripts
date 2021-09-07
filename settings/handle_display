@@ -37,12 +37,14 @@ _LoadDisp()
 
 _RemoveDisp()
 {
+   local XARGS_OPT="" && [ "$(uname -s)" != "Darwin" ] && XARGS_OPT="-r"
+
    local TYPE_SCREEN=`\which screen 2>/dev/null`
    if [ "$TYPE_SCREEN" != "" ]
    then
       \screen -wipe -q 2>/dev/null 1>&2
       mkdir -p $HOME/.display
-      find $HOME/.display -type f | grep -v -f <(\screen -ls | grep "([AD]" | awk '{ print "'"$HOME"'/.display/" $1 }') | xargs -r rm -f
+      find $HOME/.display -type f | grep -v -f <(\screen -ls | grep "([AD]" | awk '{ print "'"$HOME"'/.display/" $1 }') | xargs $XARGS_OPT rm -f
    fi
 }
 

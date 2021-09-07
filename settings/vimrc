@@ -432,12 +432,17 @@ function! ToggleSwitchBuffer()
    if !exists("s:buffswitched")
       set switchbuf=useopen
       let s:buffswitched = 1
-   else 
+   else
       set switchbuf=useopen,split
       unlet s:buffswitched 
-   endif 
+   endif
    echo 'switchbuf ='&switchbuf
-endfunction 
+endfunction
+
+if has('mac') && $VIM == '/usr/share/vim'
+    set diffopt-=internal
+    set diffopt+=iwhite
+endif
 
 function! ToggleSwitchDiffIWhite()
    if !exists("s:diffiwhiteswitched")
