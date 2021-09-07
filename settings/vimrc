@@ -93,9 +93,9 @@ set cmdheight=1
 "set winminheight=0
 
 " Shift width when you press << or >> to indent a line.
-set shiftwidth=3
-autocmd FileType java setl shiftwidth=3
-autocmd FileType python setl shiftwidth=4
+set shiftwidth=4
+"autocmd FileType java setl shiftwidth=4
+"autocmd FileType python setl shiftwidth=4
 
 " Number of spaces for a tab only for editing purpose
 set softtabstop=-1
@@ -534,6 +534,12 @@ vmap Dh <Plug>SchleppDupLeft
 vmap Dl <Plug>SchleppDupRight
 
 " Ignore some paths
-:set wildignore+=**/build/**
-:set wildignore+=**/temp/**
-:set wildignore+=**/libs/**
+set wildignore+=**/Debug/**
+set wildignore+=**/Build/**
+set wildignore+=**/build/**
+set wildignore+=**/temp/**
+set wildignore+=**/libs/**
+
+if filereadable(expand('~/.vimrc.custom'))
+   source ~/.vimrc.custom
+endif
