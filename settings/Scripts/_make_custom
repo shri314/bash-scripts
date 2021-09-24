@@ -18,7 +18,7 @@ TEMP_PIPE="$HOME/.pipeout.$$"
 
 trap "rm -f '$TEMP_PIPE'" EXIT TERM KILL QUIT INT
 
-mknod "$TEMP_PIPE" p
+mkfifo "$TEMP_PIPE"
 
 cat "$TEMP_PIPE" | "${FORMATTER[@]}" | paint &
 
