@@ -8,6 +8,7 @@ set nocompatible
 
 "set background=dark
 "set background=light
+set visualbell
 
 execute pathogen#infect()
 

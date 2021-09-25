@@ -6,6 +6,12 @@
 # Comments : bashrc
 #
 
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
 # Source global definitions
 if [ -f /etc/bashrc ]
 then
@@ -13,6 +19,8 @@ then
 fi
 
 shopt -s cdspell
+
+shopt -s checkwinsize
 
 ulimit -c unlimited
 
