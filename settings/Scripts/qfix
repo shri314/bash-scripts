@@ -6,10 +6,21 @@ trap "rm -f $EFILE" EXIT QUIT KILL TERM
 
 OP=()
 
-if [ "$1" == "--no-split" ]
-then
-   OP=( '+set switchbuf-=split' )
-fi
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        --no-sp|--no-split)
+            OP+=( '+set switchbuf-=split' )
+            ;;
+        --sp|--split)
+            OP+=( '+set switchbuf+=split' )
+            ;;
+        -g)
+            OP+=( '-g' )
+            ;;
+    esac
+    shift
+done
 
 if which paint 1>/dev/null 2>/dev/null
 then
