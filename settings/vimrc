@@ -328,7 +328,7 @@ autocmd FileType cpp  map <buffer> <F11> 0i//<Esc>j
 autocmd FileType java map <buffer> <F11> 0i//<Esc>j
 
 function! HLWord()
-   if !exists("s:highlightword") 
+   if !exists("s:highlightword")
       execute "syn match HL \"\\\<" . expand("<cword>") . "\\\>\""
       "highlight HL term=bold,reverse cterm=bold,reverse ctermfg=4 ctermbg=7
       highlight HL term=bold,reverse cterm=bold ctermfg=0 ctermbg=10 gui=bold guifg=bg guibg=LightGreen
@@ -336,7 +336,7 @@ function! HLWord()
       echo 's:highlightword=1'
    else 
       syntax clear HL
-      unlet s:highlightword 
+      unlet s:highlightword
       echo 's:highlightword=0'
    endif 
 endfunction 
@@ -550,3 +550,20 @@ set wildignore+=**/libs/**
 if filereadable(expand('~/.vimrc.custom'))
    source ~/.vimrc.custom
 endif
+
+" Scan current file for specified word and open in quickfix
+function! QfScan(needle)
+    try
+        silent! execute 'bdelete! Koo_'
+        new
+        file! Koo_
+        execute 'r !grep -e ' a:needle ' -n -H #'
+        normal gg
+        normal dd
+        hide
+        execute 'cbuffer ' buffer_number('Koo_')
+        copen
+    finally
+        silent! execute 'bdelete! Koo_'
+    endtry
+endfunction
