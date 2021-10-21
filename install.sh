@@ -83,7 +83,7 @@ RawGetTool()
    echo Getting $BN ...
 
    mkdir -p "$DEST"
-   curl --silent "$URL" -o "$DEST/$BN"
+   (set -x; curl --silent "$URL" -o "$DEST/$BN")
 }
 
 VimBundle()
@@ -96,7 +96,9 @@ VimBundle()
    if [ ! -d ~/.vim/bundle/"$NAME" ]
    then
       echo Getting vim bundle $NAME ...
-      git clone "$URL" ~/.vim/bundle/"$NAME"
+      (set -x; git clone "$URL" ~/.vim/bundle/"$NAME")
+  else
+      (cd ~/.vim/bundle/"$NAME" && pwd && git pull --ff-only)
    fi
 }
 
