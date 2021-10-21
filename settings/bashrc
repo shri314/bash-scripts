@@ -113,6 +113,9 @@ else
 fi
 alias pstree='pstree -Aah'
 
+#turn off terminal control flow Ctrl-S, Ctrl-Q
+stty -ixon
+
 Swap12()
 {
    exec 3>&1
@@ -122,20 +125,7 @@ Swap12()
 }
 
 [ -f ~/.contrib/bin/git-completion.bash ] && . ~/.contrib/bin/git-completion.bash
-
-if [ -f ~/.contrib/bin/git-prompt.sh ]
-then
-  export GIT_PS1_SHOWUPSTREAM="verbose name"
-  export GIT_PS1_SHOWCOLORHINTS=true
-  export GIT_PS1_SHOWDIRTYSTATE=true
-  export GIT_PS1_SHOWSTASHSTATE=true
-  export GIT_PS1_DESCRIBE_STYLE=describe
-  export GIT_PS1_SHOWUNTRACKEDFILES=true
-  #export GIT_PS1_STATESEPARATOR=" "
-
-  . ~/.contrib/bin/git-prompt.sh
-fi
-
+[ -f ~/.handle_git     ] && . ~/.handle_git
 [ -f ~/.handle_ssh     ] && . ~/.handle_ssh
 [ -f ~/.handle_ssh_agt ] && . ~/.handle_ssh_agt
 [ -f ~/.handle_timer   ] && . ~/.handle_timer

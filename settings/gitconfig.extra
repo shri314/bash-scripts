@@ -4,6 +4,7 @@
 	br = branch -vv
 	lg = log --graph
 	di = diff --color-words --relative
+	gr = grep --untracked -In
 [color]
 	ui = auto
 

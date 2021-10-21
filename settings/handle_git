@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if [ -f ~/.contrib/bin/git-prompt.sh ]
+then
+  export GIT_PS1_SHOWUPSTREAM="verbose name"
+  export GIT_PS1_SHOWCOLORHINTS=true
+  export GIT_PS1_SHOWDIRTYSTATE=true
+  export GIT_PS1_SHOWSTASHSTATE=true
+  export GIT_PS1_DESCRIBE_STYLE=describe
+  export GIT_PS1_SHOWUNTRACKEDFILES=true
+  #export GIT_PS1_STATESEPARATOR=" "
+
+  . ~/.contrib/bin/git-prompt.sh
+fi
+
+git() {
+  case $1 in
+     commit)
+        shift
+        command git ci "$@"
+        ;;
+     status)
+        shift
+        command git st "$@"
+        ;;
+     branch)
+        shift
+        command git br "$@"
+        ;;
+     diff)
+        shift
+        command git di "$@"
+        ;;
+     grep)
+        shift
+        command git gr "$@"
+        ;;
+    *)
+        command git "$@"
+        ;;
+  esac
+}
