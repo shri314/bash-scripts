@@ -2,8 +2,8 @@
 	ci = commit -v
 	st = status
 	br = branch -vv
-	lg = log --graph
-	di = diff --color-words --relative
+	lg = log --graph --oneline
+	di = diff --relative
 	gr = grep --untracked -In
 [color]
 	ui = auto

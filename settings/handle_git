@@ -13,7 +13,7 @@ then
   . ~/.contrib/bin/git-prompt.sh
 fi
 
-git_with_alias() {
+_GIT() {
   case $1 in
      commit)
         shift
@@ -41,4 +41,4 @@ git_with_alias() {
   esac
 }
 
-alias git=git_with_alias
+alias git=_GIT
