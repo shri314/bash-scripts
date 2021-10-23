@@ -32,6 +32,16 @@ highlight Comment        term=bold ctermfg=lightblue guifg=#8000ff gui=bold
 highlight StatusLine     ctermfg=lightblue ctermbg=white
 highlight StatusLineNC   ctermfg=gray      ctermbg=black
 
+"Tabs:
+"disables tabulour disables the plugin entirely.
+"let g:loadTabulous = 1
+let tabulousLabelLeftStr  = '_/     '
+let tabulousLabelRightStr = '     \_'
+
+highlight TabLineFill   ctermfg=Yellow     ctermbg=Grey
+highlight TabLine       ctermfg=Blue       ctermbg=Black
+highlight TabLineSel    ctermfg=Red        ctermbg=Blue   term=bold
+
 autocmd FileType cpp setl syntax=cpp11
 autocmd FileType cpp highlight Member term=bold ctermfg=white gui=bold
 autocmd FileType cpp syntax match Member /\<m_[_A-Za-z0-9]*\>/
