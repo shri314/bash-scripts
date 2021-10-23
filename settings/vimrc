@@ -710,3 +710,14 @@ function! QfScan(needle)
       silent! bdelete! QfSTmp
    endtry
 endfunction
+
+" send the line under the cursor as keys to a tmux pane
+function! TmuxExecLine(target_pane)
+    silent! execute "!tmux send-keys -t " . a:target_pane . " '" . getline(".") . "' enter"
+    silent! :/^[^# ]
+    silent! normal z.
+endfunction
+
+function! AutoScript()
+    map <buffer> <F9> :call TmuxExecLine('.')<CR>
+endfunction
