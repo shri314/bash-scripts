@@ -107,6 +107,7 @@ set cmdheight=1
 set shiftwidth=4
 "autocmd FileType java setl shiftwidth=4
 "autocmd FileType python setl shiftwidth=4
+autocmd FileType vim setl shiftwidth=3
 
 " Number of spaces for a tab only for editing purpose
 set softtabstop=-1
@@ -169,7 +170,7 @@ autocmd FileType java setl errorformat+=%Clocation%m
 autocmd FileType java setl errorformat+=%Csymbol\ %#%m
 autocmd FileType java setl errorformat+=%-G%.%#
 
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
+autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab indentkeys-=0# indentkeys-=<:>
 
 " lines longer than the width of the window will not wrap
 set nowrap
@@ -211,6 +212,8 @@ endif
 
 set list
 set listchars=tab:>-,trail:-
+autocmd FileType git setl nolist
+autocmd FileType diff setl nolist
 
 " auto complete
 "autocmd FileType java setlocal omnifunc=javacomplete#Complete
