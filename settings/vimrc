@@ -119,7 +119,8 @@ set shiftround
 set magic
 
 " Switch buffer to edit a new file, and use open file if it already open
-set switchbuf=useopen,split
+"set switchbuf=useopen,split
+set switchbuf=useopen
 
 " Make program to use
 if $ENV_MAKE_PRG != ""
@@ -264,18 +265,14 @@ endfunction
 let g:gitgutter_max_signs=3000  "allow a max of 3000 diffs in the gutter
 
 " (Internal)
-" Function to toggle the window size.
-let g:GutTog=0
+" Function to toggle the gutter
 function! ToggleGutter()
-   if g:GutTog == 0
+   if index(split(&signcolumn, ','), "no") == -1
       set signcolumn=no
-      let g:GutTog=1
-      echo 'gutter ='&signcolumn
    else
       set signcolumn=auto
-      let g:GutTog=0
-      echo 'gutter ='&signcolumn
    endif
+   echo 'signcolumn ='&signcolumn
 endfunction
 
 " Search path for opening files.
@@ -444,28 +441,22 @@ function! BeautifyPerl()
 endfunction
 
 function! ToggleSwitchBuffer()
-   if !exists("s:buffswitched")
-      set switchbuf=useopen
-      let s:buffswitched = 1
+   if index(split(&switchbuf, ','), "split") == -1
+      set switchbuf+=split
    else
-      set switchbuf=useopen,split
-      unlet s:buffswitched 
+      set switchbuf-=split
    endif
    echo 'switchbuf ='&switchbuf
 endfunction
 
-if has('mac') && $VIM == '/usr/share/vim'
-    set diffopt-=internal
-    set diffopt+=iwhite
-endif
+"diffopt iwhite handling
+if has('mac') && $VIM == '/usr/share/vim' | set diffopt-=internal | endif | set diffopt-=iwhite
 
 function! ToggleSwitchDiffIWhite()
-   if !exists("s:diffiwhiteswitched")
+   if index(split(&diffopt, ','), "iwhite") == -1
       set diffopt+=iwhite
-      let s:diffiwhiteswitched = 1
    else
       set diffopt-=iwhite
-      unlet s:diffiwhiteswitched
    endif
    echo 'diffopt ='&diffopt
 endfunction
@@ -512,7 +503,6 @@ map <F12>g :call ToggleGutter()<CR>
 map <F12>t :TlistToggle<CR>
 map <F12>h :call HLWord()<CR>
 map <F12>/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
-
 map <F12>b :call StubBeautify()<CR>
 autocmd FileType cpp      map <buffer> <F12>b  :call BeautifyUsingClangFormat()<CR>
 autocmd FileType cpp      map <buffer> <F12>b1 :call BeautifyUsingClangFormat()<CR>
@@ -524,8 +514,6 @@ autocmd FileType xml,ant  map <buffer> <F12>b  :call BeautifyXml()<CR>
 
 "imap <TAB> <C-P>
 "autocmd FileType make unmap <TAB>
-
-set diffopt-=iwhite
 
 let Tlist_Process_File_Always = 1
 set statusline=%<%f\ %h%m%r%([%{Tlist_Get_Tagname_By_Line()}]%)%=%-14.(%l,%c%V%)\ %P
