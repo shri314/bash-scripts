@@ -1,46 +1,45 @@
 [alias]
-	ci = commit -v
-	st = status
-	br = branch -vv
-	lg = log --graph --oneline
-	di = diff --relative
-	gr = grep --untracked -In
+        ci = commit -v
+        st = status
+        br = branch -vv
+        lg = log --graph --oneline
+        lg2 = !_GIT_lg2
+        di = diff --relative
+        gr = grep --untracked -In
+        an = !_GIT_an
 [color]
-	ui = auto
+        ui = auto
 
 ###############################
 [diff]
-	context = 5
-	noprefix = true
-	algorithm = histogram
-	tool = vimdiff
+        context = 5
+        noprefix = true
+        algorithm = histogram
+        tool = vimdiff
 [difftool]
         prompt = false
 [difftool "bcompare"]
-	trustExitCode = true
-	cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\"
+        trustExitCode = true
+        cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\"
 [difftool "meld"]
         cmd = meld "$LOCAL" "$REMOTE"
 
 ###############################
 [merge]
-	tool = vimdiff
-	conflictstyle = diff3
+        tool = vimdiff
+        conflictstyle = diff3
 [mergetool]
-	prompt = true
-	keepbackup = true
+        prompt = true
+        keepbackup = true
 [mergetool "vimdiff"]
-	trustExitCode = false
+        trustExitCode = false
 [mergetool "bcompare"]
-	trustExitCode = true
-	cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
-[mergetool "meld"]
-#        cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
-        cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+        trustExitCode = true
+        cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
 
 [help]
-	autocorrect = 0
+        autocorrect = 0
 [core]
-	autocrlf = false
+        autocrlf = false
 [status]
-	relativePaths = true
+        relativePaths = true
