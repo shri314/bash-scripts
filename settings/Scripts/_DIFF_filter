@@ -1,0 +1,7 @@
+#!/bin/bash
+
+F=$1;
+
+G=$(echo "$F" | sed -e 's,/,\\/,g')
+
+awk "/^diff.*$G$/ { B=1; print; next; } /^diff/ { B=0 } { if(B) print }"
