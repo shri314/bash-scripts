@@ -584,6 +584,22 @@ function! ConflictsPickRight()
 endfunction
 
 
+function! ViewBothChanges(onto)
+    "<(set -x; git diff -p --raw $V2...$V1 | _DIFF_filter $F) \
+    "<(set -x; git show -p --raw $V2       | _DIFF_filter $F) \
+    "    "+vert all" \
+    "    "+file =/=$V1" \
+    "    "+wincmd l" \
+    "    "+file =/=$V2" \
+    "    "+wincmd h"
+
+   if has("gui_running")
+       execute "!EDITOR=gvim _GIT_diff_diff " . a:onto . " REBASE_HEAD " . expand("%")
+   else
+       execute "!EDITOR=gvim _GIT_diff_diff " . a:onto . " REBASE_HEAD " . expand("%")
+   endif
+endfunction
+
 map ?? :call ConflictsInspect()<CR>
 map ?< :call ConflictsPickLeft()<CR>
 map ?> :call ConflictsPickRight()<CR>

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-V1=$1;
-V2=$2;
-F=$3;
+V1=${1-main}
+V2=${2-REBASE_HEAD}
+F=$3
 
 $EDITOR \
     <(set -x; git diff -p --raw $V2...$V1 | _DIFF_filter $F) \
