@@ -1,0 +1,14 @@
+#!/bin/bash
+
+V1=$1;
+V2=$2;
+F=$3;
+
+$EDITOR \
+    <(set -x; git diff -p --raw $V2...$V1 | _DIFF_filter $F) \
+    <(set -x; git show -p --raw $V2       | _DIFF_filter $F) \
+        "+vert all" \
+        "+file =/=$V1" \
+        "+wincmd l" \
+        "+file =/=$V2" \
+        "+wincmd h"
