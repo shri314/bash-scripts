@@ -1,3 +1,0 @@
-#!/bin/bash
-
-git rev-parse --short $(git rev-list "$1..${2-HEAD}" | tail -1)^1

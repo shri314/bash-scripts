@@ -6,7 +6,7 @@
         lg2 = !_GIT_lg2
         di = diff --relative
         gr = grep --untracked -In
-        an = !_GIT_an
+        fp = !_GIT_fp
 [color]
         ui = auto
 
