@@ -116,12 +116,15 @@ alias pstree='pstree -Aah'
 #turn off terminal control flow Ctrl-S, Ctrl-Q
 stty -ixon
 
-Swap12()
-{
-   exec 3>&1
-   exec 1>&2
-   exec 2>&3
-   exec 3>&-
+#Swap12() {
+#   exec 3>&1
+#   exec 1>&2
+#   exec 2>&3
+#   exec 3>&-
+#}
+
+_fvi() {
+    $EDITOR "$(fzf -q "$1")"
 }
 
 [ -f ~/.contrib/bin/git-completion.bash ] && . ~/.contrib/bin/git-completion.bash
