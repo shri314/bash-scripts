@@ -41,4 +41,6 @@ _GIT() {
   esac
 }
 
+export GIT_SSH="$HOME/.Scripts/_git_ssh"
+
 alias git=_GIT

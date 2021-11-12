@@ -126,6 +126,7 @@ put_item handle_timer
 put_item handle_ssh
 put_item handle_git
 put_item handle_ssh_agt
+put_item handle_ps1
 put_item screenrc
 put_item tmux.conf
 put_item vim

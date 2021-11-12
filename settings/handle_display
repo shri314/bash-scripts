@@ -2,6 +2,8 @@
 
 mkdir -p $HOME/.display
 
+[ "$DISPLAY" == "" ] && export DISPLAY=localhost:0.0
+
 _LoadDisp()
 {
    if [ "$TMUX" ]

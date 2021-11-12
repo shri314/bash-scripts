@@ -24,22 +24,7 @@ shopt -s checkwinsize
 
 ulimit -c unlimited
 
-[ "$DISPLAY" == "" ] && export DISPLAY=localhost:0.0
-
-if [ "${XAUTHORITY}" ]
-then
-   PS1THRESHOLD=4
-   export BACKGROUND=light
-else
-   PS1THRESHOLD=1
-fi
-
-if [ "$SHLVL" -gt "$PS1THRESHOLD" ]
-then
-   PS1POSTFIX="["$(expr $SHLVL - $PS1THRESHOLD)"]"
-else
-   PS1POSTFIX=""
-fi
+[ "${XAUTHORITY}" ] && export BACKGROUND=light
 
 if [ "$RUNONCE" = "" ]
 then
@@ -61,16 +46,12 @@ export CDPATH=:..:$FIX_CDPATH
 export MANPATH=$FIX_MANPATH
 export HISTCONTROL=ignorespace:ignoredups:erasedups
 export PROMPT_COMMAND="$FIX_PROMPT_COMMAND"
-
 export SEARCH_PATH=",,.,..,./include,../include,./src,../src,/usr/local/include,/usr/include"
 export HOSTFILESIZE=300000
 export HISTSIZE=30000
 export HOSTNAME="$(hostname)"
 export UQHOSTNAME=$(hostname | sed -e 's/[.].*//')
 export EDITOR='vim -fX'
-export PS1='\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\] [${__shell_last_cmd_time-0}s] [\[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\]] \[\e[33m\]\jj\[\e[1;36m\]$( $(declare -F __git_ps1 || echo "echo -n") )\[\e[0m\]\n${PS1POSTFIX}\[\e[1;36m\]${PS1POSTFIX2}\[\e[0m\]\$ '
-export PS1SEARCH="$ "
-export GIT_SSH="$HOME/.Scripts/_git_ssh"
 
 if [[ "$(uname -s)" =~ Linux ]]
 then
@@ -105,6 +86,7 @@ alias bperl='perltidy -i=3 -nt -fnl -anl -bl -l=250 -bbs -bbc -bbb -mbl=2'
 alias astyle='_astyle'
 alias man='man -a -S2:3:1:8:5:4:6:7:9'
 alias curl='curl -# -D /dev/stderr'
+
 if [ "$(uname -s)" == Darwin ]
 then
     alias top='top -s 1'
@@ -131,6 +113,7 @@ _fvi() {
 [ -f ~/.handle_git     ] && . ~/.handle_git
 [ -f ~/.handle_ssh     ] && . ~/.handle_ssh
 [ -f ~/.handle_ssh_agt ] && . ~/.handle_ssh_agt
+[ -f ~/.handle_ps1     ] && . ~/.handle_ps1
 [ -f ~/.handle_timer   ] && . ~/.handle_timer
 [ -f ~/.handle_display ] && . ~/.handle_display
 [ -f ~/.handle_dot_env ] && . ~/.handle_dot_env

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ "${XAUTHORITY}" ]
+then
+   PS1THRESHOLD=4
+else
+   PS1THRESHOLD=1
+fi
+
+if [ "$SHLVL" -gt "$PS1THRESHOLD" ]
+then
+   PS1POSTFIX="["$(expr $SHLVL - $PS1THRESHOLD)"]"
+else
+   PS1POSTFIX=""
+fi
+
+export PS1='\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\] '
+export PS1="$PS1"'[${__shell_last_cmd_time-0}s] '
+export PS1="$PS1"'[\[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\]] '
+
+if ! grep -q -e Microsoft <(uname -a)
+then
+    export PS1="$PS1"'\[\e[33m\]\jj\[\e[1;36m\]$( $(declare -F __git_ps1 || echo "echo -n") 2>/dev/null )'
+fi
+
+export PS1="$PS1"'\[\e[0m\]\n${PS1POSTFIX}\[\e[1;36m\]${PS1POSTFIX2}\[\e[0m\]\$ '
+export PS1SEARCH="$ "
