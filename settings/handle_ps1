@@ -14,14 +14,21 @@ else
    PS1POSTFIX=""
 fi
 
-export PS1='\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\] '
-export PS1="$PS1"'[${__shell_last_cmd_time-0}s] '
-export PS1="$PS1"'[\[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\]] '
+PS1='\n'
+PS1+='\[\e[32m\]\u@\h\[\e[0m\]'
+PS1+=' \[\e[33m\]\w\[\e[0m\]'
+PS1+=' [${__shell_last_cmd_time-0}s]'
+PS1+=' [\[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\]]'
+PS1+=' \[\e[33m\]\jj\[\e[0m\]'
 
 if ! grep -q -e Microsoft <(uname -a)
 then
-    export PS1="$PS1"'\[\e[33m\]\jj\[\e[1;36m\]$( $(declare -F __git_ps1 || echo "echo -n") 2>/dev/null )'
+    PS1+='\[\e[1;36m\]$( $(declare -F __git_ps1 || echo "echo -n") 2>/dev/null )\[\e[0m\]'
 fi
 
-export PS1="$PS1"'\[\e[0m\]\n${PS1POSTFIX}\[\e[1;36m\]${PS1POSTFIX2}\[\e[0m\]\$ '
+PS1+='\n'
+PS1+='${PS1POSTFIX}'
+PS1+='\[\e[1;36m\]${PS1POSTFIX2}\[\e[0m\]'
+PS1+='\$ '
+
 export PS1SEARCH="$ "
