@@ -473,14 +473,22 @@ endfunction
 
 
 function! ConflictsGetInfo()
-   if match(getline('.'), '^[<]\{7\}') == -1
-       return v:null
+   let cp = line('.')
+   let re = search("^[>]\\{7\\}", "cWn")
+   if(cp > re)
+      return v:null
    endif
 
-   let lb = line('.')
+   let lb = search("^[<]\\{7\\}", "cWnb")
+   if(cp < lb)
+      return v:null
+   endif
+
+   call cursor(lb, 0)
    let le = search("^[|]\\{7\\}", "Wn")
    let rb = search("^[=]\\{7\\}", "Wn")
-   let re = search("^[>]\\{7\\}", "Wn")
+   call cursor(cp, 0)
+
    let mb = le
    let me = rb
 
