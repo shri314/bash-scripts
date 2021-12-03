@@ -507,28 +507,34 @@ endfunction
 
 
 function! ConflictsInspect()
+   if v:version < 800
+      echohl ErrorMsg | :echo "This functionality requires Vim 8.1..." | :echohl None
+      return
+   endif
+
    let markers = ConflictsGetInfo()
    if markers is v:null
       echohl ErrorMsg | echo "No conflict under the cursor..." | echohl None
       return
    endif
 
+   let done = 0
    try
-      let textL = getbufline(buffer_number(), markers["left"]["first"],   markers["left"]["last"])
+      let textL = getbufline(bufnr("%"), markers["left"]["first"],   markers["left"]["last"])
       if has_key(markers, 'parent')
-         let textP = getbufline(buffer_number(), markers["parent"]["first"], markers["parent"]["last"])
+         let textP = getbufline(bufnr("%"), markers["parent"]["first"], markers["parent"]["last"])
       else
          let textP = v:null
       endif
-      let textR = getbufline(buffer_number(), markers["right"]["first"],  markers["right"]["last"])
+      let textR = getbufline(bufnr("%"), markers["right"]["first"],  markers["right"]["last"])
 
-      silent! bdelete! CVLeft
-      silent! bdelete! CVParent
-      silent! bdelete! CVRight
+      try | silent! bdelete! CVLeft   | catch | endtry
+      try | silent! bdelete! CVParent | catch | endtry
+      try | silent! bdelete! CVRight  | catch | endtry
 
       tab new
       setl buftype=nofile noswapfile modifiable
-      call setbufline(buffer_number(), 1, textL)
+      call setbufline(bufnr("%"), 1, textL)
       let g:CVLeft = textL[0]
       silent! file! CVLeft
       setl statusline=%!g:CVLeft
@@ -542,7 +548,7 @@ function! ConflictsInspect()
          let g:CVParent = textP[0]
          silent! file! CVParent
          setl statusline=%!g:CVParent
-         let r = setbufline(buffer_number('CVParent'), 1, textP)
+         let r = setbufline(bufnr('CVParent'), 1, textP)
          :1d
          :$d
          set diff
@@ -553,22 +559,29 @@ function! ConflictsInspect()
       silent! file! CVRight
       let g:CVRight = textR[-1]
       setl statusline=%!g:CVRight
-      let r = setbufline(buffer_number('CVRight'), 1, textR)
+      let r = setbufline(bufnr('CVRight'), 1, textR)
       :1d
       :$d
       set diff
       execute "normal \<c-w>="
+      done = 1
    catch
-      silent! bdelete! CVLeft
-      silent! bdelete! CVParent
-      silent! bdelete! CVRight
+      try | silent! bdelete! CVLeft   | catch | endtry
+      try | silent! bdelete! CVParent | catch | endtry
+      try | silent! bdelete! CVRight  | catch | endtry
+      echo v:errmsg
    finally
-       echo 'conflict diff is ready in the tab...' | sleep 1
+       if done | echo 'conflict diff is ready in the tab...' | sleep 1 | endif
    endtry
 endfunction
 
 
 function! ConflictsPickLeft()
+   if v:version < 800
+      echohl ErrorMsg | :echo "This functionality requires Vim 8.1..." | :echohl None
+      return
+   endif
+
    let markers = ConflictsGetInfo()
    if markers is v:null
       echohl ErrorMsg | echo "No conflict under the cursor..." | echohl None
@@ -581,6 +594,11 @@ endfunction
 
 
 function! ConflictsPickRight()
+   if v:version < 800
+      echohl ErrorMsg | :echo "This functionality requires Vim 8.1..." | :echohl None
+      return
+   endif
+
    let markers = ConflictsGetInfo()
    if markers is v:null
       echohl ErrorMsg | echo "No conflict under the cursor..." | echohl None
@@ -728,7 +746,7 @@ function! QfScan(needle)
       normal gg
       normal dd
       hide
-      execute 'cbuffer ' buffer_number('QfSTmp')
+      execute 'cbuffer ' bufnr('QfSTmp')
       copen
    finally
       silent! bdelete! QfSTmp
