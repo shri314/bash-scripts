@@ -1,4 +1,8 @@
-#!/usr/bin/env -S gawk -f
+#!/bin/bash
+exec -a "$0" gawk -f <(sed -n '/^\#gawk/,$p' "$0")
+exit $?
+
+#gawk -f
 
 #
 #Author   : Shriram V
