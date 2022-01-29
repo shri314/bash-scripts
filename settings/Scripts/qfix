@@ -1,26 +1,41 @@
 #!/bin/bash
 
-EFILE=~/.errors.$$.cpp
+usage()
+{
+    echo "usage: qfix [--vim|--gvim] [-g] [<--split>|<--no-split>] [--help]"
+}
 
-trap "rm -f $EFILE" EXIT QUIT KILL TERM
-
-OP=()
+ED_NAME="vim"
+ED_OPTS=()
+ED_ARGS=('+copen')
 
 while [ $# -gt 0 ]
 do
     case "$1" in
-        --no-sp|--no-split)
-            OP+=( '+set switchbuf-=split' )
+        --no-split)
+            ED_ARGS+=( '+set switchbuf-=split' )
             ;;
-        --sp|--split)
-            OP+=( '+set switchbuf+=split' )
+        --split)
+            ED_ARGS+=( '+set switchbuf+=split' )
+            ;;
+        --vim)
+            ED_NAME='vim'
+            ;;
+        --gvim)
+            ED_NAME='gvim'
             ;;
         -g)
-            OP+=( '-g' )
+            ED_OPTS+=('-g')
+            ;;
+        --help)
+            usage
+            exit 0
             ;;
     esac
     shift
 done
+
+EFILE=$(mktemp /tmp/qfix.XXXXXX)
 
 if which paint 1>/dev/null 2>/dev/null
 then
@@ -32,7 +47,11 @@ fi
 # Regular expression to find pattern ':<digits>:'
 if grep -q -e "\:[[:digit:]]\+\:" $EFILE
 then
-  [ $(cat "$EFILE" | sed -e "/^ *$/d" | wc -l) -gt 0 ] && ( exec </dev/tty ; ${EDITOR-vim} "${OP[@]}" +copen -q "$EFILE"; ) && exit 1
+    if [ $(cat "$EFILE" | sed -e "/^ *$/d" | wc -l) -gt 0 ]
+    then
+        ( exec </dev/tty; "${ED_NAME}" "${ED_ARGS[@]}" "${ED_OPTS[@]}" -q "$EFILE" )
+        exit 1
+    fi
 fi
 
 exit 0
