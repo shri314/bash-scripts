@@ -538,9 +538,11 @@ function! ConflictsInspect()
       let g:CVLeft = textL[0]
       silent! file! CVLeft
       setl statusline=%!g:CVLeft
-      :1d
-      :$d
-      set diff
+      :1d _
+      :$d _
+      :0
+      setl nomodifiable number
+      diffthis
 
       if textP isnot v:null
          vertical rightbelow new
@@ -549,9 +551,11 @@ function! ConflictsInspect()
          silent! file! CVParent
          setl statusline=%!g:CVParent
          let r = setbufline(bufnr('CVParent'), 1, textP)
-         :1d
-         :$d
-         set diff
+         :1d _
+         :$d _
+         :0
+         setl nomodifiable number
+         diffthis
       endif
 
       vertical rightbelow new
@@ -560,9 +564,11 @@ function! ConflictsInspect()
       let g:CVRight = textR[-1]
       setl statusline=%!g:CVRight
       let r = setbufline(bufnr('CVRight'), 1, textR)
-      :1d
-      :$d
-      set diff
+      :1d _
+      :$d _
+      :0
+      diffthis
+      setl nomodifiable number
       execute "normal \<c-w>="
       done = 1
    catch
@@ -588,8 +594,8 @@ function! ConflictsPickLeft()
       return
    endif
 
-   execute markers["left"]["last"] . "," . markers["right"]["last"] . "d"
-   execute markers["left"]["first"] . "d"
+   execute markers["left"]["last"] . "," . markers["right"]["last"] . "d _"
+   execute markers["left"]["first"] . "d _"
 endfunction
 
 
@@ -605,8 +611,8 @@ function! ConflictsPickRight()
       return
    endif
 
-   execute markers["right"]["last"] . "d"
-   execute markers["left"]["first"] . "," . markers["right"]["first"] . "d"
+   execute markers["right"]["last"] . "d _"
+   execute markers["left"]["first"] . "," . markers["right"]["first"] . "d _"
 endfunction
 
 
