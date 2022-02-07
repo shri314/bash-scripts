@@ -2,34 +2,28 @@
 
 usage()
 {
-    echo "usage: qfix [--vim|--gvim] [-g] [<--split>|<--no-split>] [--help]"
+    echo "usage: qfix [-g] [<--split>|<--no-split>] [--help]"
 }
 
 ED_NAME="vim"
-ED_OPTS=()
+ED_OPTS=('-f')
 ED_ARGS=('+copen')
 
 while [ $# -gt 0 ]
 do
     case "$1" in
+        --help)
+            usage
+            exit 0
+            ;;
         --no-split)
             ED_ARGS+=( '+set switchbuf-=split' )
             ;;
         --split)
             ED_ARGS+=( '+set switchbuf+=split' )
             ;;
-        --vim)
-            ED_NAME='vim'
-            ;;
-        --gvim)
-            ED_NAME='gvim'
-            ;;
         -g)
             ED_OPTS+=('-g')
-            ;;
-        --help)
-            usage
-            exit 0
             ;;
     esac
     shift
@@ -49,7 +43,7 @@ if grep -q -e "\:[[:digit:]]\+\:" $EFILE
 then
     if [ $(cat "$EFILE" | sed -e "/^ *$/d" | wc -l) -gt 0 ]
     then
-        ( exec </dev/tty; "${ED_NAME}" "${ED_ARGS[@]}" "${ED_OPTS[@]}" -q "$EFILE" )
+        ( exec </dev/tty; "${ED_NAME}" "${ED_OPTS[@]}" -q "$EFILE" "${ED_ARGS[@]}")
         exit 1
     fi
 fi
