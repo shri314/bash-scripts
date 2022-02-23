@@ -10,6 +10,9 @@ set nocompatible
 "set background=light
 set visualbell
 
+"fzf setup
+set runtimepath+=~/.fzf
+
 execute pathogen#infect()
 
 " Turn on syntax highlighting
