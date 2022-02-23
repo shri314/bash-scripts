@@ -6,8 +6,15 @@
 " use Vim defaults be used for options that have a different Vi and Vim default value.
 set nocompatible
 
-"set background=dark
-"set background=light
+if $ENV_BACKGROUND == "dark"
+   set background=dark
+elseif $ENV_BACKGROUND == "light"
+   set background=light
+else
+   "set background=dark
+   "set background=light
+endif
+
 set visualbell
 
 "fzf setup

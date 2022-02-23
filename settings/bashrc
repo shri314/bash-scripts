@@ -24,7 +24,7 @@ shopt -s checkwinsize
 
 ulimit -c unlimited
 
-[ "${XAUTHORITY}" ] && export BACKGROUND=light
+[ "${XAUTHORITY}" ] && export ENV_BACKGROUND=light
 
 if [ "$RUNONCE" = "" ]
 then
