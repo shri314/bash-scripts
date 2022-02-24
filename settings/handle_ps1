@@ -23,7 +23,12 @@ PS1+=' \[\e[33m\]\jj\[\e[0m\]'
 
 if ! grep -q -e Microsoft <(uname -a)
 then
-    PS1+='\[\e[1;36m\]$( $(declare -F __git_ps1 || echo "echo -n") 2>/dev/null )\[\e[0m\]'
+    if declare -F __git_ps1 1>/dev/null
+    then
+        PS1+=' \[\e[1;36m\]'
+        PS1+='$(__git_ps1 "( %s )")'
+        PS1+='\[\e[0m\]'
+    fi
 fi
 
 PS1+='\n'
