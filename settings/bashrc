@@ -59,6 +59,7 @@ then
    alias ll="ls -F -h -l --color"
 elif [[ "$(uname -s)" =~ Darwin ]]
 then
+   export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
    alias ls="ls -F -h -G"
    alias ll="ls -F -h -G -l"
 else
