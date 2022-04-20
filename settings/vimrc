@@ -779,3 +779,6 @@ endfunction
 function! AutoScript()
     map <buffer> <F9> :call TmuxExecLine('.')<CR>
 endfunction
+
+" Weird gvim workaround to restore background to background
+execute 'set background=' . &background
