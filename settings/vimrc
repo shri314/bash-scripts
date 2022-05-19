@@ -64,8 +64,14 @@ if exists("&fdm")
    set nofen
 endif
 
-" Ignore case in search patterns
+" Ignore case in text search patterns
 set ignorecase
+
+" Don't ignore case in file search patterns
+set nofileignorecase
+
+" Don't ignore case in file search completion
+set nowildignorecase
 
 " Incremental Search
 set incsearch
@@ -129,8 +135,8 @@ set shiftround
 set magic
 
 " Switch buffer to edit a new file, and use open file if it already open
-"set switchbuf=useopen,split
-set switchbuf=useopen
+set switchbuf=useopen,split
+"set switchbuf=useopen
 
 " Make program to use
 if $ENV_MAKE_PRG != ""
@@ -140,11 +146,7 @@ else
 endif
 
 " Grep program to use
-if $ENV_GREP_PRG != ""
-   set grepprg=$ENV_GREP_PRG
-else
-   set grepprg="grep -HIne $* /dev/null"
-endif
+set grepprg=git\ grep\ -HIn\ $*
 
 " working directory settings
 "set autochdir
@@ -354,12 +356,12 @@ function! HLWord()
       highlight HL term=bold,reverse cterm=bold ctermfg=0 ctermbg=10 gui=bold guifg=bg guibg=LightGreen
       let s:highlightword = 1
       echo 's:highlightword=1'
-   else 
+   else
       syntax clear HL
       unlet s:highlightword
       echo 's:highlightword=0'
-   endif 
-endfunction 
+   endif
+endfunction
 
 " Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.
