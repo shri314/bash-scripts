@@ -16,7 +16,7 @@ fi
 
 _ps1()
 {
-    local with_git_prompt="" && [ $# -gt 0 ] && [ "$1" == "--git-prompt" ]  && with_git_prompt=1 && shift
+    local with_git="" && [ $# -gt 0 ] && [ "$1" == "--git" ]  && with_git=1 && shift
 
     PS1='\n'
     PS1+='\[\e[32m\]\u@\h\[\e[0m\]'
@@ -25,7 +25,7 @@ _ps1()
     PS1+=' [\[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\]]'
     PS1+=' \[\e[33m\]\jj\[\e[0m\]'
 
-    if [ "$with_git_prompt" == "1" ]
+    if [ "$with_git" == "1" ]
     then
         if declare -F __git_ps1 1>/dev/null
         then
@@ -43,9 +43,4 @@ _ps1()
 
 export PS1SEARCH="$ "
 
-if ! grep -q -e Microsoft <(uname -a)
-then
-    _ps1 --git-prompt
-else
-    _ps1
-fi
+_ps1 --git
