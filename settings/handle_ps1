@@ -14,26 +14,38 @@ else
    PS1POSTFIX=""
 fi
 
-PS1='\n'
-PS1+='\[\e[32m\]\u@\h\[\e[0m\]'
-PS1+=' \[\e[33m\]\w\[\e[0m\]'
-PS1+=' [${__shell_last_cmd_time-0}s]'
-PS1+=' [\[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\]]'
-PS1+=' \[\e[33m\]\jj\[\e[0m\]'
+_ps1()
+{
+    local with_git_prompt="" && [ $# -gt 0 ] && [ "$1" == "--git-prompt" ]  && with_git_prompt=1 && shift
+
+    PS1='\n'
+    PS1+='\[\e[32m\]\u@\h\[\e[0m\]'
+    PS1+=' \[\e[33m\]\w\[\e[0m\]'
+    PS1+=' [${__shell_last_cmd_time-0}s]'
+    PS1+=' [\[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\]]'
+    PS1+=' \[\e[33m\]\jj\[\e[0m\]'
+
+    if [ "$with_git_prompt" == "1" ]
+    then
+        if declare -F __git_ps1 1>/dev/null
+        then
+            PS1+=' \[\e[1;36m\]'
+            PS1+='$(__git_ps1 "( %s )")'
+            PS1+='\[\e[0m\]'
+        fi
+    fi
+
+    PS1+='\n'
+    PS1+='${PS1POSTFIX}'
+    PS1+='\[\e[1;36m\]${PS1POSTFIX2}\[\e[0m\]'
+    PS1+='\$ '
+}
+
+export PS1SEARCH="$ "
 
 if ! grep -q -e Microsoft <(uname -a)
 then
-    if declare -F __git_ps1 1>/dev/null
-    then
-        PS1+=' \[\e[1;36m\]'
-        PS1+='$(__git_ps1 "( %s )")'
-        PS1+='\[\e[0m\]'
-    fi
+    _ps1 --git-prompt
+else
+    _ps1
 fi
-
-PS1+='\n'
-PS1+='${PS1POSTFIX}'
-PS1+='\[\e[1;36m\]${PS1POSTFIX2}\[\e[0m\]'
-PS1+='\$ '
-
-export PS1SEARCH="$ "
