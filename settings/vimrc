@@ -473,6 +473,13 @@ function! ToggleSwitchDiffIWhite()
    echo 'diffopt ='&diffopt
 endfunction
 
+" Display git-show for hash under cursor in a new window
+function! OpenGitShow()
+   execute "vert new | r ! git show '" . expand("<cword>") . "'"
+   setl filetype=git
+   setl nolist
+   setl buftype=nofile noswapfile nomodifiable
+endfunction
 
 function! ConflictsNavigate(BackwardSearch, AcceptMatchCurPos, WrapAround)
    let srchFlags = ""
@@ -668,6 +675,7 @@ function! F12Help()
    echo "/   - toggle autohighlight\n"
    echo "c   - toggle diff iwhite\n"
    echo "t   - toggle show code listing\n"
+   echo "d   - display git-show for hash under cursor\n"
 endfunction
 
 " Interesting customizations
@@ -706,6 +714,7 @@ map <F12>t :TlistToggle<CR>
 map <F12>h :call HLWord()<CR>
 map <F12>/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 map <F12>b :call StubBeautify()<CR>
+map <F12>d :call OpenGitShow()<CR>
 autocmd FileType cpp      map <buffer> <F12>b  :call BeautifyUsingClangFormat()<CR>
 autocmd FileType cpp      map <buffer> <F12>b1 :call BeautifyUsingClangFormat()<CR>
 autocmd FileType cpp      map <buffer> <F12>b2 :call BeautifyUsingAstyle()<CR>
