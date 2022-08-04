@@ -45,5 +45,6 @@
         autocorrect = 0
 [core]
         autocrlf = false
+        excludesFile = ~/.gitignore
 [status]
         relativePaths = true
