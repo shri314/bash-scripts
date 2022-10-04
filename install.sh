@@ -153,7 +153,7 @@ mv -f ~/.contrib/bin/git-prompt-patched.sh ~/.contrib/bin/git-prompt.sh
 # END HACK
 
 #RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/shri314/beautify_bash/master/beautify_bash.py"
-RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/buzztaiki/tmux-mouse/master/tmux-mouse"
+#RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/buzztaiki/tmux-mouse/master/tmux-mouse"
 chmod -R +x ~/.contrib/bin/
 
 # Vim Plugins

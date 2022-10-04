@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -euo pipefail
+
+set_mouse() {
+    local mode="$1"; shift;
+
+    if [ "$mode" != "on" ] && [ "$mode" != "off" ] && [ "$mode" != "toggle" ]; then
+        echo "invalid mouse mode $mode" 1>&2
+        exit 1
+    fi
+
+    [ "$mode" == "toggle" ] && mode=off && grep -qe off <(tmux show-options -gwv mouse) && mode=on
+
+    tmux set-option -qg mouse "$mode"
+    tmux display-message "Mouse: $mode"
+}
+
+
+if [ $# -gt 0 ]
+then
+    if [ "$1" == "-h" ]
+    then
+        shift;
+        cat <<EOF
+usage: $0 [-h] [on|off|toggle]
+
+set tmux mouse mode.
+toggle mouse mode if no argument is specified, otherwise set mouse mode on or off.
+
+options:
+  -h    show this help
+EOF
+        exit 0;
+    fi
+
+    set_mouse "$1";
+else
+    set_mouse "toggle"
+fi
