@@ -1,42 +1,26 @@
 #!/bin/bash
 
-if [ "${XAUTHORITY}" ]
-then
-   PS1THRESHOLD=4
-else
-   PS1THRESHOLD=1
-fi
-
-if [ "$SHLVL" -gt "$PS1THRESHOLD" ]
-then
-   PS1POSTFIX="["$(expr $SHLVL - $PS1THRESHOLD)"]"
-else
-   PS1POSTFIX=""
-fi
-
 _ps1()
 {
     local with_git="" && [ $# -gt 0 ] && [ "$1" == "--git" ]  && with_git=1 && shift
 
-    PS1='\n'
-    PS1+='\[\e[32m\]\u@\h\[\e[0m\]'
-    PS1+=' \[\e[33m\]\w\[\e[0m\]'
-    PS1+=' [${__shell_last_cmd_time-0}s]'
-    PS1+=' [\[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\]]'
+    PS1=
+    PS1+='\n'
+    PS1+='[ \[\e[32m\]\u@\h\[\e[0m\] \[\e[33m\]\w\[\e[0m\] ]'
+    PS1+=' '
+    PS1+='[ ${__shell_last_cmd_time-0}s ]'
+    PS1+=' [ \[\e[35m\]\D{%I:%M:%S %p}\[\e[0m\] ]'
     PS1+=' \[\e[33m\]\jj\[\e[0m\]'
 
     if [ "$with_git" == "1" ]
     then
         if declare -F __git_ps1 1>/dev/null
         then
-            PS1+=' \[\e[1;36m\]'
-            PS1+='$(__git_ps1 "( %s )")'
-            PS1+='\[\e[0m\]'
+            PS1+='$(__git_ps1 "\n[\[\e[36m\] %s \[\e[0m\]]")'
         fi
     fi
 
     PS1+='\n'
-    PS1+='${PS1POSTFIX}'
     PS1+='\[\e[1;36m\]${PS1POSTFIX2}\[\e[0m\]'
     PS1+='\$ '
 }
