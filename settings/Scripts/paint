@@ -1,5 +1,5 @@
 #!/bin/bash
-exec -a "$0" gawk -f <(sed -n '/^\#gawk/,$p' "$0")
+exec -a "$0" gawk -f <(sed -n '/^\#gawk/,$p' "$0") "$@"
 exit $?
 
 #gawk -f
