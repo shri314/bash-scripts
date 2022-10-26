@@ -248,7 +248,7 @@ endif
 let g:ScrTog=0
 function! ToggleScreenSize()
    if g:ScrTog == 1
-      execute "normal \<C-W>="
+      wincmd =
       let g:ScrTog=0
    else
       vertical resize
@@ -524,6 +524,44 @@ function! ConflictsGetInfo()
    endif
 endfunction
 
+let g:DiffWin=0
+function! DiffSwitch()
+   let l:nr=winnr()
+   if g:DiffWin == 0
+      wincmd h
+      wincmd h
+      wincmd h | if &diff == 1 | set diff! | endif
+      wincmd l | if &diff == 0 | set diff! | endif
+      wincmd l | if &diff == 0 | set diff! | endif
+      let g:DiffWin = 1
+      echo "011"
+   elseif g:DiffWin == 1
+      wincmd h
+      wincmd h
+      wincmd h | if &diff == 0 | set diff! | endif
+      wincmd l | if &diff == 0 | set diff! | endif
+      wincmd l | if &diff == 1 | set diff! | endif
+      let g:DiffWin = 2
+      echo "110"
+   elseif g:DiffWin == 2
+      wincmd h
+      wincmd h
+      wincmd h | if &diff == 0 | set diff! | endif
+      wincmd l | if &diff == 0 | set diff! | endif
+      wincmd l | if &diff == 0 | set diff! | endif
+      let g:DiffWin = 3
+      echo "111"
+   elseif g:DiffWin == 3
+      wincmd h
+      wincmd h
+      wincmd h | if &diff == 0 | set diff! | endif
+      wincmd l | if &diff == 1 | set diff! | endif
+      wincmd l | if &diff == 0 | set diff! | endif
+      let g:DiffWin = 0
+      echo "101"
+   endif
+   execute l:nr .. "wincmd w"
+endfunction
 
 function! ConflictsInspect()
    if v:version < 801
@@ -533,7 +571,8 @@ function! ConflictsInspect()
 
    let markers = ConflictsGetInfo()
    if markers is v:null
-      echohl ErrorMsg | echo "No conflict under the cursor..." | echohl None
+      echohl ErrorMsg | echo "No conflict under the cursor... moving to next conflict" | echohl None
+      call ConflictsNavigate(v:false, v:false, v:false)
       return
    endif
 
@@ -562,6 +601,7 @@ function! ConflictsInspect()
       :0
       setl nomodifiable number
       diffthis
+      map <buffer> ?? :call DiffSwitch()<CR>
 
       if textP isnot v:null
          vertical rightbelow new
@@ -575,6 +615,7 @@ function! ConflictsInspect()
          :0
          setl nomodifiable number
          diffthis
+         map <buffer> ?? :call DiffSwitch()<CR>
       endif
 
       vertical rightbelow new
@@ -587,8 +628,9 @@ function! ConflictsInspect()
       :$d _
       :0
       diffthis
+      map <buffer> ?? :call DiffSwitch()<CR>
       setl nomodifiable number
-      execute "normal \<c-w>="
+      wincmd =
       done = 1
    catch
       "if bufnr('CVLeft')   > 0 | silent! bdelete! CVLeft   | endif
@@ -597,6 +639,7 @@ function! ConflictsInspect()
       echo v:errmsg
    finally
        if done | echo 'conflict diff is ready in the tab...' | sleep 1 | endif
+       let g:DiffWin = 0
    endtry
 endfunction
 
