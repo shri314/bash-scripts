@@ -680,10 +680,11 @@ endfunction
 
 " Interesting customizations
 " use qa to close all windows individually with q
-cnoremap qa windo q
+"cnoremap qa windo q
+cnoreabbrev <expr> qa getcmdtype() == ":" && getcmdline() == 'qa' ? 'windo q' : 'qa'
 
 " use xa to save and close all windows individually with x
-cnoremap xa windo x
+cnoreabbrev <expr> xa getcmdtype() == ":" && getcmdline() == 'xa' ? 'windo x' : 'xa'
 
 " always keep the next word to be found at the center of the screen
 "set scrolloff=5
