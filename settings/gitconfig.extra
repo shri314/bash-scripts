@@ -37,6 +37,8 @@
         keepbackup = true
 [mergetool "vimdiff"]
         trustExitCode = false
+[mergetool "gvimdiff"]
+        trustExitCode = false
 [mergetool "bcompare"]
         trustExitCode = true
         cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
