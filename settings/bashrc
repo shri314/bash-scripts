@@ -53,23 +53,31 @@ export HOSTNAME="$(hostname)"
 export UQHOSTNAME=$(hostname | sed -e 's/[.].*//')
 export EDITOR='vim -fX'
 
-if [[ "$(uname -s)" =~ Linux ]]
+if [[ "$(uname -s)" =~ Darwin ]]
 then
+   if which gls 1>/dev/null 2>/dev/null
+   then
+      alias ls="gls -F -h --color"
+      alias ll="gls -F -h -l --color"
+      alias rm='grm -iv'
+      alias cp='gcp -iv'
+      alias mv='gmv -iv'
+   else
+      export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
+      alias ls="ls -F -h -G"
+      alias ll="ls -F -h -G -l"
+      alias rm='rm -iv'
+      alias cp='cp -iv'
+      alias mv='mv -iv'
+   fi
+else
    alias ls="ls -F -h --color"
    alias ll="ls -F -h -l --color"
-elif [[ "$(uname -s)" =~ Darwin ]]
-then
-   export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
-   alias ls="ls -F -h -G"
-   alias ll="ls -F -h -G -l"
-else
-   alias ls="ls -F -h"
-   alias ll="ls -F -h -l"
+   alias rm='rm -iv'
+   alias cp='cp -iv'
+   alias mv='mv -iv'
 fi
 
-alias rm='rm -iv'
-alias cp='cp -iv'
-alias mv='mv -iv'
 alias grep='grep --color'
 alias egrep='egrep --color'
 alias less='less -R'
