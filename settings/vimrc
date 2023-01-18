@@ -308,10 +308,10 @@ nmap <F2> :w<CR>
 imap <F2> <Esc>:w<CR><Esc>a
 
 "F4 to list files in the project with the word under the cursor
-map <F4>  :silent grep! -e "\<"<cword>"\>" *<CR>:call QuickfixOpen()<CR>:<BS><C-L>
+map <F4>  :silent grep! -e <cword> *<CR>:call QuickfixOpen()<CR>:<BS><C-L>
 
 "Shift-F4 to list files in the project with the word under the cursor ignoring the case
-map <S-F4> :silent grep! -i -e "\<"<cword>"\>" *<CR>:call QuickfixOpen()<CR>:<BS><C-L>
+map <F4>i :silent grep! -e <cword> -i *<CR>:call QuickfixOpen()<CR>:<BS><C-L>
 
 "F5 to Stop highlighting words
 map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:TlistUpdate<CR>:nohl<CR>
