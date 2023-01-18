@@ -20,6 +20,7 @@
         noprefix = true
         algorithm = histogram
         tool = vimdiff
+        renameLimit = 4096
 [difftool]
         prompt = false
 [difftool "bcompare"]
