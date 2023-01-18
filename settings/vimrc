@@ -316,9 +316,6 @@ map <F4>i :silent grep! -e <cword> -i *<CR>:call QuickfixOpen()<CR>:<BS><C-L>
 "F5 to Stop highlighting words
 map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:TlistUpdate<CR>:nohl<CR>
 
-"Ctrl-F5 to stop highlighting words, and reload file (discard editing).
-map <C-F5> :diffupdate<CR>:syntax sync fromstart<CR>:nohl<CR><Esc>:e!<CR>
-
 "F6 to switch window
 map <F6> <C-W>w<C-G>
 
