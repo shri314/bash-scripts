@@ -487,7 +487,11 @@ function! ConflictsNavigate(BackwardSearch, AcceptMatchCurPos, WrapAround)
    if a:AcceptMatchCurPos is v:true  | let srchFlags .= "c" | endif
    if a:WrapAround        is v:true  | let srchFlags .= "w" | endif
    if a:WrapAround        is v:false | let srchFlags .= "W" | endif
-   return search('^[<]\{7\}', l:srchFlags)
+   let ret = search('^[<]\{7\}', l:srchFlags)
+   if ret > 0
+      normal m'z.`'
+   endif
+   return ret
 endfunction
 
 
@@ -504,6 +508,10 @@ function! ConflictsGetInfo()
    endif
 
    call cursor(lb, 0)
+   let re_intervening = search("^[>]\\{7\\}", "cWn")
+   if(re_intervening != re)
+      return v:null
+   endif
    let le = search("^[|]\\{7\\}", "Wn")
    let rb = search("^[=]\\{7\\}", "Wn")
    call cursor(cp, 0)
@@ -571,8 +579,13 @@ function! ConflictsInspect()
 
    let markers = ConflictsGetInfo()
    if markers is v:null
-      echohl ErrorMsg | echo "No conflict under the cursor... moving to next conflict" | echohl None
-      call ConflictsNavigate(v:false, v:false, v:false)
+      call ConflictsNavigate(v:false, v:false, v:true)
+      let markers1 = ConflictsGetInfo()
+      if markers1 is v:null
+         echohl ErrorMsg | echo "No conflicts found in the entire buffer" | echohl None
+      else
+         echohl WarningMsg | echo "Moved to next conflict" | echohl None
+      endif
       return
    endif
 
