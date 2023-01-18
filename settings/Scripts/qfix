@@ -2,7 +2,7 @@
 
 usage()
 {
-    echo "usage: qfix [-g] [<--split>|<--no-split>] [--help]"
+    echo "usage: qfix [-g] [<-s>|<--split>|<+s>|<--no-split>] [--help]"
 }
 
 ED_NAME="vim"
@@ -16,10 +16,10 @@ do
             usage
             exit 0
             ;;
-        --no-split)
+        +s|--no-split)
             ED_ARGS+=( '+set switchbuf-=split' )
             ;;
-        --split)
+        -s|--split)
             ED_ARGS+=( '+set switchbuf+=split' )
             ;;
         -g)
@@ -30,6 +30,8 @@ do
 done
 
 EFILE=$(mktemp /tmp/qfix.XXXXXX)
+
+trap "rm -f '$EFILE'" EXIT QUIT KILL TERM
 
 if which paint 1>/dev/null 2>/dev/null
 then
