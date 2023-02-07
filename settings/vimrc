@@ -552,18 +552,18 @@ function! DiffSwitch()
       wincmd h
       wincmd h
       wincmd h | if &diff == 0 | set diff! | endif
-      wincmd l | if &diff == 0 | set diff! | endif
+      wincmd l | if &diff == 1 | set diff! | endif
       wincmd l | if &diff == 0 | set diff! | endif
       let g:DiffWin = 3
-      echo "111"
+      echo "101"
    elseif g:DiffWin == 3
       wincmd h
       wincmd h
       wincmd h | if &diff == 0 | set diff! | endif
-      wincmd l | if &diff == 1 | set diff! | endif
+      wincmd l | if &diff == 0 | set diff! | endif
       wincmd l | if &diff == 0 | set diff! | endif
       let g:DiffWin = 0
-      echo "101"
+      echo "111"
    endif
    execute l:nr .. "wincmd w"
 endfunction
