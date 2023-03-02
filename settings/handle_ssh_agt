@@ -4,19 +4,10 @@ _LoadAgent()
 {
    if [ "${SSH_AGENT_PID-x}" == "x" ]
    then
-      if [ -f ~/.ssh-agent-env ]
-      then
-         source ~/.ssh-agent-env > /dev/null
-         if ! grep -q "$SSH_AGENT_PID" <(pgrep -fl ssh-agent)
-         then
-            rm -f ~/.ssh-agent-env
-         fi
-      fi
+      ( [ -f ~/.ssh-agent-env ] && source ~/.ssh-agent-env >/dev/null && [ "$SSH_AGENT_PID" != "$(pgrep -f '^ss[h]-agent')" ] && rm -f ~/.ssh-agent-env )
 
-      if [ ! -f ~/.ssh-agent-env ]
-      then
-         ssh-agent -s > ~/.ssh-agent-env
-      fi
+      [ ! -f ~/.ssh-agent-env ] && ssh-agent -s > ~/.ssh-agent-env
+
       source ~/.ssh-agent-env
    fi
 }
