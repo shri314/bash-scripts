@@ -13,34 +13,4 @@ then
   . ~/.contrib/bin/git-prompt.sh
 fi
 
-_GIT() {
-  case $1 in
-     commit)
-        shift
-        command git ci "$@"
-        ;;
-     status)
-        shift
-        command git st "$@"
-        ;;
-     branch)
-        shift
-        command git br "$@"
-        ;;
-     diff)
-        shift
-        command git di "$@"
-        ;;
-     grep)
-        shift
-        command git gr "$@"
-        ;;
-    *)
-        command git "$@"
-        ;;
-  esac
-}
-
 export GIT_SSH="$HOME/.Scripts/_git_ssh"
-
-alias git=_GIT

@@ -1,53 +1,57 @@
 [init]
         defaultBranch = main
 
-###############################
+[core]
+        autocrlf = false
+        excludesFile = ~/.gitignore
+        editor = gvim --not-a-term -f +1
+
 [alias]
-        ci = commit -v
         st = status
         br = branch -vv
-        lg = log --graph --oneline
-        lg2 = !_GIT_lg2
-        di = diff --relative
         gr = grep --untracked -In
+        lg = log --graph --oneline
+        mt = mergetool --tool=gvimdiff
         fp = !_GIT_fp
-[color]
-        ui = auto
+        lg2 = !_GIT_lg2
 
-###############################
+[commit]
+        verbose = true
+
+[status]
+        relativePaths = true
+
+[pager]
+        show = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
+        diff = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
+        annotate = gvim --not-a-term +'set filetype=git' +1 -
+
+[merge]
+        conflictstyle = diff3
+        tool = gvimdiff
+
 [diff]
         context = 5
         noprefix = true
         algorithm = histogram
-        tool = vimdiff
+        tool = gvimdiff
         renameLimit = 4096
+
 [difftool]
         prompt = false
-[difftool "bcompare"]
-        trustExitCode = true
-        cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\"
-[difftool "meld"]
-        cmd = meld "$LOCAL" "$REMOTE"
 
-###############################
-[merge]
-        tool = vimdiff
-        conflictstyle = diff3
 [mergetool]
         prompt = true
         keepbackup = true
+
 [mergetool "vimdiff"]
         trustExitCode = false
+
 [mergetool "gvimdiff"]
         trustExitCode = false
-[mergetool "bcompare"]
-        trustExitCode = true
-        cmd = "/usr/bin/bcompare" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
 
 [help]
         autocorrect = 0
-[core]
-        autocrlf = false
-        excludesFile = ~/.gitignore
-[status]
-        relativePaths = true
+
+[color]
+        ui = auto
