@@ -609,6 +609,10 @@ function! ConflictsInspect()
       :1d _
       :$d _
       :0
+      let b:old_undolevels = &undolevels
+      setl undolevels=-1
+      exe "normal a \<BS>\<Esc>"
+      let &undolevels = b:old_undolevels
       setl nomodifiable number
       diffthis
       map <buffer> ?? :call DiffSwitch()<CR>
@@ -623,6 +627,10 @@ function! ConflictsInspect()
          :1d _
          :$d _
          :0
+         let b:old_undolevels = &undolevels
+         setl undolevels=-1
+         exe "normal a \<BS>\<Esc>"
+         let &undolevels = b:old_undolevels
          setl nomodifiable number
          diffthis
          map <buffer> ?? :call DiffSwitch()<CR>
@@ -637,9 +645,13 @@ function! ConflictsInspect()
       :1d _
       :$d _
       :0
+      let b:old_undolevels = &undolevels
+      setl undolevels=-1
+      exe "normal a \<BS>\<Esc>"
+      let &undolevels = b:old_undolevels
+      setl nomodifiable number
       diffthis
       map <buffer> ?? :call DiffSwitch()<CR>
-      setl nomodifiable number
       wincmd =
       done = 1
    catch
