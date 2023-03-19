@@ -165,13 +165,13 @@ set tabstop=8
 autocmd FileType java setl tabstop=8
 
 "Error formats
-autocmd FileType cpp  setl errorformat=#%m
-autocmd FileType cpp  setl errorformat+=%f:%l:%c:\ %m,%f:%l:\ %m
-autocmd FileType cpp  setl errorformat+=make:\ ***\ %m,In\ file\ included\ from\ %f:%l:
-autocmd FileType cpp  setl errorformat+=%f:\ In[%*\\d]'%m':
-autocmd FileType cpp  setl errorformat+=\^I\^Ifrom\ %f:%l%m
-autocmd FileType cpp  setl errorformat+=%Dmake[%*\\d]:\ Entering\ directory\ `%f'
-autocmd FileType cpp  setl errorformat+=%Xmake[%*\\d]:\ Leaving\ directory\ `%f'
+"autocmd FileType cpp  setl errorformat=#%m
+"autocmd FileType cpp  setl errorformat+=%f:%l:%c:\ %m,%f:%l:\ %m
+"autocmd FileType cpp  setl errorformat+=make:\ ***\ %m,In\ file\ included\ from\ %f:%l:
+"autocmd FileType cpp  setl errorformat+=%f:\ In[%*\\d]'%m':
+"autocmd FileType cpp  setl errorformat+=\^I\^Ifrom\ %f:%l%m
+"autocmd FileType cpp  setl errorformat+=%Dmake[%*\\d]:\ Entering\ directory\ `%f'
+"autocmd FileType cpp  setl errorformat+=%Xmake[%*\\d]:\ Leaving\ directory\ `%f'
 
 autocmd FileType java setl errorformat=##%m(%f:%l)
 autocmd FileType java setl errorformat+=#%m
