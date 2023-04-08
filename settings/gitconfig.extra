@@ -1,3 +1,5 @@
+# vi: filetype=gitconfig
+
 [init]
         defaultBranch = main
 
