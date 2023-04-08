@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -eo pipefail
+
+OP=$1; shift
+TIP=$1; shift
+
+BR=HEAD
+PRE_OPT=()
+POST_OPT=()
+while [ $# -gt 0 ]
+do
+    case "$1" in
+    -*)
+        PRE_OPT+=( "$1" );
+        shift
+        ;;
+    *)
+        BR=$1;
+        shift;
+        break
+        ;;
+    esac
+done
+
+POST_OPT=( "$@" )
+
+[ $TIP == "h" ] && git "$OP" "${PRE_OPT[@]}" "$(git merge-base "${BR}"@{upstream} "${BR}")..${BR}"            "${POST_OPT[@]}"
+[ $TIP == "u" ] && git "$OP" "${PRE_OPT[@]}" "$(git merge-base "${BR}"@{upstream} "${BR}")..${BR}@{upstream}" "${POST_OPT[@]}"

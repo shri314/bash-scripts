@@ -4,22 +4,20 @@
 [core]
         autocrlf = false
         excludesFile = ~/.gitignore
-        editor = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' -f +1
+        #editor = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' -f +1
 
 [alias]
         st = status
         br = branch -vv
         gr = grep --untracked -In
         lg = log --graph --oneline
-        mt = mergetool --tool=gvimdiff
+        mt = mergetool --tool=vimdiff
+        mtg = mergetool --tool=gvimdiff
 
-        fp         = !_GIT_fp
-
-        log-mb-H   = !git log  $(git merge-base @{upstream} HEAD)..HEAD
-        log-mb-u   = !git log  $(git merge-base @{upstream} HEAD)..@{upstream}
-
-        diff-mb-H  = !git diff $(git merge-base @{upstream} HEAD)..HEAD
-        diff-mb-u  = !git diff $(git merge-base @{upstream} HEAD)..@{upstream}
+        log-mb-h   = !_GIT-ALIAS_op_mb_x log h
+        log-mb-u   = !_GIT-ALIAS_op_mb_x log u
+        diff-mb-h  = !_GIT-ALIAS_op_mb_x diff h
+        diff-mb-u  = !_GIT-ALIAS_op_mb_x diff u
 
 [commit]
         verbose = true
@@ -27,11 +25,11 @@
 [status]
         relativePaths = true
 
-[pager]
-        show     = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
-        diff     = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
-        annotate = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
-        log      = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
+#[pager]
+#        show     = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
+#        diff     = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
+#        annotate = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
+#        log      = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
 
 [merge]
         conflictstyle = diff3
@@ -56,6 +54,12 @@
 
 [mergetool "gvimdiff"]
         trustExitCode = false
+
+[log]
+        decorate = short
+
+[fetch]
+        prune = true
 
 [help]
         autocorrect = 0
