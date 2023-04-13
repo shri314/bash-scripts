@@ -16,10 +16,13 @@
         mt = mergetool --tool=vimdiff
         mtg = mergetool --tool=gvimdiff
 
-        log-mb-h   = !_GIT-ALIAS_op_mb_x log h
-        log-mb-u   = !_GIT-ALIAS_op_mb_x log u
-        diff-mb-h  = !_GIT-ALIAS_op_mb_x diff h
-        diff-mb-u  = !_GIT-ALIAS_op_mb_x diff u
+        xdiff-fork = !_GIT-ALIAS-diff-log-range-helper diff fp h
+        xdiff-pull = !_GIT-ALIAS-diff-log-range-helper diff mb u
+        xdiff-push = !_GIT-ALIAS-diff-log-range-helper diff mb h
+
+        xlog-fork = !_GIT-ALIAS-diff-log-range-helper log fp h
+        xlog-pull = !_GIT-ALIAS-diff-log-range-helper log mb u
+        xlog-push = !_GIT-ALIAS-diff-log-range-helper log mb h
 
 [commit]
         verbose = true
