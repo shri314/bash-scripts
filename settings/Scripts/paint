@@ -7,7 +7,7 @@ exit $?
 #
 #Author   : Shriram V
 #Email    : shri314@yahoo.com
-#Comments : Colors the output of make!!
+#Comments : Colors the output of any command
 #
 
 BEGIN {
@@ -201,7 +201,7 @@ BEGIN {
    $0 = gensub(/\<struct\>/,    "[01;32m\\0[00m", "g");
    $0 = gensub(/\<union\>/,     "[01;32m\\0[00m", "g");
    $0 = gensub(/\<namespace\>/, "[01;32m\\0[00m", "g");
-   $0 = gensub(/\<static\>/,    "[01;32m\\0[00m", "g");
+   $0 = gensub(/(^|[ :])(\<static\>)([ ]|$)/,    "\\1[01;32m\\2[00m\\3", "g");
    $0 = gensub(/\<virtual\>/,   "[01;32m\\0[00m", "g");
 
    $0 = gensub(/\<this\>/,      "[01;33m\\0[00m", "g");
@@ -215,16 +215,23 @@ BEGIN {
    $0 = gensub(/\<else\>/,      "[01;33m\\0[00m", "g");
    $0 = gensub(/\<fi\>/,        "[01;33m\\0[00m", "g");
    $0 = gensub(/\<for\>/,       "[01;33m\\0[00m", "g");
-   $0 = gensub(/\<static_assert\>/,  "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<const_cast\>/,       "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<dynamic_cast\>/,     "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<reinterpret_cast\>/, "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<static_assert\>/,    "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<static_cast\>/,      "[01;33m\\0[00m", "g");
    $0 = gensub(/\<operator\>/,  "[01;33m\\0[00m", "g");
    $0 = gensub(/\<new\>/,       "[01;33m\\0[00m", "g");
    $0 = gensub(/\<delete\>/,    "[01;33m\\0[00m", "g");
    $0 = gensub(/\<return\>/,    "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<co_async\>/,  "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<co_yield\>/,  "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<co_return\>/, "[01;33m\\0[00m", "g");
    $0 = gensub(/\<decltype\>/,  "[01;33m\\0[00m", "g");
    $0 = gensub(/\<using\>/,     "[01;33m\\0[00m", "g");
-   $0 = gensub(/\<public\>/,    "[01;33m\\0[00m", "g");
-   $0 = gensub(/\<private\>/,   "[01;33m\\0[00m", "g");
-   $0 = gensub(/\<protected\>/, "[01;33m\\0[00m", "g");
+   $0 = gensub(/(^|[ :])(\<public\>)([: ]|$)/,    "\\1[01;33m\\2[00m\\3", "g");
+   $0 = gensub(/(^|[ :])(\<private\>)([: ]|$)/,   "\\1[01;33m\\2[00m\\3", "g");
+   $0 = gensub(/(^|[ :])(\<protected\>)([: ]|$)/, "\\1[01;33m\\2[00m\\3", "g");
    $0 = gensub(/\<requires\>/,  "[01;33m\\0[00m", "g");
 
    $0 = gensub(/\<true\>/,      "[00;35m\\0[00m", "g");
@@ -239,4 +246,3 @@ BEGIN {
    print;
    fflush("");
 }
-
