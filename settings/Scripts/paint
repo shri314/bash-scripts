@@ -196,6 +196,7 @@ BEGIN {
    $0 = gensub(/\<signed\>/,    "[01;32m\\0[00m", "g");
    $0 = gensub(/\<typedef\>/,   "[01;32m\\0[00m", "g");
    $0 = gensub(/\<typename\>/,  "[01;32m\\0[00m", "g");
+   $0 = gensub(/\<external\>/,  "[01;32m\\0[00m", "g");
    $0 = gensub(/\<template\>/,  "[01;32m\\0[00m", "g");
    $0 = gensub(/\<class\>/,     "[01;32m\\0[00m", "g");
    $0 = gensub(/\<struct\>/,    "[01;32m\\0[00m", "g");
@@ -213,8 +214,15 @@ BEGIN {
    $0 = gensub(/\<if\>/,        "[01;33m\\0[00m", "g");
    $0 = gensub(/\<then\>/,      "[01;33m\\0[00m", "g");
    $0 = gensub(/\<else\>/,      "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<elif\>/,      "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<switch\>/,    "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<case\>/,      "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<esac\>/,      "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<done\>/,      "[01;33m\\0[00m", "g");
    $0 = gensub(/\<fi\>/,        "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<do\>/,        "[01;33m\\0[00m", "g");
    $0 = gensub(/\<for\>/,       "[01;33m\\0[00m", "g");
+   $0 = gensub(/\<while\>/,     "[01;33m\\0[00m", "g");
    $0 = gensub(/\<const_cast\>/,       "[01;33m\\0[00m", "g");
    $0 = gensub(/\<dynamic_cast\>/,     "[01;33m\\0[00m", "g");
    $0 = gensub(/\<reinterpret_cast\>/, "[01;33m\\0[00m", "g");
