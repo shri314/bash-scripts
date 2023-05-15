@@ -1,13 +1,16 @@
 #!/bin/bash
 
+set -euo pipefail
+
 usage()
 {
-    echo "usage: qfix [-g] [<-s>|<--split>|<+s>|<--no-split>] [--help]"
+    echo "usage: qfix [-g] [<-s>|<--split>|<+s>|<--no-split>] [--help] [file...]"
 }
 
 ED_NAME="vim"
-ED_OPTS=('-f')
+ED_OPTS=('--not-a-term' '-fX')
 ED_ARGS=('+copen')
+OTHER_OPTS=()
 
 while [ $# -gt 0 ]
 do
@@ -23,7 +26,19 @@ do
             ED_ARGS+=( '+set switchbuf+=split' )
             ;;
         -g)
-            ED_OPTS+=('-g')
+            ED_NAME="vim"
+            ED_OPTS=('--not-a-term' '-gfX')
+            ;;
+        -G)
+            ED_NAME="vim"
+            ED_OPTS=('--not-a-term' '-gX')
+            ;;
+        -*)
+            usage
+            exit 1
+            ;;
+         *)
+            OTHER_OPTS+=("$1")
             ;;
     esac
     shift
@@ -35,9 +50,9 @@ trap "rm -f '$EFILE'" EXIT QUIT KILL TERM
 
 if which paint 1>/dev/null 2>/dev/null
 then
-   ( cat | tee "$EFILE" | paint )
+   ( cat "${OTHER_OPTS[@]+${OTHER_OPTS[@]}}" | tee "$EFILE" | paint )
 else
-   ( cat | tee "$EFILE" )
+   ( cat "${OTHER_OPTS[@]+${OTHER_OPTS[@]}}" | tee "$EFILE" )
 fi
 
 # Regular expression to find pattern ':<digits>:'
@@ -45,7 +60,7 @@ if grep -q -e "\:[[:digit:]]\+\:" $EFILE
 then
     if [ $(cat "$EFILE" | sed -e "/^ *$/d" | wc -l) -gt 0 ]
     then
-        ( exec </dev/tty; "${ED_NAME}" "${ED_OPTS[@]}" -q "$EFILE" "${ED_ARGS[@]}")
+        ( exec </dev/tty; "${ED_NAME}" "${ED_OPTS[@]}" -q <(cat "$EFILE") "${ED_ARGS[@]}" )
         exit 1
     fi
 fi
