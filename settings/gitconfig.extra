@@ -41,7 +41,7 @@
         tool = gvimdiff
 
 [diff]
-        context = 5
+        context = 10
         noprefix = true
         algorithm = histogram
         tool = gvimdiff
@@ -59,6 +59,9 @@
 
 [mergetool "gvimdiff"]
         trustExitCode = false
+
+[grep]
+        lineNumber = true
 
 [log]
         decorate = short
