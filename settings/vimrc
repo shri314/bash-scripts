@@ -297,6 +297,8 @@ else
    set path=,,.,..,../../,./include,../include,./src,../src,/usr/local/include,/usr/include/g++-3,/usr/include
 endif
 
+let g:netrw_browse_split=3 "split file open in netrw in a new tab
+
 let g:explVertical=1 "split vertically the explorer Window
 
 "set guifont=Monospace\ Regular\ 11
