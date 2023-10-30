@@ -4,7 +4,8 @@ set -euo pipefail
 
 usage()
 {
-    echo "usage: qfix [-g] [<-s>|<--split>|<+s>|<--no-split>] [--help] [file...]"
+    echo "usage: qfix [-g|-G] [<-s>|<--split>|<+s>|<--no-split>] [file...]"
+    echo "usage: qfix [--help]"
 }
 
 ED_NAME="vim"
