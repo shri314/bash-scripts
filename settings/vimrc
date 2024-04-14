@@ -482,8 +482,8 @@ map ?> :call ConflictsPickRight()<CR>
 "map ?X :call ConflictsNavigate(v:true , v:false, v:false)<CR>
 
 " Display git-show for hash under cursor in a new window
-function! OpenGitShow()
-   execute "vert new | r ! git show '" . expand("<cword>") . "'"
+function! OpenGitShow(What)
+   execute "vert new | 0r ! " .. expandcmd("git show '" .. a:What .. "' --")
    setl filetype=git
    setl nolist
    setl buftype=nofile noswapfile nomodifiable
@@ -546,7 +546,8 @@ map <F12>t :TlistToggle<CR>
 map <F12>h :call HLWord()<CR>
 map <F12>/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 map <F12>b :call StubBeautify()<CR>
-map <F12>d :call OpenGitShow()<CR>
+map <F12>d :call OpenGitShow("<cword>")<CR>
+map <F12>D :call OpenGitShow("origin/main:<cfile>")
 autocmd FileType cpp      map <buffer> <F12>b  :call BeautifyUsingClangFormat()<CR>
 autocmd FileType cpp      map <buffer> <F12>b1 :call BeautifyUsingClangFormat()<CR>
 autocmd FileType cpp      map <buffer> <F12>b2 :call BeautifyUsingAstyle()<CR>
