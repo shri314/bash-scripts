@@ -125,6 +125,9 @@ set shiftwidth=4
 "autocmd FileType python setl shiftwidth=4
 autocmd FileType vim setl shiftwidth=3
 
+" Text width to use. this is enabled with `:set formatoptions+=t`
+"set textwidth=100
+
 " Number of spaces for a tab only for editing purpose
 set softtabstop=-1
 
