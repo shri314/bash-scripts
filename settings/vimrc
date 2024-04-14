@@ -524,6 +524,8 @@ cnoreabbrev <expr> xa getcmdtype() == ":" && getcmdline() == 'xa' ? 'windo x' : 
 "set scrolloff=5
 noremap n nm'z.`'
 noremap N Nm'z.`'
+"noremap ]c ]cm'z.`'
+"noremap [c [cm'z.`'
 
 "https://stackoverflow.com/questions/23695727/vim-highlight-a-word-with-without-moving-cursor
 nnoremap * *``
