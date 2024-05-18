@@ -6,6 +6,10 @@
 " use Vim defaults be used for options that have a different Vi and Vim default value.
 set nocompatible
 
+"fzf setup
+set runtimepath+=~/.fzf
+set runtimepath+=/usr/local/opt/fzf
+
 if $ENV_BACKGROUND == "dark"
    set background=dark
 elseif $ENV_BACKGROUND == "light"
@@ -16,9 +20,6 @@ else
 endif
 
 set visualbell
-
-"fzf setup
-set runtimepath+=~/.fzf
 
 execute pathogen#infect()
 
