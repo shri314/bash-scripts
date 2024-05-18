@@ -156,15 +156,9 @@ mv -f ~/.contrib/bin/git-prompt-patched.sh ~/.contrib/bin/git-prompt.sh
 chmod -R +x ~/.contrib/bin/
 
 # Vim Plugins
-RawGetTool ~/.vim/autoload "https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
-
-VimBundle https://github.com/zirrostig/vim-schlepp.git
-VimBundle https://github.com/airblade/vim-gitgutter.git
-VimBundle https://github.com/webdevel/tabulous.git
-#VimBundle https://github.com/arecarn/vim-crunch.git
-#VimBundle https://github.com/artur-shaik/vim-javacomplete2.git
-#VimBundle https://github.com/mzlogin/vim-markdown-toc.git
-#VimBundle https://github.com/vim-scripts/pylint.vim.git
+rm -f ~/.vim/autoload/pathogen.vim
+VimBundle https://github.com/VundleVim/Vundle.vim.git
+vim +VundleInstall +qa
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]

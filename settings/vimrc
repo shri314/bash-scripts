@@ -10,6 +10,17 @@ set nocompatible
 set runtimepath+=~/.fzf
 set runtimepath+=/usr/local/opt/fzf
 
+"vundle setup
+set runtimepath+=~/.vim/bundle/Vundle.vim "required for vundle
+filetype off                              "required for vundle
+call vundle#begin()                       "required for vundle
+Plugin 'VundleVim/Vundle.vim'             "required for vundle
+Plugin 'zirrostig/vim-schlepp'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'webdevel/tabulous'
+call vundle#end()                         "required for vundle
+filetype plugin indent on                 "required for vundle
+
 if $ENV_BACKGROUND == "dark"
    set background=dark
 elseif $ENV_BACKGROUND == "light"
@@ -20,8 +31,6 @@ else
 endif
 
 set visualbell
-
-execute pathogen#infect()
 
 " Turn on syntax highlighting
 syntax on
