@@ -1,7 +1,6 @@
 #!/bin/bash
 
 unset CDPATH
-unset GIT_SSH
 SCRIPT_PATH=$(cd "$(dirname "$0")" && pwd)
 
 set -eu

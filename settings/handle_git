@@ -12,5 +12,3 @@ then
 
   . ~/.contrib/bin/git-prompt.sh
 fi
-
-export GIT_SSH="$HOME/.Scripts/_git_ssh"

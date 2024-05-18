@@ -6,6 +6,7 @@
 [core]
         autocrlf = false
         excludesFile = ~/.gitignore
+        sshCommand = ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o CheckHostIP=no -o ServerAliveInterval=100 -q
         #editor = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' -f +1
 
 [alias]
