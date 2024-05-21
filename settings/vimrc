@@ -363,7 +363,7 @@ autocmd FileType java map <buffer> <F11> 0i//<Esc>j
 
 function! HLWord()
    if !exists("s:highlightword")
-      execute "syn match HL \"\\\<" . expand("<cword>") . "\\\>\""
+      execute "syn match HL \"\\\<" .. expand("<cword>") .. "\\\>\""
       "highlight HL term=bold,reverse cterm=bold,reverse ctermfg=4 ctermbg=7
       highlight HL term=bold,reverse cterm=bold ctermfg=0 ctermbg=10 gui=bold guifg=bg guibg=LightGreen
       let s:highlightword = 1
@@ -586,7 +586,7 @@ autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | execute "
 " http://stackoverflow.com/questions/2400264/is-it-possible-to-apply-vim-configurations-without-restarting
 augroup my_vimrc_hooks
    au!
-   autocmd bufwritepost .vimrc echo 'sourcing .vimrc' | source ~/.vimrc
+   autocmd bufwritepost .vimrc echo 'sourcing .vimrc' | source ~/.vimrc | setl shiftwidth=3
 augroup end
 
 " Enable virtualedit for visualblock
