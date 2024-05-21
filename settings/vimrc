@@ -657,9 +657,9 @@ command! -nargs=* DiffInNewTab call DiffInNewTab(<f-args>)
 
 " send the line under the cursor as keys to a tmux pane
 function! TmuxExecLine(target_pane)
-    silent! execute "!tmux send-keys -t " . a:target_pane . " '" . getline(".") . "' enter"
-    silent! :/^[^# ]
-    silent! normal z.
+   silent! execute "!tmux send-keys -t " .. a:target_pane .. " '" .. getline(".") .. "' enter"
+   silent! :/^[^# ]
+   silent! normal z.
 endfunction
 
 function! AutoScript()
@@ -667,4 +667,4 @@ function! AutoScript()
 endfunction
 
 " Weird gvim workaround to restore background to background
-execute 'set background=' . &background
+execute 'set background=' .. &background
