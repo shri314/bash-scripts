@@ -612,20 +612,19 @@ if filereadable(expand('~/.vimrc.custom'))
 endif
 
 " Scan current file for specified word and open in quickfix
-function! QfScan(needle)
-   try
-      silent! bdelete! QfSTmp
-      new
-      silent! file! QfSTmp
-      execute 'r !grep -e ' a:needle ' -n -H #'
-      normal gg
-      normal dd
-      hide
-      execute 'cbuffer ' bufnr('QfSTmp')
-      copen
-   finally
-      silent! bdelete! QfSTmp
-   endtry
+function! QfixRun(cmd)
+   cexpr system(a:cmd)
+   copen
+endfunction
+
+" Scan current file for specified word and open in quickfix
+function! QfixGrep(needle)
+   call QfRun('grep -e ' .. a:needle .. ' -n -H #')
+endfunction
+
+" Scan current file for specified word and open in quickfix
+function! QfixGitGrep(needle)
+   call QfRun('git grep -e ' .. a:needle .. ' -n -H #')
 endfunction
 
 function! DeleteEmptyBuffers()
