@@ -216,6 +216,7 @@ BEGIN {
    $0 = gensub(/\<typename\>/,  "[01;32m\\0[00m", "g");
    $0 = gensub(/\<external\>/,  "[01;32m\\0[00m", "g");
    $0 = gensub(/\<template\>/,  "[01;32m\\0[00m", "g");
+   $0 = gensub(/\<extern\>/,    "[01;32m\\0[00m", "g");
    $0 = gensub(/\<class\>/,     "[01;32m\\0[00m", "g");
    $0 = gensub(/\<struct\>/,    "[01;32m\\0[00m", "g");
    $0 = gensub(/\<union\>/,     "[01;32m\\0[00m", "g");
