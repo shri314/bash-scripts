@@ -270,22 +270,29 @@ function! ToggleScreenSize()
    endif
 endfunction
 
-" (Internal)
-function! QuickfixOpen()
+function! QfixOpen()
+   cclose
    top copen 5
    setl wrap
+endfunction
+
+command! -nargs=+ -complete=shellcmd QfixRun call QfixRun(<q-args>)
+
+function! QfixRun(cmd)
+   cexpr system(a:cmd)
+   call QfixOpen()
 endfunction
 
 " (Internal)
 " Function to toggle the window size.
 let g:ErrTog=0
-function! ToggleQuickFix()
+function! ToggleQfix()
    if g:ErrTog == 0
-      call QuickfixOpen()
+      call QfixOpen()
       let g:ErrTog=1
    else
-      call QuickfixOpen()
-      q
+      call QfixOpen()
+      cclose
       let g:ErrTog=0
    endif
 endfunction
@@ -323,10 +330,10 @@ nmap <F2> :w<CR>
 imap <F2> <Esc>:w<CR><Esc>a
 
 "F4 to list files in the project with the word under the cursor
-map <F4>  :silent grep! -e <cword> *<CR>:call QuickfixOpen()<CR>:<BS><C-L>
+map <F4>  :silent grep! -e <cword> *<CR>:call QfixOpen()<CR>:<BS><C-L>
 
 "Shift-F4 to list files in the project with the word under the cursor ignoring the case
-map <F4>i :silent grep! -e <cword> -i *<CR>:call QuickfixOpen()<CR>:<BS><C-L>
+map <F4>i :silent grep! -e <cword> -i *<CR>:call QfixOpen()<CR>:<BS><C-L>
 
 "F5 to Stop highlighting words
 map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:TlistUpdate<CR>:nohl<CR>
@@ -555,7 +562,7 @@ map <F12>i :setl paste!<CR>:echo 'paste ='&paste<CR>
 map <F12>l :setl list!<CR>:echo 'list ='&list<CR>
 map <F12>c :call ToggleSwitchDiffIWhite()<CR>
 map <F12>s :call ToggleSwitchBuffer()<CR>
-map <F12>q :call ToggleQuickFix()<CR>:<BS><C-L>
+map <F12>q :call ToggleQfix()<CR>:<BS><C-L>
 map <F12>g :call ToggleGutter()<CR>
 map <F12>t :TlistToggle<CR>
 map <F12>h :call HLWord()<CR>
@@ -610,22 +617,6 @@ set wildignore+=**/libs/**
 if filereadable(expand('~/.vimrc.custom'))
    source ~/.vimrc.custom
 endif
-
-" Scan current file for specified word and open in quickfix
-function! QfixRun(cmd)
-   cexpr system(a:cmd)
-   copen
-endfunction
-
-" Scan current file for specified word and open in quickfix
-function! QfixGrep(needle)
-   call QfRun('grep -e ' .. a:needle .. ' -n -H #')
-endfunction
-
-" Scan current file for specified word and open in quickfix
-function! QfixGitGrep(needle)
-   call QfRun('git grep -e ' .. a:needle .. ' -n -H #')
-endfunction
 
 function! DeleteEmptyBuffers()
    let [l:i, l:n; l:empty] = [1, bufnr('$')]
