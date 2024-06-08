@@ -274,6 +274,8 @@ function! QfixOpen()
    cclose
    top copen 5
    setl wrap
+   normal gg
+   call search('error:', 'cW')
 endfunction
 
 command! -nargs=+ -complete=shellcmd QfixRun call QfixRun(<q-args>)
