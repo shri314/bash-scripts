@@ -684,5 +684,32 @@ nmap <silent> <C-w>j       :call TmuxSwitchPane("j")<CR>
 nmap <silent> <C-w>k       :call TmuxSwitchPane("k")<CR>
 nmap <silent> <C-w>l       :call TmuxSwitchPane("l")<CR>
 
+function! Both()
+"      let l:left_name = bufname(winbufnr(winnr("1h")))
+"      let l:right_name = bufname(winbufnr(winnr("1l")))
+
+   if expand('%:e') == 'hpp'
+      let l:cur_winid = win_getid(winnr())
+      let l:old_splitright = &splitright
+      try
+         let &splitright = 1
+         vsp %:r.cpp
+      finally
+         let &splitright = l:old_splitright
+         call win_gotoid(l:cur_winid)
+      endtry
+   elseif expand('%:e') == 'cpp'
+      let l:cur_winid = win_getid(winnr())
+      let l:old_splitright = &splitright
+      try
+         let &splitright = 0
+         vsp %:r.hpp
+      finally
+         let &splitright = l:old_splitright
+         call win_gotoid(l:cur_winid)
+      endtry
+   endif
+endfunction
+
 " Weird gvim workaround to restore background to background
 execute 'set background=' .. &background
