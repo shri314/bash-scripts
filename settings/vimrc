@@ -10,8 +10,7 @@ set nocompatible
 set runtimepath+=~/.fzf
 set runtimepath+=/usr/local/opt/fzf
 
-"To get or keep plugins updated, please run
-"':VundleUpdate' on the vim command prompt regularly
+"To get or keep plugins updated, please run ':VundleUpdate' on the vim command prompt regularly
 
 "vundle setup
 set runtimepath+=~/.vim/bundle/Vundle.vim "required for vundle
