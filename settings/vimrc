@@ -18,6 +18,7 @@ Plugin 'VundleVim/Vundle.vim'             "required for vundle
 Plugin 'zirrostig/vim-schlepp'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'webdevel/tabulous'
+Plugin 'yegappan/taglist'
 call vundle#end()                         "required for vundle
 filetype plugin indent on                 "required for vundle
 
