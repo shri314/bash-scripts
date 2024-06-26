@@ -12,15 +12,29 @@ set runtimepath+=/usr/local/opt/fzf
 
 "To get or keep plugins updated, please run ':VundleUpdate' on the vim command prompt regularly
 
+function! PluginEIf(uri)
+   let l:status_all = eval("$VundlePlugin__all")
+   let l:status_plu = eval("$VundlePlugin__" .. substitute(a:uri, "[-/.]", "_", "g"))
+   if l:status_all != "0" || l:status_plu != "0"
+      echo "Y Plugin a:uri" .. l:status_plu
+      Plugin a:uri
+   else
+      echo "N Plugin a:uri" .. l:status_plu
+   endif
+endfunction
+
+command! -nargs=1 EPlugin call PluginEIf(<args>)
+
 "vundle setup
 set runtimepath+=~/.vim/bundle/Vundle.vim "required for vundle
 filetype off                              "required for vundle
 call vundle#begin()                       "required for vundle
-Plugin 'VundleVim/Vundle.vim'             "required for vundle
-Plugin 'zirrostig/vim-schlepp'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'webdevel/tabulous'
-Plugin 'yegappan/taglist'
+Plugin 'VundleVim/Vundle.vim'
+
+EPlugin 'zirrostig/vim-schlepp'
+EPlugin 'airblade/vim-gitgutter'
+EPlugin 'webdevel/tabulous'
+EPlugin 'yegappan/taglist'
 call vundle#end()                         "required for vundle
 filetype plugin indent on                 "required for vundle
 
