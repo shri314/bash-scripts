@@ -82,7 +82,7 @@ RawGetTool()
    echo Getting $BN ...
 
    mkdir -p "$DEST"
-   (set -x; curl --silent "$URL" -o "$DEST/$BN")
+   (set -x; curl --silent "$URL" -o "$DEST/$BN") || (E=$?; echo curl failed; exit $E)
 }
 
 VimBundle()
