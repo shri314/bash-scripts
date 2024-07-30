@@ -1,73 +1,81 @@
 # vi: filetype=gitconfig
 
 [init]
-        defaultBranch = main
+    defaultBranch = main
 
 [core]
-        autocrlf = false
-        excludesFile = ~/.gitignore
-        sshCommand = ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o CheckHostIP=no -o ServerAliveInterval=100 -q
-        #editor = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' -f +1
+    autocrlf = false
+    excludesFile = ~/.gitignore
+    sshCommand = ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o CheckHostIP=no -o ServerAliveInterval=100 -q
+    #editor = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' -f +1
 
 [alias]
-        st = status
-        br = branch -vv
-        gr = grep --untracked -In
-        lg = log --graph --oneline
-        mt = mergetool --tool=vimdiff
-        mtg = mergetool --tool=gvimdiff
+    st = status
+    br = branch -vv
+    gr = grep --untracked -In
+    lg = log --graph --oneline
+    mt = mergetool --tool=vimdiff
+    mtg = mergetool --tool=gvimdiff
+    sreset = "!fn() { \
+                    set -euo pipefail; \
+                    local oldsha=$(git rev-parse -q --verify refs/stash); \
+                    git stash save -q; \
+                    local newsha=$(git rev-parse -q --verify refs/stash); \
+                    git reset $@; \
+                    if [ \"$oldsha\" != \"$newsha\" ]; then git stash pop; fi; \
+                }; fn"
 
-        #https://stackoverflow.com/questions/8475448/find-merge-commit-which-includes-a-specific-commit
-        find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
-        show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
+    #https://stackoverflow.com/questions/8475448/find-merge-commit-which-includes-a-specific-commit
+    find-merge = "!bash -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
+    show-merge = "!bash -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
 
 [commit]
-        verbose = true
+    verbose = true
 
 [status]
-        relativePaths = true
+    relativePaths = true
 
 #[pager]
-#        show     = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
-#        diff     = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
-#        annotate = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
-#        log      = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
+#    show     = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
+#    diff     = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
+#    annotate = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
+#    log      = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
 
 [merge]
-        conflictstyle = diff3
-        tool = gvimdiff
+    conflictstyle = diff3
+    tool = gvimdiff
 
 [diff]
-        context = 10
-        noprefix = true
-        algorithm = histogram
-        tool = gvimdiff
-        renameLimit = 4096
+    context = 10
+    noprefix = true
+    algorithm = histogram
+    tool = gvimdiff
+    renameLimit = 4096
 
 [difftool]
-        prompt = false
+    prompt = false
 
 [mergetool]
-        prompt = true
-        keepbackup = true
+    prompt = true
+    keepbackup = true
 
 [mergetool "vimdiff"]
-        trustExitCode = false
+    trustExitCode = false
 
 [mergetool "gvimdiff"]
-        trustExitCode = false
+    trustExitCode = false
 
 [grep]
-        lineNumber = true
+    lineNumber = true
 
 [log]
-        decorate = short
+    decorate = short
 
 [fetch]
-        prune = true
+    prune = true
 
 [help]
-        autocorrect = 0
+    autocorrect = 0
 
 [color]
-        ui = auto
+    ui = auto
