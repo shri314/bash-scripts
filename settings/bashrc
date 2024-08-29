@@ -132,6 +132,7 @@ _fvi() {
 [ -f ~/.handle_display ] && . ~/.handle_display
 [ -f ~/.handle_dot_env ] && . ~/.handle_dot_env
 [ -f ~/.fzf.bash       ] && . ~/.fzf.bash
+[ -f ~/.cargo/env      ] && . ~/.cargo/env
 
 [ "${PATH_SAVED-x}" == "x" ] && export PATH_SAVED="$PATH"
 [ -f ~/.bashrc.custom  ] && . ~/.bashrc.custom
