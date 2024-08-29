@@ -16,10 +16,10 @@ function! PluginEIf(uri)
    let l:status_all = eval("$VundlePlugin__all")
    let l:status_plu = eval("$VundlePlugin__" .. substitute(a:uri, "[-/.]", "_", "g"))
    if l:status_all != "0" || l:status_plu != "0"
-      echo "Y Plugin a:uri" .. l:status_plu
+      "echo "Y Plugin a:uri" .. l:status_plu
       Plugin a:uri
    else
-      echo "N Plugin a:uri" .. l:status_plu
+      "echo "N Plugin a:uri" .. l:status_plu
    endif
 endfunction
 
