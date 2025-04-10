@@ -252,7 +252,9 @@ set autoindent
 autocmd FileType cpp  set cindent
 
 " Set cryptmethod
-set cryptmethod=blowfish
+if !has('nvim')
+   set cryptmethod=blowfish
+endif
 
 if has("win32")
    autocmd BufNewFile,GUIEnter * simalt~x
@@ -727,6 +729,8 @@ function! Both()
       endtry
    endif
 endfunction
+
+command! -nargs=0 Both call Both(<f-args>)
 
 " Weird gvim workaround to restore background to background
 execute 'set background=' .. &background
