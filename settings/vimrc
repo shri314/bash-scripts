@@ -582,13 +582,6 @@ augroup END
 nnoremap * *``
 nnoremap # #``
 
-"augroup CursorPosition
-"   autocmd!
-"   autocmd BufLeave * let b:winview = winsaveview()
-"   autocmd BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
-"augroup END
-
-
 "F12<key> to apply special properties
 map <F12><F12> :call F12Help()<CR>
 map <F12>n :setl number!<CR>:echo 'number ='&number<CR>
