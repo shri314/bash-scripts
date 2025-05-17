@@ -562,10 +562,21 @@ cnoreabbrev <expr> xa getcmdtype() == ":" && getcmdline() == 'xa' ? 'windo x' : 
 
 " always keep the next word to be found at the center of the screen
 "set scrolloff=5
-noremap n nm'z.`'
-noremap N Nm'z.`'
-"noremap ]c ]cm'z.`'
-"noremap [c [cm'z.`'
+nmap n nzz
+nmap N Nzz
+
+function! EnhanceMapping(mode_cmd, mapping, enhancement)
+    let current = maparg(a:mapping, 'n', 0, 1)
+    if !empty(current)
+        execute a:mode_cmd . ' <buffer> ' . a:mapping . ' ' . current.rhs . a:enhancement
+    endif
+endfunction
+
+augroup EnhanceMappings
+    autocmd!
+    autocmd VimEnter * call EnhanceMapping('nmap', ']c', 'zz')
+    autocmd VimEnter * call EnhanceMapping('nmap', '[c', 'zz')
+augroup END
 
 "https://stackoverflow.com/questions/23695727/vim-highlight-a-word-with-without-moving-cursor
 nnoremap * *``
