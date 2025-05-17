@@ -623,13 +623,6 @@ set laststatus=2
 
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | execute "normal g'\"" | endif
 
-" Autoload .vimrc
-" http://stackoverflow.com/questions/2400264/is-it-possible-to-apply-vim-configurations-without-restarting
-augroup my_vimrc_hooks
-   au!
-   autocmd bufwritepost .vimrc echo 'sourcing .vimrc' | source ~/.vimrc | setl shiftwidth=3
-augroup end
-
 " Enable virtualedit for visualblock
 set virtualedit=block
 vmap k  <Plug>SchleppUp
