@@ -608,8 +608,14 @@ autocmd FileType xml,ant  map <buffer> <F12>b  :call BeautifyXml()<CR>
 "imap <TAB> <C-P>
 "autocmd FileType make unmap <TAB>
 
-let Tlist_Process_File_Always = 1
-set statusline=%<%f\ %h%m%r%([%{Tlist_Get_Tagname_By_Line()}]%)%=%-14.(%l,%c%V%)\ %P
+" Only set Taglist configurations if the function exists
+if exists('*Tlist_Get_Tagname_By_Line')
+   let Tlist_Process_File_Always = 1
+   set statusline=%<%f\ %h%m%r%([%{Tlist_Get_Tagname_By_Line()}]%)%=%-14.(%l,%c%V%)\ %P
+else
+    " Fallback statusline without Taglist function
+    set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+endif
 
 " Always show status line
 set laststatus=2
