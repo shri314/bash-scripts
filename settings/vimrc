@@ -6,10 +6,6 @@
 " use Vim defaults be used for options that have a different Vi and Vim default value.
 set nocompatible
 
-"fzf setup
-set runtimepath+=~/.fzf
-set runtimepath+=/usr/local/opt/fzf
-
 "To get or keep plugins updated, please run ':VundleUpdate' on the vim command prompt regularly
 
 function! PluginEIf(uri)
@@ -35,6 +31,7 @@ EPlugin 'zirrostig/vim-schlepp'
 EPlugin 'airblade/vim-gitgutter'
 EPlugin 'webdevel/tabulous'
 EPlugin 'yegappan/taglist'
+EPlugin 'junegunn/fzf'
 call vundle#end()                         "required for vundle
 filetype plugin indent on                 "required for vundle
 
