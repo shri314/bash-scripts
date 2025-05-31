@@ -320,7 +320,9 @@ function! ToggleQfix()
    endif
 endfunction
 
-let g:gitgutter_max_signs=3000  "allow a max of 3000 diffs in the gutter
+"no limit to number of diffs in the gutter
+let g:gitgutter_max_signs = -1
+let g:gitgutter_show_msg_on_hunk_jumping = 1
 
 " (Internal)
 " Function to toggle the gutter
@@ -548,7 +550,8 @@ function! F12Help()
    echo "l   - toggle list\n"
    echo "n   - toggle number\n"
    echo "q   - toggle quickfix\n"
-   echo "g   - toggle gutter\n"
+   echo "g   - toggle GitGutterSignsToggle\n"
+   echo "u   - toggle GitGutterLineHighlights\n"
    echo "s   - toggle switchbuf\n"
    echo "/   - toggle autohighlight\n"
    echo "c   - toggle diff iwhite\n"
@@ -594,7 +597,8 @@ map <F12>l :setl list!<CR>:echo 'list ='&list<CR>
 map <F12>c :call ToggleSwitchDiffIWhite()<CR>
 map <F12>s :call ToggleSwitchBuffer()<CR>
 map <F12>q :call ToggleQfix()<CR>:<BS><C-L>
-map <F12>g :call ToggleGutter()<CR>
+map <F12>g :GitGutterSignsToggle<CR>
+map <F12>u :GitGutterLineHighlightsToggle<CR>
 map <F12>t :TlistToggle<CR>
 map <F12>h :call HLWord()<CR>
 map <F12>/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
