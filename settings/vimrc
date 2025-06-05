@@ -359,9 +359,9 @@ map <F4>i :silent grep! -e <cword> -i *<CR>:call QfixOpen()<CR>:<BS><C-L>
 
 "F5 to Stop highlighting words
 if exists('*Tlist_Get_Tagname_By_Line')
-   map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:TlistUpdate<CR>:nohl<CR>
+   map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:GitGutter<CR>:TlistUpdate<CR>:nohl<CR>
 else
-   map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:nohl<CR>
+   map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:GitGutter<CR>:nohl<CR>
 endif
 
 "F6 to switch window
