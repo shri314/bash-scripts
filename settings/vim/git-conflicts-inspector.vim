@@ -1,4 +1,4 @@
-" .vimrc file
+" .vim/git-conflicts-inspector.vim file
 "
 " Author   : Shriram V
 " Email    : shri314@yahoo.com
