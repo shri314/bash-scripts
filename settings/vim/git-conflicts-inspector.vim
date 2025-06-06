@@ -228,3 +228,35 @@ function! ConflictsPickRight()
    execute markers["right"]["last"] . "d _"
    execute markers["left"]["first"] . "," . markers["right"]["first"] . "d _"
 endfunction
+
+
+function! ConflictsPickBoth(order)
+   if v:version < 801
+      echohl ErrorMsg | :echo "This functionality requires Vim 8.1..." | :echohl None
+      return
+   endif
+
+   if a:order != "lr" && a:order != "rl"
+      echohl ErrorMsg | echo "Invalid order: must be 'lr' or 'rl'" | echohl None
+      return
+   endif
+
+   let markers = ConflictsGetInfo()
+   if markers is v:null
+      echohl ErrorMsg | echo "No conflict under the cursor..." | echohl None
+      return
+   endif
+
+   let l:LText = getline(markers["left"]["first"]  + 1, markers["left"]["last"]  - 1)
+   let l:RText = getline(markers["right"]["first"] + 1, markers["right"]["last"] - 1)
+
+   " make edits
+   call deletebufline('%', markers["left"]["first"], markers["right"]["last"])
+   if a:order == "lr"
+      call append(line('.') - 1, l:LText)
+      call append(line('.') - 1, l:RText)
+   else
+      call append(line('.') - 1, l:RText)
+      call append(line('.') - 1, l:LText)
+   endif
+endfunction

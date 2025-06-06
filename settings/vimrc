@@ -522,8 +522,10 @@ endfunction
 source $HOME/.vim/git-conflicts-inspector.vim
 
 map ?? :call ConflictsInspect()<CR>
-map ?< :call ConflictsPickLeft()<CR>
-map ?> :call ConflictsPickRight()<CR>
+map ?<< :call ConflictsPickLeft()<CR>
+map ?>> :call ConflictsPickRight()<CR>
+map ?<> :call ConflictsPickBoth('lr')<CR>
+map ?>< :call ConflictsPickBoth('rl')<CR>
 "map ?x :call ConflictsNavigate(v:false, v:false, v:false)<CR>
 "map ?X :call ConflictsNavigate(v:true , v:false, v:false)<CR>
 
