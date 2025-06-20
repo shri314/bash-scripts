@@ -31,9 +31,13 @@ EPlugin 'zirrostig/vim-schlepp'
 EPlugin 'airblade/vim-gitgutter'
 EPlugin 'webdevel/tabulous'
 EPlugin 'yegappan/taglist'
+EPlugin 'shri314/vim-git-conflict-inspector'
 EPlugin 'junegunn/fzf'
 call vundle#end()                         "required for vundle
 filetype plugin indent on                 "required for vundle
+
+" Add the git conflict inspector configuration here:
+let g:git_conflict_inspector_use_leader = 0  " Use '?' prefix instead of <Leader>
 
 if $ENV_BACKGROUND == "dark"
    set background=dark
@@ -517,17 +521,6 @@ function! ToggleSwitchDiffIWhite()
    endif
    echo 'diffopt ='&diffopt
 endfunction
-
-" git conflicts inspector
-source $HOME/.vim/git-conflicts-inspector.vim
-
-map ?? :call ConflictsInspect()<CR>
-map ?<< :call ConflictsPickLeft()<CR>
-map ?>> :call ConflictsPickRight()<CR>
-map ?<> :call ConflictsPickBoth('lr')<CR>
-map ?>< :call ConflictsPickBoth('rl')<CR>
-"map ?x :call ConflictsNavigate(v:false, v:false, v:false)<CR>
-"map ?X :call ConflictsNavigate(v:true , v:false, v:false)<CR>
 
 " Display git-show for hash under cursor in a new window
 function! OpenGitShow(What)
