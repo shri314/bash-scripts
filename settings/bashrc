@@ -43,7 +43,7 @@ fi
 export PATH=:~/.bin:~/.Scripts:~/.contrib/bin:~/.local/bin:$FIX_PATH
 export LD_LIBRARY_PATH=$FIX_LD_LIBRARY_PATH
 export CDPATH=:..:$FIX_CDPATH
-export MANPATH=$FIX_MANPATH
+export MANPATH=~/.bin/man:~/.Scripts/man:$FIX_MANPATH
 export HISTCONTROL=ignorespace:ignoredups:erasedups
 export PROMPT_COMMAND="$FIX_PROMPT_COMMAND"
 export SEARCH_PATH=",,.,..,./include,../include,./src,../src,/usr/local/include,/usr/include"
