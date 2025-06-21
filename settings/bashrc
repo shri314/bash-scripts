@@ -126,7 +126,7 @@ _fvi() {
 [ -f ~/.contrib/bin/git-completion.bash ] && . ~/.contrib/bin/git-completion.bash
 [ -f ~/.docker-completion-bash          ] && . ~/.docker-completion-bash
 
-[ -f ~/.handle_git     ] && . ~/.handle_git
+[ -f ~/.handle_git_ps1 ] && . ~/.handle_git_ps1
 [ -f ~/.handle_ssh     ] && . ~/.handle_ssh
 [ -f ~/.handle_ssh_agt ] && . ~/.handle_ssh_agt
 [ -f ~/.handle_ps1     ] && . ~/.handle_ps1
