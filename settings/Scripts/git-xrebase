@@ -1,0 +1,136 @@
+#!/bin/bash
+#
+# File: git-xrebase
+# Author: Shriram V
+# Brief: Preserves file timestamps during git rebases.
+#        Run --help for full usage instructions.
+#
+
+set -euo pipefail
+
+SCRIPT_DIR="$(CDPATH= cd "$(dirname "$0")" && pwd)"
+SCRIPT_NAME=$(basename "$0")
+
+# check if the script directory is in MANPATH
+xrebase_mancheck() {
+    if [ -f "$SCRIPT_DIR/$SCRIPT_NAME.1" ]; then
+        if [ -z "${MANPATH:-}" ] || ! echo "$MANPATH" | grep -q "$SCRIPT_DIR"; then
+            echo "Note: A man page for $SCRIPT_NAME is available in the script directory."
+            echo "To access it with 'man $SCRIPT_NAME', add this to your shell profile:"
+            echo "  export MANPATH=\"$SCRIPT_DIR:\$MANPATH\""
+            echo ""
+        fi
+    fi
+}
+
+# return true if a "git rebase" is active
+xrebase_active() {
+    if [[ -d "$(git rev-parse --git-path rebase-merge 2>/dev/null)"
+       || -d "$(git rev-parse --git-path rebase-apply 2>/dev/null)" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# get hash + timestamp for a file
+xrebase_hash_file() {
+    local file_path="$1"
+
+    if [[ ! -f "$file_path" ]]
+    then
+        return 0
+    fi
+
+    echo ": save ts $file_path" >&2
+    local file_hash=$(git hash-object "$file_path")
+    local file_mtime=$(stat -f "%m" "$file_path" 2>/dev/null || stat -c "%Y" "$file_path")
+
+    printf "%s\0%s\0%s\0" "$file_path" "$file_hash" "$file_mtime"
+    return 0
+}
+
+# handle OS specific touch idiosyncrasies
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    xrebase_touch_() {
+        touch -t $(date -r "$2" +"%Y%m%d%H%M.%S") "$1"
+    }
+else
+    xrebase_touch_() {
+        touch -d "@$2" "$1"
+    }
+fi
+
+# invoke touch with timestamp on the specified file only if hash matches
+xrebase_filter_touch() {
+    local file_path="$1"
+    local file_hash="$2"
+    local file_mtime="$3"
+
+    if [[ ! -f "$file_path" ]]; then
+        return 0
+    fi
+
+    if [[ "$file_hash" == "$(git hash-object "$file_path")" ]]; then
+        echo ": load ts $file_path" >&2
+        xrebase_touch_ "$file_path" "$file_mtime"
+    fi
+
+    return 0
+}
+
+# find files changed since base branch
+xrebase_backup_files() {
+    # try origin/HEAD first, then @{upstream}
+    git diff --name-only origin/HEAD..HEAD -z 2>/dev/null ||
+    git diff --name-only @{upstream}..HEAD -z 2>/dev/null ||
+    {
+        echo "$SCRIPT_NAME: warning: no base branch found, skipping timestamp preservation." >&2
+        true
+    }
+}
+
+main() {
+    xrebase_mancheck
+
+    local git_dir=$(git rev-parse --git-dir)
+    local dat_file="$git_dir/xrebase.dat"
+
+    if ! xrebase_active; then
+        # store timestamps using null-terminated filenames
+        export -f xrebase_hash_file
+        xrebase_backup_files | xargs -0 -r -n1 bash -c 'xrebase_hash_file "$1"' _ > "${dat_file}.tmp"
+        mv -f "${dat_file}.tmp" "$dat_file"
+        echo
+    else
+        if [[ ! -f "$dat_file" ]]; then
+            echo "$SCRIPT_NAME: warning: rebase in progress but no timestamp file found" >&2
+        fi
+    fi
+
+    # use --git-dir to avoid recursion if script is symlinked as git-rebase
+    local status
+    if "$(which git)" --git-dir="$git_dir" rebase "$@"; then
+        status=$?
+    else
+        status=$?
+    fi
+
+    if ! xrebase_active; then
+        if [[ ! -f "$dat_file" ]]; then
+            echo "$SCRIPT_NAME: warning: no timestamp data found - skipping restoration" >&2
+        else
+            # restore timestamps for unchanged files
+            echo
+            export -f xrebase_filter_touch xrebase_touch_
+            cat "$dat_file" | xargs -0 -n3 bash -c 'xrebase_filter_touch "$1" "$2" "$3"' _
+            rm -f "$dat_file"
+            echo
+        fi
+    fi
+
+    return $status
+}
+
+main "$@"
+exit $?

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if which git-xrebase 2>/dev/null 1>/dev/null; then
+    git() {
+        if [ "${1-}" = "rebase" ]; then
+            shift
+            command git-xrebase "$@"
+        else
+            command git "$@"
+        fi
+    }
+fi

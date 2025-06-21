@@ -1,0 +1,53 @@
+.TH GIT-XREBASE 1 "June 2025" "Git" "Git Manual"
+.SH NAME
+git-xrebase \- Preserve file timestamps during git rebases
+.SH SYNOPSIS
+.B git xrebase
+.RI [ options ]
+.SH DESCRIPTION
+.B git-xrebase
+preserves file timestamps during git rebases. When you perform a rebase operation,
+Git normally updates the timestamps of all files to the current time, which can cause
+problems with build systems that rely on file timestamps.
+.PP
+This command preserves the timestamps of files that haven't changed during the rebase.
+It works by:
+.IP \[bu] 2
+Saving timestamps of all files before the rebase operation
+.IP \[bu] 2
+Performing the Git rebase
+.IP \[bu] 2
+Restoring timestamps for any files whose content hasn't changed
+.SH OPTIONS
+All options are passed directly to git-rebase. See
+.BR git-rebase (1)
+for a complete list of options.
+.SH EXAMPLES
+.TP
+.B git xrebase -i HEAD~3
+Perform an interactive rebase on the last three commits while preserving timestamps.
+.TP
+.B git xrebase -i --autosquash
+Perform an interactive rebase with autosquash while preserving timestamps.
+.SH CONFIGURATION
+No special configuration is required. The script automatically handles macOS and Linux
+timestamp formats.
+.SH FILES
+Timestamps are temporarily stored in:
+.PP
+.RS
+$GIT_DIR/xrebase.dat
+.RE
+.PP
+This file is automatically removed after the operation completes successfully.
+.SH ENVIRONMENT
+.TP
+.B GIT_DIR
+Used to locate the Git repository data.
+.TP
+.B OSTYPE
+Used to determine timestamp format for macOS vs Linux.
+.SH SEE ALSO
+.BR git-rebase (1)
+.SH AUTHOR
+Created by Shriram V.
