@@ -27,7 +27,6 @@ filetype off                              "required for vundle
 call vundle#begin()                       "required for vundle
 Plugin 'VundleVim/Vundle.vim'
 
-EPlugin 'zirrostig/vim-schlepp'
 EPlugin 'airblade/vim-gitgutter'
 EPlugin 'webdevel/tabulous'
 EPlugin 'yegappan/taglist'
@@ -57,13 +56,9 @@ syntax on
 filetype plugin on
 filetype plugin indent on
 
-autocmd BufNewFile,BufRead *.cgi    setl filetype=perl
-autocmd BufNewFile,BufRead *.tt     setl filetype=html
 autocmd BufNewFile,BufRead *.strace setl filetype=strace
 autocmd BufNewFile,BufRead *.vim    setl filetype=vim
-autocmd BufNewFile,BufRead *.c,*.h,*.C,*.cc,*.cpp,*.hpp,*.cxx,*.hxx,*.hh,*.ipp  setl filetype=cpp
 autocmd BufNewFile,BufRead makefile*,Makefile*,*.mk  setl filetype=make
-autocmd BufNewFile,BufRead *.am     setl filetype=automake
 
 "Syntax & highlighting extensions
 highlight Comment        term=bold ctermfg=lightblue guifg=#8000ff gui=bold
@@ -83,7 +78,6 @@ highlight TabLineSel    ctermfg=Red        ctermbg=Blue   term=bold
 autocmd FileType cpp setl syntax=cpp11
 autocmd FileType cpp highlight Member term=bold ctermfg=white gui=bold
 autocmd FileType cpp syntax match Member /\<m_[_A-Za-z0-9]*\>/
-"autocmd FileType python compiler pylint
 autocmd FileType qf highlight! QuickFixLine guifg=#3333b0 guibg=#a0c0a0
 
 
@@ -151,9 +145,6 @@ set cmdheight=1
 
 " Shift width when you press << or >> to indent a line.
 set shiftwidth=4
-"autocmd FileType java setl shiftwidth=4
-"autocmd FileType python setl shiftwidth=4
-autocmd FileType vim setl shiftwidth=3
 
 " Text width to use. this is enabled with `:set formatoptions+=t`
 "set textwidth=100
@@ -195,26 +186,6 @@ autocmd FileType make setl noexpandtab
 
 " Number of spaces for a tab
 set tabstop=8
-autocmd FileType java setl tabstop=8
-
-"Error formats
-"autocmd FileType cpp  setl errorformat=#%m
-"autocmd FileType cpp  setl errorformat+=%f:%l:%c:\ %m,%f:%l:\ %m
-"autocmd FileType cpp  setl errorformat+=make:\ ***\ %m,In\ file\ included\ from\ %f:%l:
-"autocmd FileType cpp  setl errorformat+=%f:\ In[%*\\d]'%m':
-"autocmd FileType cpp  setl errorformat+=\^I\^Ifrom\ %f:%l%m
-"autocmd FileType cpp  setl errorformat+=%Dmake[%*\\d]:\ Entering\ directory\ `%f'
-"autocmd FileType cpp  setl errorformat+=%Xmake[%*\\d]:\ Leaving\ directory\ `%f'
-
-autocmd FileType java setl errorformat=##%m(%f:%l)
-autocmd FileType java setl errorformat+=#%m
-autocmd FileType java setl errorformat+=make:\ ***\ %m
-autocmd FileType java setl errorformat+=%A%f:%l:\ %msymbol\ ,
-autocmd FileType java setl errorformat+=%A%f:%l:\ %m
-autocmd FileType java setl errorformat+=%-Z%p^
-autocmd FileType java setl errorformat+=%Clocation%m
-autocmd FileType java setl errorformat+=%Csymbol\ %#%m
-autocmd FileType java setl errorformat+=%-G%.%#
 
 autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab indentkeys-=0# indentkeys-=<:>
 
@@ -266,9 +237,6 @@ set listchars=tab:>-,trail:-
 autocmd FileType git setl nolist
 autocmd FileType diff setl nolist
 
-" auto complete
-"autocmd FileType java setlocal omnifunc=javacomplete#Complete
-
 " man page support
 source $HOME/.vim/manual.vim
 
@@ -278,26 +246,14 @@ if exists("&mouse")
    set mousemodel=popup
 endif
 
-" (Internal)
-" Function to toggle the window size.
-let g:ScrTog=0
-function! ToggleScreenSize()
-   if g:ScrTog == 1
-      wincmd =
-      let g:ScrTog=0
-   else
-      vertical resize
-      resize
-      let g:ScrTog=1
-   endif
-endfunction
-
+let g:ErrTog=0
 function! QfixOpen()
    cclose
    top copen 5
    setl wrap
    normal gg
    call search('error:', 'cW')
+   let g:ErrTog=1
 endfunction
 
 command! -nargs=+ -complete=shellcmd QfixRun call QfixRun(<q-args>)
@@ -309,11 +265,9 @@ endfunction
 
 " (Internal)
 " Function to toggle the window size.
-let g:ErrTog=0
 function! ToggleQfix()
    if g:ErrTog == 0
       call QfixOpen()
-      let g:ErrTog=1
    else
       call QfixOpen()
       cclose
@@ -351,28 +305,12 @@ let g:explVertical=1 "split vertically the explorer Window
 "set guifont=Monospace\ Italic\ 11
 autocmd GUIEnter * set guifont=Monaco:h14 | colorscheme desert
 
-"F2 to Save file
-nmap <F2> :w<CR>
-imap <F2> <Esc>:w<CR><Esc>a
-
-"F4 to list files in the project with the word under the cursor
-map <F4>  :silent grep! -e <cword> *<CR>:call QfixOpen()<CR>:<BS><C-L>
-
-"Shift-F4 to list files in the project with the word under the cursor ignoring the case
-map <F4>i :silent grep! -e <cword> -i *<CR>:call QfixOpen()<CR>:<BS><C-L>
-
 "F5 to Stop highlighting words
 if exists('*Tlist_Get_Tagname_By_Line')
    map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:GitGutter<CR>:TlistUpdate<CR>:nohl<CR>
 else
    map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:GitGutter<CR>:nohl<CR>
 endif
-
-"F6 to switch window
-map <F6> <C-W>w<C-G>
-
-"Shift-F6 to toggle window size
-map <S-F6> :call ToggleScreenSize()<CR><C-G>
 
 "- to decrease the current window height
 map - <C-W>-
@@ -392,115 +330,6 @@ map <F8>   :cn<CR>m'z.`'
 "F7 to Go to previous error
 map <F7>   :cp<CR>m'z.`'
 
-"F11 to comment current line and go to next line
-map <F11> 0i#<Esc>j
-autocmd FileType vim  map <buffer> <F11> 0i"<Esc>j
-autocmd FileType cpp  map <buffer> <F11> 0i//<Esc>j
-autocmd FileType java map <buffer> <F11> 0i//<Esc>j
-
-function! HLWord()
-   if !exists("s:highlightword")
-      execute "syn match HL \"\\\<" .. expand("<cword>") .. "\\\>\""
-      "highlight HL term=bold,reverse cterm=bold,reverse ctermfg=4 ctermbg=7
-      highlight HL term=bold,reverse cterm=bold ctermfg=0 ctermbg=10 gui=bold guifg=bg guibg=LightGreen
-      let s:highlightword = 1
-      echo 's:highlightword=1'
-   else
-      syntax clear HL
-      unlet s:highlightword
-      echo 's:highlightword=0'
-   endif
-endfunction
-
-" Highlight all instances of word under cursor, when idle.
-" Useful when studying strange source code.
-function! AutoHighlightToggle()
-  let @/ = ''
-  if exists('#auto_highlight')
-    au! auto_highlight
-    augroup! auto_highlight
-    setl updatetime=4000
-    echo 'Auto highlight current word: off'
-    return 0
-  else
-    augroup auto_highlight
-      au!
-      au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
-    augroup end
-    setl updatetime=500
-    echo 'Auto highlight current word: ON'
-    return 1
-  endif
-endfunction
-
-function! StubBeautify()
-   echohl ErrorMsg | echo "Beautifier not configured..." | echohl None
-endfunction
-
-function! BeautifyUsingBcpp()
-   if executable('bcpp')
-      normal msHmt
-      undojoin | %!bcpp -bnl -s -tbnl -i 3 -na -ylcnc -cc 33 2>/dev/null
-      normal 'tzt`sa
-   else
-      call StubBeautify()
-   endif
-endfunction
-
-function! BeautifyUsingAstyle()
-   if executable('astyle')
-      normal msHmt
-      undojoin | %!astyle --style=allman --indent=spaces=3 --attach-extern-c --indent-switches --indent-namespaces --indent-classes --indent-preproc-define --indent-col1-comments --max-instatement-indent=40 --pad-oper --keep-one-line-blocks --convert-tabs --max-code-length=180 --lineend=linux --unpad-paren --align-pointer=type --align-reference=type 2>/dev/null | sed -e :a -e '/^\n*$/{$d;N;};/\n$/ba'
-      normal 'tzt`sa
-   else
-      call StubBeautify()
-   endif
-endfunction
-
-function! BeautifyUsingClangFormat()
-   if executable('clang-format')
-      normal msHmt
-      undojoin | %!clang-format -style="{
-         \AlignConsecutiveAssignments: 'true',
-         \AlignOperands: 'true',
-         \AlignAfterOpenBracket: Align,
-         \BasedOnStyle: WebKit,
-         \AlignTrailingComments: 'true',
-         \AllowAllArgumentsOnNextLine: 'false',
-         \AllowShortLambdasOnASingleLine: None,
-         \AlwaysBreakTemplateDeclarations: 'Yes',
-         \ConstructorInitializerAllOnOneLineOrOnePerLine: 'true',
-         \ConstructorInitializerIndentWidth: '2',
-         \KeepEmptyLinesAtTheStartOfBlocks: 'true',
-         \MaxEmptyLinesToKeep: '3',
-         \UseTab: Never
-         \}"
-      normal 'tzt`sa
-   else
-      call StubBeautify()
-   endif
-endfunction
-
-function! BeautifyXml()
-   if executable('xmllint')
-      normal msHmt
-      undojoin | %!xmllint --xmlout --format - 2>/dev/null
-      normal 'tzt`sa
-   else
-      call StubBeautify()
-   endif
-endfunction
-
-function! BeautifyPerl()
-   if executable('perltidy')
-      normal msHmt
-      undojoin | %!perltidy -i=3 -nt -fnl -anl -bl -l=250 -bbs -bbc -bbb -mbl=2
-      normal 'tzt`sa
-   else
-      call StubBeautify()
-   endif
-endfunction
-
 function! ToggleSwitchBuffer()
    if index(split(&switchbuf, ','), "split") == -1
       set switchbuf+=split
@@ -513,15 +342,6 @@ endfunction
 "diffopt iwhite handling
 if has('mac') && $VIM == '/usr/share/vim' | set diffopt-=internal | endif | set diffopt-=iwhite
 
-function! ToggleSwitchDiffIWhite()
-   if index(split(&diffopt, ','), "iwhite") == -1
-      set diffopt+=iwhite
-   else
-      set diffopt-=iwhite
-   endif
-   echo 'diffopt ='&diffopt
-endfunction
-
 " Display git-show for hash under cursor in a new window
 function! OpenGitShow(What)
    execute "vert new | 0r ! " .. expandcmd("git show '" .. a:What .. "' --")
@@ -532,10 +352,6 @@ endfunction
 
 " Quick Display help for F12-<?> key strokes suppored
 function! F12Help()
-   echo "b   - beautify action\n"
-   echo "b1  - beautify action for cpp (using clang)\n"
-   echo "b2  - beautify action for cpp (using astyle)\n"
-   echo "b3  - beautify action for cpp (using bcpp)\n"
    echo "F12 - show F12 help\n"
    echo "h   - toggle wordhighlight\n"
    echo "i   - toggle paste\n"
@@ -545,9 +361,6 @@ function! F12Help()
    echo "g   - toggle GitGutterSignsToggle\n"
    echo "u   - toggle GitGutterLineHighlights\n"
    echo "s   - toggle switchbuf\n"
-   echo "/   - toggle autohighlight\n"
-   echo "c   - toggle diff iwhite\n"
-   echo "t   - toggle show code listing\n"
    echo "d   - display git-show for hash under cursor\n"
 endfunction
 
@@ -586,27 +399,12 @@ map <F12><F12> :call F12Help()<CR>
 map <F12>n :setl number!<CR>:echo 'number ='&number<CR>
 map <F12>i :setl paste!<CR>:echo 'paste ='&paste<CR>
 map <F12>l :setl list!<CR>:echo 'list ='&list<CR>
-map <F12>c :call ToggleSwitchDiffIWhite()<CR>
 map <F12>s :call ToggleSwitchBuffer()<CR>
 map <F12>q :call ToggleQfix()<CR>:<BS><C-L>
 map <F12>g :GitGutterSignsToggle<CR>
 map <F12>u :GitGutterLineHighlightsToggle<CR>
-map <F12>t :TlistToggle<CR>
-map <F12>h :call HLWord()<CR>
-map <F12>/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
-map <F12>b :call StubBeautify()<CR>
 map <F12>d :call OpenGitShow("<cword>")<CR>
 map <F12>D :call OpenGitShow("origin/main:<cfile>")
-autocmd FileType cpp      map <buffer> <F12>b  :call BeautifyUsingClangFormat()<CR>
-autocmd FileType cpp      map <buffer> <F12>b1 :call BeautifyUsingClangFormat()<CR>
-autocmd FileType cpp      map <buffer> <F12>b2 :call BeautifyUsingAstyle()<CR>
-autocmd FileType cpp      map <buffer> <F12>b3 :call BeautifyUsingBcpp()<CR>
-autocmd FileType java     map <buffer> <F12>b  :call BeautifyUsingAstyle()<CR>
-autocmd FileType perl     map <buffer> <F12>b  :call BeautifyPerl()<CR>
-autocmd FileType xml,ant  map <buffer> <F12>b  :call BeautifyXml()<CR>
-
-"imap <TAB> <C-P>
-"autocmd FileType make unmap <TAB>
 
 " Only set Taglist configurations if the function exists
 if exists('*Tlist_Get_Tagname_By_Line')
@@ -624,14 +422,6 @@ autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | execute "
 
 " Enable virtualedit for visualblock
 set virtualedit=block
-vmap k  <Plug>SchleppUp
-vmap j  <Plug>SchleppDown
-vmap h  <Plug>SchleppLeft
-vmap l  <Plug>SchleppRight
-vmap Dk <Plug>SchleppDupLeft
-vmap Dj <Plug>SchleppDupDown
-vmap Dh <Plug>SchleppDupLeft
-vmap Dl <Plug>SchleppDupRight
 
 " Ignore some paths
 set wildignore+=**/Debug/**
