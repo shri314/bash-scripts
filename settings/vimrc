@@ -4,10 +4,10 @@
 " Email    : shri314@yahoo.com
 "
 " use Vim defaults be used for options that have a different Vi and Vim default value.
+" vim: set shiftwidth=3:
 set nocompatible
 
 "To get or keep plugins updated, please run ':VundleUpdate' on the vim command prompt regularly
-
 function! PluginEIf(uri)
    let l:status_all = eval("$VundlePlugin__all")
    let l:status_plu = eval("$VundlePlugin__" .. substitute(a:uri, "[-/.]", "_", "g"))
@@ -29,41 +29,16 @@ Plugin 'VundleVim/Vundle.vim'
 
 EPlugin 'airblade/vim-gitgutter'
 EPlugin 'webdevel/tabulous'
-EPlugin 'yegappan/taglist'
 EPlugin 'shri314/vim-git-conflict-inspector'
 EPlugin 'junegunn/fzf'
 call vundle#end()                         "required for vundle
 filetype plugin indent on                 "required for vundle
 
-" Add the git conflict inspector configuration here:
-let g:git_conflict_inspector_use_leader = 0  " Use '?' prefix instead of <Leader>
-
-if $ENV_BACKGROUND == "dark"
-   set background=dark
-elseif $ENV_BACKGROUND == "light"
-   set background=light
-else
-   "set background=dark
-   "set background=light
-endif
-
-set visualbell
-
-" Turn on syntax highlighting
-syntax on
-
 " Enable loading the plugin files for specific file types
 filetype plugin on
 filetype plugin indent on
 
-autocmd BufNewFile,BufRead *.strace setl filetype=strace
-autocmd BufNewFile,BufRead *.vim    setl filetype=vim
-autocmd BufNewFile,BufRead makefile*,Makefile*,*.mk  setl filetype=make
-
-"Syntax & highlighting extensions
-highlight Comment        term=bold ctermfg=lightblue guifg=#8000ff gui=bold
-highlight StatusLine     ctermfg=lightblue ctermbg=white
-highlight StatusLineNC   ctermfg=gray      ctermbg=black
+runtime! ftplugin/man.vim
 
 "Tabs:
 "disables tabulour disables the plugin entirely.
@@ -75,176 +50,76 @@ highlight TabLineFill   ctermfg=Yellow     ctermbg=Grey
 highlight TabLine       ctermfg=Blue       ctermbg=Black
 highlight TabLineSel    ctermfg=Red        ctermbg=Blue   term=bold
 
-autocmd FileType cpp setl syntax=cpp11
-autocmd FileType cpp highlight Member term=bold ctermfg=white gui=bold
-autocmd FileType cpp syntax match Member /\<m_[_A-Za-z0-9]*\>/
-autocmd FileType qf highlight! QuickFixLine guifg=#3333b0 guibg=#a0c0a0
+"Syntax & highlighting extensions
+highlight Comment        ctermfg=lightblue guifg=#8000ff gui=bold term=bold
+highlight StatusLine     ctermfg=lightblue ctermbg=white
+highlight StatusLineNC   ctermfg=gray      ctermbg=black
 
-
-" FOLD CONFIG
-if exists("&fdm")
-   set fdm=marker
-   set fmr={,}
-   set nofen
-endif
-
-" Ignore case in text search patterns
+set visualbell
 set ignorecase
-
-" Don't ignore case in file search patterns
 set nofileignorecase
-
-" Don't ignore case in file search completion
 set nowildignorecase
-
-" Incremental Search
 set incsearch
-
-" Highlight search
 set hlsearch
-
-" Show ruler
 set ruler
-
-" Set the shell to use
-if has("win32")
-   if executable('bash.exe')
-      set shell=bash.exe
-   else
-      set shell=cmd.exe
-   endif
-else
-   set shell=bash
-endif
-
-" Show brace matching as you edit
-set showmatch
-
-set matchpairs+=<:>
-"set matchpairs+==:;
-
-" Don't consider : as part of words
-set iskeyword-=:
-autocmd FileType make setl iskeyword-=:
-autocmd FileType perl setl iskeyword-=:
-
-" Show working mode
 set showmode
-
-" Show the command
 set showcmd
-
-" Number of screen lines to use for the command-line
+set showmatch
+set matchpairs+=<:>
+set iskeyword-=:
 set cmdheight=1
-
-" Number of screen lines to use for the command-line
-"set winminwidth=0
-
-" Number of screen lines to use for the command-line
-"set winminheight=0
-
-" Shift width when you press << or >> to indent a line.
-set shiftwidth=4
-
-" Text width to use. this is enabled with `:set formatoptions+=t`
 "set textwidth=100
-
-" Number of spaces for a tab only for editing purpose
 set softtabstop=-1
-
-" Set Shift rounding off
-set shiftround
-
-" Patten matching
-set magic
-
-" Switch buffer to edit a new file, and use open file if it already open
-set switchbuf=useopen,split
-"set switchbuf=useopen
-
-" Make program to use
-if $ENV_MAKE_PRG != ""
-   set makeprg=$ENV_MAKE_PRG
-else
-   set makeprg=make\ -s\ -w\ $*
-endif
-
-" Grep program to use
-set grepprg=git\ grep\ -HIn\ $*
-
-" working directory settings
-"set autochdir
-
-" Changes how backspace works.
-set bs=eol,indent,start
-"set bs=start
-
-" Expand Tab
-set expandtab
-"set noexpandtab
-autocmd FileType make setl noexpandtab
-
-" Number of spaces for a tab
 set tabstop=8
-
-autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab indentkeys-=0# indentkeys-=<:>
-
-" lines longer than the width of the window will not wrap
-set nowrap
-
-" Searches does not wrap around the end of the file
-set nowrapscan
-
-" prevent automatic wrap folding while typing beyond 'margin'. I hate it
-set formatoptions-=t
-
-"Not always equal
-set noequalalways
-
-if $TEMP != ""
-   " Directory for backup files
-   set backupdir=$TEMP
-
-   " Directory for swap files
-   set directory=$TEMP
-endif
-
-" warn when a shell command is used while the buffer has changed
-set warn
-
-" Does not allows writing to any file with no need for "!" override
-set nowriteany
-
-" viminfo settings
-set viminfo='1000,f1,<500,:500,@50,/100,h
-
-" Set indent
+set shiftwidth=4
+set shiftround
+set magic
+set switchbuf=useopen,split
+set bs=eol,indent,start
+set expandtab
 set smartindent
 set autoindent
-autocmd FileType cpp  set cindent
-
-" Set cryptmethod
-if !has('nvim')
-   set cryptmethod=blowfish
-endif
-
-if has("win32")
-   autocmd BufNewFile,GUIEnter * simalt~x
-endif
-
+set nowrap
+set nowrapscan
+set formatoptions-=t
+set noequalalways
+set warn
+set nowriteany
 set list
 set listchars=tab:>-,trail:-
-autocmd FileType git setl nolist
+set virtualedit=block
+set laststatus=2
+set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+set viminfo='1000,f1,<500,:500,@50,/100,h
+"set scrolloff=5
+
+set path=,,.,..,../../,./include,../include,./src,../src,/usr/local/include,/usr/include/g++-3,/usr/include,$ENV_SEARCH_PATH
+
+if $TEMP | set backupdir=$TEMP | endif
+if $TEMP | set directory=$TEMP | endif
+
+if exists("&fdm") | set fdm=marker | endif
+if exists("&fdm") | set fmr={,} | endif
+if exists("&fdm") | set nofen | endif
+
+if exists("&mouse") | set mousemodel=popup | endif
+if !has('nvim') | set cryptmethod=blowfish | endif
+
+if has("win32") | if executable('bash.exe') | set shell=bash.exe | else | set shell=cmd.exe | endif | else | set shell=bash | endif
+if has('mac') && $VIM == '/usr/share/vim' | set diffopt-=internal | endif | set diffopt-=iwhite
+
+autocmd FileType cpp  setl cindent
+autocmd FileType cpp  setl syntax=cpp11
+autocmd FileType cpp  highlight Member term=bold ctermfg=white gui=bold
+autocmd FileType cpp  syntax match Member /\<m_[_A-Za-z0-9]*\>/
+autocmd FileType qf   highlight! QuickFixLine guifg=#3333b0 guibg=#a0c0a0
+autocmd FileType perl setl iskeyword-=:
+autocmd FileType make setl iskeyword-=:
+autocmd FileType make setl noexpandtab
+autocmd FileType yaml setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab indentkeys-=0# indentkeys-=<:>
+autocmd FileType git  setl nolist
 autocmd FileType diff setl nolist
-
-" man page support
-source $HOME/.vim/manual.vim
-
-" mouse settings
-if exists("&mouse")
-   "set mouse=a
-   set mousemodel=popup
-endif
+autocmd FileType man  setl nolist
 
 let g:ErrTog=0
 function! QfixOpen()
@@ -256,15 +131,13 @@ function! QfixOpen()
    let g:ErrTog=1
 endfunction
 
-command! -nargs=+ -complete=shellcmd QfixRun call QfixRun(<q-args>)
-
 function! QfixRun(cmd)
    cexpr system(a:cmd)
    call QfixOpen()
 endfunction
 
-" (Internal)
-" Function to toggle the window size.
+command! -nargs=+ -complete=shellcmd QfixRun call QfixRun(<q-args>)
+
 function! ToggleQfix()
    if g:ErrTog == 0
       call QfixOpen()
@@ -274,6 +147,9 @@ function! ToggleQfix()
       let g:ErrTog=0
    endif
 endfunction
+
+" Add the git conflict inspector configuration here:
+let g:git_conflict_inspector_use_leader = 0  " Use '?' prefix instead of <Leader>
 
 "no limit to number of diffs in the gutter
 let g:gitgutter_max_signs = -1
@@ -290,45 +166,10 @@ function! ToggleGutter()
    echo 'signcolumn ='&signcolumn
 endfunction
 
-" Search path for opening files.
-if $ENV_SEARCH_PATH != ""
-   set path=$ENV_SEARCH_PATH
-else
-   set path=,,.,..,../../,./include,../include,./src,../src,/usr/local/include,/usr/include/g++-3,/usr/include
-endif
-
 let g:netrw_browse_split=3 "split file open in netrw in a new tab
 
 let g:explVertical=1 "split vertically the explorer Window
 
-"set guifont=Monospace\ Regular\ 11
-"set guifont=Monospace\ Italic\ 11
-autocmd GUIEnter * set guifont=Monaco:h14 | colorscheme desert
-
-"F5 to Stop highlighting words
-if exists('*Tlist_Get_Tagname_By_Line')
-   map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:GitGutter<CR>:TlistUpdate<CR>:nohl<CR>
-else
-   map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:GitGutter<CR>:nohl<CR>
-endif
-
-"- to decrease the current window height
-map - <C-W>-
-
-"= to increase the current window height
-map = <C-W>+
-
-"_ to decrease the current window width
-map _ <C-W><
-
-"+ to increase the current window width
-map + <C-W>>
-
-"F8 to Go to next error
-map <F8>   :cn<CR>m'z.`'
-
-"F7 to Go to previous error
-map <F7>   :cp<CR>m'z.`'
 
 function! ToggleSwitchBuffer()
    if index(split(&switchbuf, ','), "split") == -1
@@ -339,8 +180,6 @@ function! ToggleSwitchBuffer()
    echo 'switchbuf ='&switchbuf
 endfunction
 
-"diffopt iwhite handling
-if has('mac') && $VIM == '/usr/share/vim' | set diffopt-=internal | endif | set diffopt-=iwhite
 
 " Display git-show for hash under cursor in a new window
 function! OpenGitShow(What)
@@ -364,19 +203,6 @@ function! F12Help()
    echo "d   - display git-show for hash under cursor\n"
 endfunction
 
-" Interesting customizations
-" use qa to close all windows individually with q
-"cnoremap qa windo q
-cnoreabbrev <expr> qa getcmdtype() == ":" && getcmdline() == 'qa' ? 'windo q' : 'qa'
-
-" use xa to save and close all windows individually with x
-cnoreabbrev <expr> xa getcmdtype() == ":" && getcmdline() == 'xa' ? 'windo x' : 'xa'
-
-" always keep the next word to be found at the center of the screen
-"set scrolloff=5
-nmap n nzz
-nmap N Nzz
-
 function! EnhanceMapping(mode_cmd, mapping, enhancement)
     let current = maparg(a:mapping, 'n', 0, 1)
     if !empty(current)
@@ -385,14 +211,39 @@ function! EnhanceMapping(mode_cmd, mapping, enhancement)
 endfunction
 
 augroup EnhanceMappings
-    autocmd!
-    autocmd VimEnter * call EnhanceMapping('nmap', ']c', 'zz')
-    autocmd VimEnter * call EnhanceMapping('nmap', '[c', 'zz')
+   autocmd!
+   autocmd VimEnter * call EnhanceMapping('nmap', ']c', 'zz')
+   autocmd VimEnter * call EnhanceMapping('nmap', '[c', 'zz')
 augroup END
+
+augroup RestoreCursorPos
+   autocmd!
+   autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | execute "normal g'\"" | endif
+augroup END
+
+" use qa to close all windows individually with q
+cnoreabbrev <expr> qa getcmdtype() == ":" && getcmdline() == 'qa' ? 'windo q' : 'qa'
+
+" use xa to save and close all windows individually with x
+cnoreabbrev <expr> xa getcmdtype() == ":" && getcmdline() == 'xa' ? 'windo x' : 'xa'
+
+" always keep the next word to be found at the center of the screen
+nmap n nzz
+nmap N Nzz
 
 "https://stackoverflow.com/questions/23695727/vim-highlight-a-word-with-without-moving-cursor
 nnoremap * *``
 nnoremap # #``
+
+" Window size
+map - <C-W>-
+map = <C-W>+
+map _ <C-W><
+map + <C-W>>
+
+map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:GitGutter<CR>:nohl<CR>
+map <F8>   :cn<CR>m'z.`'
+map <F7>   :cp<CR>m'z.`'
 
 "F12<key> to apply special properties
 map <F12><F12> :call F12Help()<CR>
@@ -405,34 +256,6 @@ map <F12>g :GitGutterSignsToggle<CR>
 map <F12>u :GitGutterLineHighlightsToggle<CR>
 map <F12>d :call OpenGitShow("<cword>")<CR>
 map <F12>D :call OpenGitShow("origin/main:<cfile>")
-
-" Only set Taglist configurations if the function exists
-if exists('*Tlist_Get_Tagname_By_Line')
-   let Tlist_Process_File_Always = 1
-   set statusline=%<%f\ %h%m%r%([%{Tlist_Get_Tagname_By_Line()}]%)%=%-14.(%l,%c%V%)\ %P
-else
-    " Fallback statusline without Taglist function
-    set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-endif
-
-" Always show status line
-set laststatus=2
-
-autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | execute "normal g'\"" | endif
-
-" Enable virtualedit for visualblock
-set virtualedit=block
-
-" Ignore some paths
-set wildignore+=**/Debug/**
-set wildignore+=**/Build/**
-set wildignore+=**/build/**
-set wildignore+=**/temp/**
-set wildignore+=**/libs/**
-
-if filereadable(expand('~/.vimrc.custom'))
-   source ~/.vimrc.custom
-endif
 
 function! DeleteEmptyBuffers()
    let [l:i, l:n; l:empty] = [1, bufnr('$')]
@@ -459,7 +282,7 @@ function! DiffInNewTab(file1, ...)
    tabdo call DeleteEmptyBuffers()
 endfunction
 
-command! -nargs=* DiffInNewTab call DiffInNewTab(<f-args>)
+command! -nargs=+ -complete=file DiffInNewTab call DiffInNewTab(<f-args>)
 
 function! TmuxSwitchPane(direction)
    if a:direction == "h"
@@ -497,9 +320,6 @@ nmap <silent> <C-w>k       :call TmuxSwitchPane("k")<CR>
 nmap <silent> <C-w>l       :call TmuxSwitchPane("l")<CR>
 
 function! Both()
-"      let l:left_name = bufname(winbufnr(winnr("1h")))
-"      let l:right_name = bufname(winbufnr(winnr("1l")))
-
    if expand('%:e') == 'hpp'
       let l:cur_winid = win_getid(winnr())
       let l:old_splitright = &splitright
@@ -525,6 +345,19 @@ endfunction
 
 command! -nargs=0 Both call Both(<f-args>)
 
-" Weird gvim workaround to restore background to background
-execute 'set background=' .. &background
-" vim: set shiftwidth=3:
+if filereadable(expand('~/.vimrc.custom'))
+   source ~/.vimrc.custom
+endif
+
+if has("gui_running")
+   "set guifont=Monospace\ Regular\ 11
+   "set guifont=Monospace\ Italic\ 11
+   autocmd GUIEnter * set guifont=Monaco:h14 | colorscheme desert
+   if has("win32")
+      autocmd BufNewFile,GUIEnter * simalt~x
+   endif
+endif
+
+if $ENV_BACKGROUND | set background=$ENV_BACKGROUND | endif
+
+syntax on
