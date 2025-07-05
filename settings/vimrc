@@ -1,60 +1,20 @@
-" .vimrc file
+"----------------------------------------
+" The .vimrc file
 "
-" Author   : Shriram V
-" Email    : shri314@yahoo.com
-"
-" use Vim defaults be used for options that have a different Vi and Vim default value.
-" vim: set shiftwidth=3:
+" Author : Shriram V
+" Email  : shri314@yahoo.com
+"----------------------------------------
+
 set nocompatible
 
-"To get or keep plugins updated, please run ':VundleUpdate' on the vim command prompt regularly
-function! PluginEIf(uri)
-   let l:status_all = eval("$VundlePlugin__all")
-   let l:status_plu = eval("$VundlePlugin__" .. substitute(a:uri, "[-/.]", "_", "g"))
-   if l:status_all != "0" || l:status_plu != "0"
-      "echo "Y Plugin a:uri" .. l:status_plu
-      Plugin a:uri
-   else
-      "echo "N Plugin a:uri" .. l:status_plu
-   endif
-endfunction
+"----------------------------------------
+" Load all plugins
+"----------------------------------------
+source ~/.vim/custom/plugins.vim
 
-command! -nargs=1 EPlugin call PluginEIf(<args>)
-
-"vundle setup
-set runtimepath+=~/.vim/bundle/Vundle.vim "required for vundle
-filetype off                              "required for vundle
-call vundle#begin()                       "required for vundle
-Plugin 'VundleVim/Vundle.vim'
-
-EPlugin 'airblade/vim-gitgutter'
-EPlugin 'webdevel/tabulous'
-EPlugin 'shri314/vim-git-conflict-inspector'
-EPlugin 'junegunn/fzf'
-call vundle#end()                         "required for vundle
-filetype plugin indent on                 "required for vundle
-
-" Enable loading the plugin files for specific file types
-filetype plugin on
-filetype plugin indent on
-
-runtime! ftplugin/man.vim
-
-"Tabs:
-"disables tabulour disables the plugin entirely.
-"let g:loadTabulous = 1
-let tabulousLabelLeftStr  = '_/     '
-let tabulousLabelRightStr = '     \_'
-
-highlight TabLineFill   ctermfg=Yellow     ctermbg=Grey
-highlight TabLine       ctermfg=Blue       ctermbg=Black
-highlight TabLineSel    ctermfg=Red        ctermbg=Blue   term=bold
-
-"Syntax & highlighting extensions
-highlight Comment        ctermfg=lightblue guifg=#8000ff gui=bold term=bold
-highlight StatusLine     ctermfg=lightblue ctermbg=white
-highlight StatusLineNC   ctermfg=gray      ctermbg=black
-
+"----------------------------------------
+" General Custimizations
+"----------------------------------------
 set visualbell
 set ignorecase
 set nofileignorecase
@@ -92,22 +52,93 @@ set laststatus=2
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set viminfo='1000,f1,<500,:500,@50,/100,h
 "set scrolloff=5
+set diffopt-=iwhite
 
-set path=,,.,..,../../,./include,../include,./src,../src,/usr/local/include,/usr/include/g++-3,/usr/include,$ENV_SEARCH_PATH
+set path=,,
+set path+=.
+set path+=..
+set path+=../../
+set path+=./include
+set path+=../include
+set path+=./src
+set path+=../src
+set path+=/usr/local/include
+set path+=/usr/include/g++-3
+set path+=/usr/include
+set path+=$ENV_SEARCH_PATH
 
-if $TEMP | set backupdir=$TEMP | endif
-if $TEMP | set directory=$TEMP | endif
+if $TEMP != ""
+   set backupdir=$TEMP//
+   set directory=$TEMP//
+endif
 
-if exists("&fdm") | set fdm=marker | endif
-if exists("&fdm") | set fmr={,} | endif
-if exists("&fdm") | set nofen | endif
+if exists("&fdm")
+   set fdm=marker
+   set fmr={,}
+   set nofen
+endif
 
-if exists("&mouse") | set mousemodel=popup | endif
-if !has('nvim') | set cryptmethod=blowfish | endif
+if exists("&mouse")
+   set mousemodel=popup
+endif
 
-if has("win32") | if executable('bash.exe') | set shell=bash.exe | else | set shell=cmd.exe | endif | else | set shell=bash | endif
-if has('mac') && $VIM == '/usr/share/vim' | set diffopt-=internal | endif | set diffopt-=iwhite
+if !has('nvim')
+   set cryptmethod=blowfish
+endif
 
+if has("win32")
+   if executable('bash.exe')
+      set shell=bash.exe
+   else
+      set shell=cmd.exe
+   endif
+else
+   set shell=bash
+endif
+
+if has('mac') && $VIM == '/usr/share/vim'
+   set diffopt-=internal
+endif
+
+if has("gui_running")
+   "set guifont=Monospace\ Regular\ 11
+   "set guifont=Monospace\ Italic\ 11
+   autocmd GUIEnter * set guifont=Monaco:h14 | colorscheme desert
+   if has("win32")
+      autocmd BufNewFile,GUIEnter * simalt~x
+   endif
+endif
+
+"----------------------------------------
+" Plugin Customizations
+"----------------------------------------
+
+let g:git_conflict_inspector_use_leader = 0  " Use '?' prefix instead of <Leader>
+let g:gitgutter_max_signs = -1               " No limit to number of diffs in the gutter
+let g:gitgutter_show_msg_on_hunk_jumping = 1
+
+"let g:loadTabulous = 1
+let g:tabulousLabelLeftStr  = '_/     '
+let g:tabulousLabelRightStr = '     \_'
+
+let g:netrw_browse_split=3
+let g:explVertical=1
+
+"----------------------------------------
+" Syntax & highlighting extensions
+"----------------------------------------
+
+highlight TabLineFill   ctermfg=Yellow     ctermbg=Grey
+highlight TabLine       ctermfg=Blue       ctermbg=Black
+highlight TabLineSel    ctermfg=Red        ctermbg=Blue   term=bold
+
+highlight Comment        ctermfg=lightblue guifg=#8000ff gui=bold term=bold
+highlight StatusLine     ctermfg=lightblue ctermbg=white
+highlight StatusLineNC   ctermfg=gray      ctermbg=black
+
+"----------------------------------------
+" Settings overrides for filetype
+"----------------------------------------
 autocmd FileType cpp  setl cindent
 autocmd FileType cpp  setl syntax=cpp11
 autocmd FileType cpp  highlight Member term=bold ctermfg=white gui=bold
@@ -121,57 +152,23 @@ autocmd FileType git  setl nolist
 autocmd FileType diff setl nolist
 autocmd FileType man  setl nolist
 
-let g:ErrTog=0
-function! QfixOpen()
-   cclose
-   top copen 5
-   setl wrap
-   normal gg
-   call search('error:', 'cW')
-   let g:ErrTog=1
-endfunction
+"------------------------------------------
+" Custom Functionality
+"------------------------------------------
+source ~/.vim/custom/qfix.vim
+source ~/.vim/custom/tmux.vim
+source ~/.vim/custom/diff-in-tab.vim
+source ~/.vim/custom/both-open.vim
+source ~/.vim/custom/git-show.vim
 
-function! QfixRun(cmd)
-   cexpr system(a:cmd)
-   call QfixOpen()
-endfunction
+if filereadable(expand('~/.vimrc.custom'))
+   source ~/.vimrc.custom
+endif
 
-command! -nargs=+ -complete=shellcmd QfixRun call QfixRun(<q-args>)
-
-function! ToggleQfix()
-   if g:ErrTog == 0
-      call QfixOpen()
-   else
-      call QfixOpen()
-      cclose
-      let g:ErrTog=0
-   endif
-endfunction
-
-" Add the git conflict inspector configuration here:
-let g:git_conflict_inspector_use_leader = 0  " Use '?' prefix instead of <Leader>
-
-"no limit to number of diffs in the gutter
-let g:gitgutter_max_signs = -1
-let g:gitgutter_show_msg_on_hunk_jumping = 1
-
-" (Internal)
-" Function to toggle the gutter
-function! ToggleGutter()
-   if index(split(&signcolumn, ','), "no") == -1
-      set signcolumn=no
-   else
-      set signcolumn=auto
-   endif
-   echo 'signcolumn ='&signcolumn
-endfunction
-
-let g:netrw_browse_split=3 "split file open in netrw in a new tab
-
-let g:explVertical=1 "split vertically the explorer Window
-
-
-function! ToggleSwitchBuffer()
+"----------------------------------------
+" Custom Mappings
+"----------------------------------------
+function! s:ToggleSwitchBuffer()
    if index(split(&switchbuf, ','), "split") == -1
       set switchbuf+=split
    else
@@ -180,17 +177,10 @@ function! ToggleSwitchBuffer()
    echo 'switchbuf ='&switchbuf
 endfunction
 
-
-" Display git-show for hash under cursor in a new window
-function! OpenGitShow(What)
-   execute "vert new | 0r ! " .. expandcmd("git show '" .. a:What .. "' --")
-   setl filetype=git
-   setl nolist
-   setl buftype=nofile noswapfile nomodifiable
-endfunction
+command! -nargs=0 ToggleSwitchBuffer call s:ToggleSwitchBuffer()
 
 " Quick Display help for F12-<?> key strokes suppored
-function! F12Help()
+function! s:F12Help()
    echo "F12 - show F12 help\n"
    echo "h   - toggle wordhighlight\n"
    echo "i   - toggle paste\n"
@@ -203,17 +193,17 @@ function! F12Help()
    echo "d   - display git-show for hash under cursor\n"
 endfunction
 
-function! EnhanceMapping(mode_cmd, mapping, enhancement)
-    let current = maparg(a:mapping, 'n', 0, 1)
-    if !empty(current)
-        execute a:mode_cmd . ' <buffer> ' . a:mapping . ' ' . current.rhs . a:enhancement
-    endif
+function! s:EnhanceMapping(mode_cmd, mapping, enhancement)
+   let current = maparg(a:mapping, 'n', 0, 1)
+   if !empty(current)
+      execute a:mode_cmd . ' <buffer> ' . a:mapping . ' ' . current.rhs . a:enhancement
+   endif
 endfunction
 
 augroup EnhanceMappings
    autocmd!
-   autocmd VimEnter * call EnhanceMapping('nmap', ']c', 'zz')
-   autocmd VimEnter * call EnhanceMapping('nmap', '[c', 'zz')
+   autocmd VimEnter * call s:EnhanceMapping('nmap', ']c', 'zz')
+   autocmd VimEnter * call s:EnhanceMapping('nmap', '[c', 'zz')
 augroup END
 
 augroup RestoreCursorPos
@@ -246,118 +236,24 @@ map <F8>   :cn<CR>m'z.`'
 map <F7>   :cp<CR>m'z.`'
 
 "F12<key> to apply special properties
-map <F12><F12> :call F12Help()<CR>
+map <F12><F12> :call <SID>F12Help()<CR>
 map <F12>n :setl number!<CR>:echo 'number ='&number<CR>
 map <F12>i :setl paste!<CR>:echo 'paste ='&paste<CR>
 map <F12>l :setl list!<CR>:echo 'list ='&list<CR>
-map <F12>s :call ToggleSwitchBuffer()<CR>
-map <F12>q :call ToggleQfix()<CR>:<BS><C-L>
+map <F12>s :ToggleSwitchBuffer<CR>
+map <F12>q :QfixToggle<CR>:<BS><C-L>
 map <F12>g :GitGutterSignsToggle<CR>
 map <F12>u :GitGutterLineHighlightsToggle<CR>
-map <F12>d :call OpenGitShow("<cword>")<CR>
-map <F12>D :call OpenGitShow("origin/main:<cfile>")
+map <F12>d :OpenGitShow <cword><CR>
+map <F12>D :OpenGitShow origin/main:<cfile>
 
-function! DeleteEmptyBuffers()
-   let [l:i, l:n; l:empty] = [1, bufnr('$')]
-   while l:i <= l:n
-      if bufexists(l:i) && bufname(l:i) == ''
-         call add(l:empty, l:i)
-      endif
-      let l:i += 1
-   endwhile
-
-   if len(l:empty) > 0
-      silent! execute 'bdelete' join(l:empty)
-   endif
-endfunction
-
-function! DiffInNewTab(file1, ...)
-   let l:cmd = 'tabnew ' .. a:file1
-   let l:sep = '|vert botright diffsp '
-   for l:file in a:000
-      let l:cmd ..= l:sep .. l:file
-   endfor
-   execute l:cmd
-   wincmd =
-   tabdo call DeleteEmptyBuffers()
-endfunction
-
-command! -nargs=+ -complete=file DiffInNewTab call DiffInNewTab(<f-args>)
-
-function! TmuxSwitchPane(direction)
-   if a:direction == "h"
-      let l:tmux_cmd = 'if-shell "test #{pane_at_left}   -eq 0" "select-pane -L"'
-   elseif a:direction == "j"
-      let l:tmux_cmd = 'if-shell "test #{pane_at_bottom} -eq 0" "select-pane -D"'
-   elseif a:direction == "k"
-      let l:tmux_cmd = 'if-shell "test #{pane_at_top}    -eq 0" "select-pane -U"'
-   elseif a:direction == "l"
-      let l:tmux_cmd = 'if-shell "test #{pane_at_right}  -eq 0" "select-pane -R"'
-   else
-      return
-   endif
-
-   if winnr("1" .. a:direction) == winnr()
-      if $TMUX != "" && !has("gui_running")
-         if trim(system("tmux display-message -p '#{window_zoomed_flag}'")) == "0"
-            silent call system("tmux " .. l:tmux_cmd)
-         endif
-      endif
-   else
-      call win_gotoid(win_getid(winnr("1" .. a:direction)))
-   endif
-endfunction
-
-"TMUX-VIM Integration:
-"Make default vim window navigation keys work seemlessly across tmux
-nmap <silent> <C-w><Left>  :call TmuxSwitchPane("h")<CR>
-nmap <silent> <C-w><Down>  :call TmuxSwitchPane("j")<CR>
-nmap <silent> <C-w><Up>    :call TmuxSwitchPane("k")<CR>
-nmap <silent> <C-w><Right> :call TmuxSwitchPane("l")<CR>
-nmap <silent> <C-w>h       :call TmuxSwitchPane("h")<CR>
-nmap <silent> <C-w>j       :call TmuxSwitchPane("j")<CR>
-nmap <silent> <C-w>k       :call TmuxSwitchPane("k")<CR>
-nmap <silent> <C-w>l       :call TmuxSwitchPane("l")<CR>
-
-function! Both()
-   if expand('%:e') == 'hpp'
-      let l:cur_winid = win_getid(winnr())
-      let l:old_splitright = &splitright
-      try
-         let &splitright = 1
-         vsp %:r.cpp
-      finally
-         let &splitright = l:old_splitright
-         call win_gotoid(l:cur_winid)
-      endtry
-   elseif expand('%:e') == 'cpp'
-      let l:cur_winid = win_getid(winnr())
-      let l:old_splitright = &splitright
-      try
-         let &splitright = 0
-         vsp %:r.hpp
-      finally
-         let &splitright = l:old_splitright
-         call win_gotoid(l:cur_winid)
-      endtry
-   endif
-endfunction
-
-command! -nargs=0 Both call Both(<f-args>)
-
-if filereadable(expand('~/.vimrc.custom'))
-   source ~/.vimrc.custom
+"----------------------------------------
+" Last things
+"----------------------------------------
+if $ENV_BACKGROUND != ""
+   set background=$ENV_BACKGROUND
 endif
-
-if has("gui_running")
-   "set guifont=Monospace\ Regular\ 11
-   "set guifont=Monospace\ Italic\ 11
-   autocmd GUIEnter * set guifont=Monaco:h14 | colorscheme desert
-   if has("win32")
-      autocmd BufNewFile,GUIEnter * simalt~x
-   endif
-endif
-
-if $ENV_BACKGROUND | set background=$ENV_BACKGROUND | endif
 
 syntax on
+
+" vim: set shiftwidth=3:
