@@ -65,9 +65,11 @@ set path+=../src
 set path+=/usr/local/include
 set path+=/usr/include/g++-3
 set path+=/usr/include
-set path+=$ENV_SEARCH_PATH
+if !empty($ENV_SEARCH_PATH)
+   set path+=$ENV_SEARCH_PATH
+endif
 
-if $TEMP != ""
+if !empty($TEMP)
    set backupdir=$TEMP//
    set directory=$TEMP//
 endif
@@ -80,10 +82,6 @@ endif
 
 if exists("&mouse")
    set mousemodel=popup
-endif
-
-if !has('nvim')
-   set cryptmethod=blowfish
 endif
 
 if has("win32")
@@ -140,7 +138,6 @@ highlight StatusLineNC   ctermfg=gray      ctermbg=black
 " Settings overrides for filetype
 "----------------------------------------
 autocmd FileType cpp  setl cindent
-autocmd FileType cpp  setl syntax=cpp11
 autocmd FileType cpp  highlight Member term=bold ctermfg=white gui=bold
 autocmd FileType cpp  syntax match Member /\<m_[_A-Za-z0-9]*\>/
 autocmd FileType qf   highlight! QuickFixLine guifg=#3333b0 guibg=#a0c0a0
@@ -250,7 +247,7 @@ map <F12>D :OpenGitShow origin/main:<cfile>
 "----------------------------------------
 " Last things
 "----------------------------------------
-if $ENV_BACKGROUND != ""
+if !empty($ENV_BACKGROUND)
    set background=$ENV_BACKGROUND
 endif
 

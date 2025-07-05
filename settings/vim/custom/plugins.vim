@@ -36,6 +36,7 @@ try
    EPlugin 'webdevel/tabulous'
    EPlugin 'shri314/vim-git-conflict-inspector'
    EPlugin 'junegunn/fzf'
+   EPlugin 'octol/vim-cpp-enhanced-highlight'
 
 finally
    call vundle#end()                      "required for vundle

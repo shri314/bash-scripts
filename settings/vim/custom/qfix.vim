@@ -33,7 +33,6 @@ function! s:QfixToggle()
    if g:ErrTog == 0
       call s:QfixOpen()
    else
-      call s:QfixOpen()
       cclose
       let g:ErrTog=0
    endif
