@@ -62,14 +62,19 @@ fi
 put_item()
 {
    fname="$1"; shift;
+   prefix="${1:-.}" # Default to "." if not provided
 
-   if [ ! -e ~/."$fname" ] || [ ! -L ~/."$fname" ] || [ "$(realpath ~/.$fname)" != "$(realpath ~/.env-scripts/settings/$fname)" ]
+   if [ ! -e ~/"$prefix$fname" ] || [ ! -L ~/"$prefix$fname" ] || [ "$(realpath ~/$prefix$fname)" != "$(realpath ~/.env-scripts/settings/$fname)" ]
    then
-      # if ~/.$fname its a directory, move it out of the way
-      ( set -e; cd ~ && [ -d ".$fname" ] && mv ".$fname" ".$fname.$(date +%s)"; exit 0 )
+      # if ~/$prefix$fname is a directory, move it out of the way
+      ( set -e; cd ~ && [ -d "$prefix$fname" ] && mv "$prefix$fname" "$prefix$fname.$(date +%s)"; exit 0 )
+
+      # Create parent directories if needed
+      dirname=$(dirname ~/"$prefix$fname")
+      [ -d "$dirname" ] || mkdir -p "$dirname"
 
       # create a symbolic link inside .env-scripts
-      ( set -e; cd ~ && rm -f ".$fname" && ln -v -s -f ".env-scripts/settings/$fname" ".$fname" )
+      ( set -e; cd ~ && rm -f "$prefix$fname" && ln -v -s -f ".env-scripts/settings/$fname" "$prefix$fname" )
    fi
 }
 
@@ -131,6 +136,15 @@ put_item tmux.conf
 put_item vim
 put_item vimrc
 put_item ideavimrc
+
+# Set up Neovim configuration directory and files individually
+mkdir -p ~/.config/nvim
+if [ -d ~/.env-scripts/settings/nvim ] && [ -f ~/.env-scripts/settings/nvim/init.vim ]
+then
+   echo "Setting up Neovim configuration..."
+   ln -v -s -f ~/.env-scripts/settings/nvim/init.vim ~/.config/nvim/init.vim
+   # Copy any other Neovim specific files as needed
+fi
 
 # put the ~/.bin folder
 if [ ! -d ~/.bin ]

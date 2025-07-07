@@ -5,7 +5,9 @@
 " Email  : shri314@yahoo.com
 "----------------------------------------
 
-set nocompatible
+if !has('nvim')
+  set nocompatible
+endif
 
 "----------------------------------------
 " Load all plugins (the first thing)
@@ -50,9 +52,14 @@ set listchars=tab:>-,trail:-
 set virtualedit=block
 set laststatus=2
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-set viminfo='1000,f1,<500,:500,@50,/100,h
 "set scrolloff=5
 set diffopt-=iwhite
+
+if has('nvim')
+  set shada='1000,f1,<500,:500,@50,/100,h
+else
+  set viminfo='1000,f1,<500,:500,@50,/100,h
+endif
 
 set path=,,
 set path+=.
