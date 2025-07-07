@@ -8,7 +8,7 @@
 set nocompatible
 
 "----------------------------------------
-" Load all plugins
+" Load all plugins (the first thing)
 "----------------------------------------
 source ~/.vim/custom/plugins.vim
 
@@ -65,6 +65,7 @@ set path+=../src
 set path+=/usr/local/include
 set path+=/usr/include/g++-3
 set path+=/usr/include
+
 if !empty($ENV_SEARCH_PATH)
    set path+=$ENV_SEARCH_PATH
 endif
@@ -110,7 +111,6 @@ endif
 "----------------------------------------
 " Plugin Customizations
 "----------------------------------------
-
 let g:git_conflict_inspector_use_leader = 0  " Use '?' prefix instead of <Leader>
 let g:gitgutter_max_signs = -1               " No limit to number of diffs in the gutter
 let g:gitgutter_show_msg_on_hunk_jumping = 1
@@ -125,7 +125,6 @@ let g:explVertical=1
 "----------------------------------------
 " Syntax & highlighting extensions
 "----------------------------------------
-
 highlight TabLineFill   ctermfg=Yellow     ctermbg=Grey
 highlight TabLine       ctermfg=Blue       ctermbg=Black
 highlight TabLineSel    ctermfg=Red        ctermbg=Blue   term=bold
@@ -157,92 +156,19 @@ source ~/.vim/custom/tmux.vim
 source ~/.vim/custom/diff-in-tab.vim
 source ~/.vim/custom/both-open.vim
 source ~/.vim/custom/git-show.vim
+source ~/.vim/custom/mappings.vim
 
 if filereadable(expand('~/.vimrc.custom'))
    source ~/.vimrc.custom
 endif
 
 "----------------------------------------
-" Custom Mappings
+" Misc Things
 "----------------------------------------
-function! s:ToggleSwitchBuffer()
-   if index(split(&switchbuf, ','), "split") == -1
-      set switchbuf+=split
-   else
-      set switchbuf-=split
-   endif
-   echo 'switchbuf ='&switchbuf
-endfunction
-
-command! -nargs=0 ToggleSwitchBuffer call s:ToggleSwitchBuffer()
-
-" Quick Display help for F12-<?> key strokes suppored
-function! s:F12Help()
-   echo "F12 - show F12 help\n"
-   echo "h   - toggle wordhighlight\n"
-   echo "i   - toggle paste\n"
-   echo "l   - toggle list\n"
-   echo "n   - toggle number\n"
-   echo "q   - toggle quickfix\n"
-   echo "g   - toggle GitGutterSignsToggle\n"
-   echo "u   - toggle GitGutterLineHighlights\n"
-   echo "s   - toggle switchbuf\n"
-   echo "d   - display git-show for hash under cursor\n"
-endfunction
-
-function! s:EnhanceMapping(mode_cmd, mapping, enhancement)
-   let current = maparg(a:mapping, 'n', 0, 1)
-   if !empty(current)
-      execute a:mode_cmd . ' <buffer> ' . a:mapping . ' ' . current.rhs . a:enhancement
-   endif
-endfunction
-
-augroup EnhanceMappings
-   autocmd!
-   autocmd VimEnter * call s:EnhanceMapping('nmap', ']c', 'zz')
-   autocmd VimEnter * call s:EnhanceMapping('nmap', '[c', 'zz')
-augroup END
-
 augroup RestoreCursorPos
    autocmd!
    autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | execute "normal g'\"" | endif
 augroup END
-
-" use qa to close all windows individually with q
-cnoreabbrev <expr> qa getcmdtype() == ":" && getcmdline() == 'qa' ? 'windo q' : 'qa'
-
-" use xa to save and close all windows individually with x
-cnoreabbrev <expr> xa getcmdtype() == ":" && getcmdline() == 'xa' ? 'windo x' : 'xa'
-
-" always keep the next word to be found at the center of the screen
-nmap n nzz
-nmap N Nzz
-
-"https://stackoverflow.com/questions/23695727/vim-highlight-a-word-with-without-moving-cursor
-nnoremap * *``
-nnoremap # #``
-
-" Window size
-map - <C-W>-
-map = <C-W>+
-map _ <C-W><
-map + <C-W>>
-
-map <F5>  :diffupdate<CR>:syntax sync fromstart<CR>:GitGutter<CR>:nohl<CR>
-map <F8>   :cn<CR>m'z.`'
-map <F7>   :cp<CR>m'z.`'
-
-"F12<key> to apply special properties
-map <F12><F12> :call <SID>F12Help()<CR>
-map <F12>n :setl number!<CR>:echo 'number ='&number<CR>
-map <F12>i :setl paste!<CR>:echo 'paste ='&paste<CR>
-map <F12>l :setl list!<CR>:echo 'list ='&list<CR>
-map <F12>s :ToggleSwitchBuffer<CR>
-map <F12>q :QfixToggle<CR>:<BS><C-L>
-map <F12>g :GitGutterSignsToggle<CR>
-map <F12>u :GitGutterLineHighlightsToggle<CR>
-map <F12>d :OpenGitShow <cword><CR>
-map <F12>D :OpenGitShow origin/main:<cfile>
 
 "----------------------------------------
 " Last things
