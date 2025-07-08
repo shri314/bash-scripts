@@ -90,19 +90,26 @@ RawGetTool()
    (set -x; curl --silent "$URL" -o "$DEST/$BN") || (E=$?; echo curl failed 1>&2; exit $E)
 }
 
-VimBundle()
+VimPut()
 {
+   local TARGET_DIR="$1"; shift;  # "bundle", "autoload", etc.
    local URL="$1"; shift;
+
+   # Must be a git repository
+   if [[ "$URL" != *".git" ]]; then
+      echo "Error: Only git repositories are supported"
+      return 1
+   fi
 
    local BASE_NAME="${URL##*/}";
    local NAME="${BASE_NAME%%.git}";
 
-   if [ ! -d ~/.vim/bundle/"$NAME" ]
+   if [ ! -d ~/.vim/"$TARGET_DIR"/"$NAME" ]
    then
-      echo Getting vim bundle $NAME ...
-      (set -x; git clone "$URL" ~/.vim/bundle/"$NAME")
-  else
-      (cd ~/.vim/bundle/"$NAME" && pwd && git pull --ff-only)
+      echo "Getting $NAME into ~/.vim/$TARGET_DIR..."
+      (set -x; mkdir -p ~/.vim/"$TARGET_DIR" && git clone "$URL" ~/.vim/"$TARGET_DIR"/"$NAME")
+   else
+      (cd ~/.vim/"$TARGET_DIR"/"$NAME" && pwd && git pull --ff-only)
    fi
 }
 
@@ -136,15 +143,7 @@ put_item tmux.conf
 put_item vim
 put_item vimrc
 put_item ideavimrc
-
-# Set up Neovim configuration directory and files individually
-mkdir -p ~/.config/nvim
-if [ -d ~/.env-scripts/settings/nvim ] && [ -f ~/.env-scripts/settings/nvim/init.vim ]
-then
-   echo "Setting up Neovim configuration..."
-   ln -v -s -f ~/.env-scripts/settings/nvim/init.vim ~/.config/nvim/init.vim
-   # Copy any other Neovim specific files as needed
-fi
+put_item nvim/init.vim .config/
 
 # put the ~/.bin folder
 if [ ! -d ~/.bin ]
@@ -171,8 +170,11 @@ chmod -R +x ~/.contrib/bin/
 
 # Vim Plugins
 rm -f ~/.vim/autoload/pathogen.vim
-VimBundle https://github.com/VundleVim/Vundle.vim.git
-vim +VundleInstall +qa
+rm -rf ~/.vim/bundle/
+VimPut "autoload" "https://github.com/junegunn/vim-plug.git"
+
+# Install plugins non-interactively
+VimPlug__verbose=1 vim +PlugInstall +qa
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]

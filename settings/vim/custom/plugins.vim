@@ -6,44 +6,42 @@
 "----------------------------------------
 
 "----------------------------------------
-" Plugin Loading Function
+" Plugin Loading Environ Control Function
 "----------------------------------------
-" To get or keep plugins updated, please run ':VundleUpdate' on the vim command prompt regularly
-function! s:PluginEIf(uri)
-   let l:status_all = eval("$VundlePlugin__all")
-   let l:status_plu = eval("$VundlePlugin__" .. substitute(a:uri, "[-/.]", "_", "g"))
+" To get or keep plugins updated, please run ':PlugUpdate' on the vim command prompt regularly
+function! s:PlugEIf(uri)
+   let l:verbose = eval("$VimPlug__verbose")
+   let l:status_all = eval("$VimPlug__all")
+   let l:status_plu = eval("$VimPlug__" .. substitute(a:uri, "[-/.]", "_", "g"))
    if l:status_all != "0" || l:status_plu != "0"
-      "echo "Y Plugin a:uri" .. l:status_plu
-      Plugin a:uri
+      if l:verbose == "1" | echo "Y Plugin " .. a:uri .. " : " .. l:status_plu | endif
+      Plug a:uri
    else
-      "echo "N Plugin a:uri" .. l:status_plu
+      if l:verbose == "1" | echo "N Plugin " .. a:uri .. " : " .. l:status_plu | endif
    endif
 endfunction
 
-command! -nargs=1 EPlugin call s:PluginEIf(<args>)
+command! -nargs=1 EPlug call s:PlugEIf(<args>)
 
 "----------------------------------------
-" Vundle Configuration
+" vim-plug Configuration
 "----------------------------------------
-set runtimepath+=~/.vim/bundle/Vundle.vim "required for vundle
-
+source ~/.vim/autoload/vim-plug/plug.vim
 try
-   filetype off                           "required for vundle
-   call vundle#begin()                    "required for vundle
+   call plug#begin('~/.vim/plugged')
 
-   Plugin 'VundleVim/Vundle.vim'
-   EPlugin 'airblade/vim-gitgutter'
-   EPlugin 'webdevel/tabulous'
-   EPlugin 'shri314/vim-git-conflict-inspector'
-   EPlugin 'junegunn/fzf'
-   EPlugin 'octol/vim-cpp-enhanced-highlight'
+   EPlug 'airblade/vim-gitgutter'
+   EPlug 'webdevel/tabulous'
+   EPlug 'shri314/vim-git-conflict-inspector'
+   EPlug 'junegunn/fzf'
+   EPlug 'octol/vim-cpp-enhanced-highlight'
 
 finally
-   call vundle#end()                      "required for vundle
-   filetype plugin indent on              "required for vundle
+   call plug#end()
 endtry
 
 filetype plugin on
+filetype plugin indent on
 runtime! ftplugin/man.vim
 
 " vim: set shiftwidth=3:
