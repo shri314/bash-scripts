@@ -9,6 +9,10 @@
     sshCommand = ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o CheckHostIP=no -o ServerAliveInterval=100 -q
     #editor = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' -f +1
 
+    # https://stackoverflow.com/a/70942119
+    # packedGitLimit = 512m
+    # packedGitWindowSize = 512m
+
 [alias]
     st = status
     br = branch -vv
@@ -80,3 +84,9 @@
 
 [color]
     ui = auto
+
+[pack]
+    # https://stackoverflow.com/a/70942119
+    # deltaCacheSize = 2047m
+    # packSizeLimit = 2047m
+    # windowMemory = 2047m
