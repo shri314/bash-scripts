@@ -12,6 +12,8 @@ let &packpath = &runtimepath
 " Source Vim settings (this will load all plugins and settings)
 source ~/.vimrc
 
+lua require('claude-code').setup()
+
 colorscheme vim
 colorscheme desert
 

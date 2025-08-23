@@ -36,6 +36,11 @@ try
    EPlug 'junegunn/fzf'
    EPlug 'octol/vim-cpp-enhanced-highlight'
 
+   if has('nvim')
+      EPlug 'nvim-lua/plenary.nvim'
+      EPlug 'greggh/claude-code.nvim'
+   endif
+
 finally
    call plug#end()
 endtry
