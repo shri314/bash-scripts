@@ -174,7 +174,14 @@ rm -rf ~/.vim/bundle/
 VimPut "autoload" "https://github.com/junegunn/vim-plug.git"
 
 # Install plugins non-interactively
-VimPlug__verbose=1 vim +PlugInstall +qa
+if which vim 1>/dev/null 2>/dev/null; then
+    VimPlug__verbose=1 vim +PlugInstall +qa
+fi
+
+if which nvim 1>/dev/null 2>/dev/null; then
+    VimPlug__verbose=1 nvim +PlugInstall +qa
+fi
+
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]
