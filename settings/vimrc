@@ -109,6 +109,7 @@ endif
 if has("gui_running")
    "set guifont=Monospace\ Regular\ 11
    "set guifont=Monospace\ Italic\ 11
+   "set guifont=Courier\ New\:h11
    autocmd GUIEnter * set guifont=Monaco:h14 | colorscheme desert
    if has("win32")
       autocmd BufNewFile,GUIEnter * simalt~x
