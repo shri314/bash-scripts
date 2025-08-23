@@ -12,6 +12,9 @@ let &packpath = &runtimepath
 " Source Vim settings (this will load all plugins and settings)
 source ~/.vimrc
 
+colorscheme vim
+colorscheme desert
+
 " Live substitution preview
 set inccommand=nosplit
 
