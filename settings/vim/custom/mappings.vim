@@ -82,7 +82,7 @@ map <F12>s :ToggleSwitchBuffer<CR>
 map <F12>q :QfixToggle<CR>:<BS><C-L>
 map <F12>g :GitGutterSignsToggle<CR>
 map <F12>u :GitGutterLineHighlightsToggle<CR>
-map <F12>d :OpenGitShow <cword><CR>
-map <F12>D :OpenGitShow origin/main:<cfile>
+map <F12>d :OpenGitShow <C-R>=expand('<cword>')<CR><CR>
+map <F12>D :OpenGitShow origin/main:<C-R>=expand('<cfile>')<CR>
 
 " vim: set shiftwidth=3:
