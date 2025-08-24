@@ -55,6 +55,14 @@ cnoreabbrev <expr> qa getcmdtype() == ':' && getcmdline() == 'qa' ? 'windo q' : 
 " use :xa to save and close all windows individually with x
 cnoreabbrev <expr> xa getcmdtype() == ':' && getcmdline() == 'xa' ? 'windo x' : 'xa'
 
+" wildmenu customizations
+cnoremap <expr> <Down> wildmenumode() ? "\<C-n>" : "\<Down>"
+cnoremap <expr> <Up> wildmenumode() ? "\<C-p>" : "\<Up>"
+cnoremap <expr> <Right> wildmenumode() ? "\<C-y>" : "\<Right>"
+cnoremap <expr> <CR> wildmenumode() ? "\<C-y>" : "\<CR>"
+cnoremap <expr> <Left> wildmenumode() ? "\<C-e>" : "\<Left>"
+cnoremap <expr> <Esc> wildmenumode() ? "\<C-e>" : "\<Esc>"
+
 " always keep the next word to be found at the center of the screen
 nmap n nzz
 nmap N Nzz

@@ -50,6 +50,11 @@ set nowriteany
 set list
 set listchars=tab:>-,trail:-
 set virtualedit=block
+set wildmenu
+"set wildmode=
+"set wildmode=full
+"set wildmode=longest:full,full
+set wildoptions=pum
 set laststatus=2
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 "set scrolloff=5
