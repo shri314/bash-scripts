@@ -51,7 +51,6 @@ export HOSTFILESIZE=300000
 export HISTSIZE=30000
 export HOSTNAME="$(hostname)"
 export UQHOSTNAME=$(hostname | sed -e 's/[.].*//')
-export EDITOR='vim -fX'
 
 if ! grep -q brew <<< "$PATH"
 then
@@ -94,12 +93,19 @@ alias gcc='gcc -fmessage-length=0'
 alias g++='g++ -fmessage-length=0'
 alias ssh='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o CheckHostIP=no -o ServerAliveInterval=100'
 alias scp='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o CheckHostIP=no -o ServerAliveInterval=100'
-alias vi="$EDITOR"
-alias vim="$EDITOR"
 alias bperl='perltidy -i=3 -nt -fnl -anl -bl -l=250 -bbs -bbc -bbb -mbl=2'
 alias astyle='_astyle'
 alias man='man -a -S2:3:1:8:5:4:6:7:9'
 alias curl='curl -# -D /dev/stderr'
+
+if which nvim 1>/dev/null 2>/dev/null; then
+    export EDITOR='nvim'
+elif which vim 1>/dev/null 2>/dev/null; then
+    export EDITOR='vim -fX'
+fi
+
+alias vi="$EDITOR"
+alias vim="$EDITOR"
 
 if [ "$(uname -s)" == Darwin ]
 then
@@ -118,10 +124,6 @@ stty -ixon
 #   exec 2>&3
 #   exec 3>&-
 #}
-
-_fvi() {
-    $EDITOR "$(fzf -q "$1")"
-}
 
 [ -f ~/.contrib/bin/git-completion.bash ] && . ~/.contrib/bin/git-completion.bash
 [ -f ~/.docker-completion-bash          ] && . ~/.docker-completion-bash
