@@ -19,7 +19,7 @@ colorscheme desert
 
 " Clipboard friendly settings
 set clipboard=unnamed
-set mouse=
+"set mouse=
 
 " Live substitution preview
 set inccommand=nosplit
