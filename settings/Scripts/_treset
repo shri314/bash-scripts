@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+
+printf '\033c'        # Terminal reset
+#printf '\033[24;1H'   # Move cursor to line 24
+printf '\033[999;1H'  # Move cursor to bottom
+
+# Claude Code specific fixes
+if [[ -n "${CLAUDECODE:-}" ]]; then
+    printf '\033[?25l'    # Hide cursor
+    printf '\033[1E'      # Move cursor down invisibly
+fi
