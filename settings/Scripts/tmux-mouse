@@ -3,17 +3,30 @@
 set -euo pipefail
 
 set_mouse() {
-    local mode="$1"; shift;
+    local option=$1; shift;
 
-    if [ "$mode" != "on" ] && [ "$mode" != "off" ] && [ "$mode" != "toggle" ]; then
-        echo "invalid mouse mode $mode" 1>&2
-        exit 1
+    local value_old=$(tmux show-options -gwv mouse)
+
+    if [[ $option == on ]]; then
+        value_new=on
+    elif [[ $option == off ]]; then
+        value_new=off
+    elif [[ $option == toggle && $value_old == on  ]]; then
+        value_new=off
+    elif [[ $option == toggle && $value_old == off ]]; then
+        value_new=on
+    else
+        echo "invalid option: $option" 1>&2
+        return 1
     fi
 
-    [ "$mode" == "toggle" ] && mode=off && grep -qe off <(tmux show-options -gwv mouse) && mode=on
-
-    tmux set-option -qg mouse "$mode"
-    tmux display-message "Mouse: $mode"
+    if [[ $option != print && $value_old != $value_new ]]; then
+        tmux set-option -qg mouse "$value_new"
+        tmux display-message "Mouse: $value_new"
+        echo "$value_old -> $(tmux show-options -gwv mouse)"
+    else
+        tmux show-options -gwv mouse
+    fi
 }
 
 
@@ -23,10 +36,12 @@ then
     then
         shift;
         cat <<EOF
-usage: $0 [-h] [on|off|toggle]
+Usage: $0 [<on|off|toggle|print>]
+       $0 -h
 
-set tmux mouse mode.
-toggle mouse mode if no argument is specified, otherwise set mouse mode on or off.
+sets or resets the tmux mouse mode.
+
+with no argument is specified, print is the default
 
 options:
   -h    show this help
@@ -36,5 +51,5 @@ EOF
 
     set_mouse "$1";
 else
-    set_mouse "toggle"
+    set_mouse "print"
 fi
