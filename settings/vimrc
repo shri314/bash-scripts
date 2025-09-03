@@ -48,7 +48,7 @@ set noequalalways
 set warn
 set nowriteany
 set list
-set listchars=tab:>-,trail:-
+set listchars=tab:>-,trail:.
 set virtualedit=block
 set wildmenu
 "set wildmode=
