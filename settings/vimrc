@@ -143,13 +143,20 @@ let g:explVertical=1
 "----------------------------------------
 " Syntax & highlighting extensions
 "----------------------------------------
-highlight TabLineFill   ctermfg=Yellow     ctermbg=Grey
-highlight TabLine       ctermfg=Blue       ctermbg=Black
-highlight TabLineSel    ctermfg=Red        ctermbg=Blue   term=bold
+augroup FixHighlights
+   autocmd!
+   autocmd ColorScheme * highlight TabLineFill   ctermfg=Yellow     ctermbg=Grey
+   autocmd ColorScheme * highlight TabLine       ctermfg=Blue       ctermbg=Black
+   autocmd ColorScheme * highlight TabLineSel    ctermfg=Red        ctermbg=Blue   term=bold
+   autocmd ColorScheme * highlight Comment       ctermfg=lightblue  guifg=#8000ff gui=bold term=bold
+   autocmd ColorScheme * highlight StatusLine    ctermfg=lightblue  ctermbg=white
+   autocmd ColorScheme * highlight StatusLineNC  ctermfg=gray       ctermbg=black
+augroup END
 
-highlight Comment        ctermfg=lightblue guifg=#8000ff gui=bold term=bold
-highlight StatusLine     ctermfg=lightblue ctermbg=white
-highlight StatusLineNC   ctermfg=gray      ctermbg=black
+if has('nvim')
+   colorscheme vim
+endif
+colorscheme desert
 
 "----------------------------------------
 " Settings overrides for filetype

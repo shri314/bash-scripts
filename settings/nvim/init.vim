@@ -14,9 +14,6 @@ source ~/.vimrc
 
 lua require('claude-code').setup()
 
-colorscheme vim
-colorscheme desert
-
 " Clipboard friendly settings
 set clipboard=unnamed
 "set mouse=
