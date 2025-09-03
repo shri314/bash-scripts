@@ -29,7 +29,7 @@ autocmd TermOpen * setlocal nonumber norelativenumber
 autocmd TermOpen * startinsert
 
 " Terminal mode mappings
-tnoremap <Esc> <C-\><C-n>
-tnoremap <C-v><Esc> <Esc>
+autocmd TermOpen * tnoremap <buffer> <Esc> <C-\><C-n>
+autocmd TermOpen * tnoremap <buffer> <C-v><Esc> <Esc>
 
 " vim: set shiftwidth=3:
