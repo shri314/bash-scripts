@@ -60,10 +60,10 @@ set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 "set scrolloff=5
 set diffopt-=iwhite
 set autoread                " Auto-reload files, see CursorHold autocmd below
-set updatetime=500
+set updatetime=3000
 set timeout
 set ttimeout
-set ttimeoutlen=500
+set ttimeoutlen=50
 
 if has('nvim')
   set shada='1000,f1,<500,:500,@50,/100,h
