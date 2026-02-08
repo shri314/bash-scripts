@@ -12,11 +12,12 @@ let &packpath = &runtimepath
 " Source Vim settings (this will load all plugins and settings)
 source ~/.vimrc
 
-lua require('claude-code').setup()
+"lua require('claude-code').setup()
+set noautoread
 
 " Clipboard friendly settings
-set clipboard=unnamed
-"set mouse=
+"set clipboard=unnamed
+set mouse=a
 
 " Live substitution preview
 set inccommand=nosplit

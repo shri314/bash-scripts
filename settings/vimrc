@@ -59,7 +59,7 @@ set laststatus=2
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 "set scrolloff=5
 set diffopt-=iwhite
-set autoread                " Auto-reload files, see CursorHold autocmd below
+set noautoread                " Auto-reload files, see CursorHold autocmd below
 set updatetime=3000
 set timeout
 set ttimeout
@@ -200,7 +200,7 @@ augroup END
 
 augroup FileReload
   autocmd!
-  autocmd CursorHold,CursorHoldI * checktime    " Works with autoread setting above
+  autocmd CursorHold,CursorHoldI * checktime    " Works with autoread setting above if enabled
   autocmd FocusGained,BufEnter * checktime
 augroup END
 
