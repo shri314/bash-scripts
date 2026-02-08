@@ -15,12 +15,15 @@ set_mouse() {
         value_new=off
     elif [[ $option == toggle && $value_old == off ]]; then
         value_new=on
+    elif [[ $option == print ]]; then
+        tmux show-options -gwv mouse
+        return 0
     else
         echo "invalid option: $option" 1>&2
         return 1
     fi
 
-    if [[ $option != print && $value_old != $value_new ]]; then
+    if [[ $value_old != $value_new ]]; then
         tmux set-option -qg mouse "$value_new"
         tmux display-message "Mouse: $value_new"
         echo "$value_old -> $(tmux show-options -gwv mouse)"
