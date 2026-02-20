@@ -1,11 +1,11 @@
 #!/bin/bash
 
-mkdir -p ~/.ssh
+mkdir -p ~/.ssh ~/.ssh/agent
 
 [ -f ~/.ssh/environment ]      || touch -a ~/.ssh/environment
 [ -f ~/.ssh/authorized_keys ]  || touch -a ~/.ssh/authorized_keys
 [ -f ~/.ssh/environment_temp ] || touch -a ~/.ssh/environment_temp
 
 chmod u=rwx,go=rx ~
-chmod u=rwx,go=   ~/.ssh
-chmod u=rw,go=    ~/.ssh/*
+find ~/.ssh/ -maxdepth 1 -type d | xargs -r chmod u=rwx,go=
+find ~/.ssh/ -maxdepth 1 -type f | xargs -r chmod u=rw,go=
