@@ -176,7 +176,7 @@ ClonePut ~/.vim/autoload "https://github.com/junegunn/vim-plug.git"
 # Plugins (tmux)
 ClonePut ~/.tmux/plugins "https://github.com/tmux-plugins/tpm.git"
 
-# Install plugins non-interactively
+# Install/Update vim plugins non-interactively
 if which vim 1>/dev/null 2>/dev/null; then
     VimPlug__verbose=1 vim +PlugInstall +qa
 fi
@@ -185,6 +185,8 @@ if which nvim 1>/dev/null 2>/dev/null; then
     VimPlug__verbose=1 nvim +PlugInstall +qa
 fi
 
+# Install/Update tmux plugins non-interactively
+~/.tmux/plugins/tpm/bin/update_plugins all
 
 # set version - we plan to use this for upgrades
 if [ ! -f ~/.version-env-scripts ]
