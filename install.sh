@@ -90,26 +90,25 @@ RawGetTool()
    (set -x; curl --silent "$URL" -o "$DEST/$BN") || (E=$?; echo curl failed 1>&2; exit $E)
 }
 
-VimPut()
+ClonePut()
 {
-   local TARGET_DIR="$1"; shift;  # "bundle", "autoload", etc.
+   local TARGET_DIR="$1"; shift;  # "~/.vim/bundle", "~/.vim/autoload", ~/.tmux/plugins etc.
    local URL="$1"; shift;
 
    # Must be a git repository
    if [[ "$URL" != *".git" ]]; then
-      echo "Error: Only git repositories are supported"
-      return 1
+      URL="$URL.git"
    fi
 
    local BASE_NAME="${URL##*/}";
    local NAME="${BASE_NAME%%.git}";
 
-   if [ ! -d ~/.vim/"$TARGET_DIR"/"$NAME" ]
+   if [ ! -d "$TARGET_DIR"/"$NAME" ]
    then
-      echo "Getting $NAME into ~/.vim/$TARGET_DIR..."
-      (set -x; mkdir -p ~/.vim/"$TARGET_DIR" && git clone "$URL" ~/.vim/"$TARGET_DIR"/"$NAME")
+      echo "Getting $NAME into $TARGET_DIR..."
+      (set -x; mkdir -p "$TARGET_DIR" && git clone "$URL" "$TARGET_DIR"/"$NAME")
    else
-      (cd ~/.vim/"$TARGET_DIR"/"$NAME" && pwd && git pull --ff-only)
+      (cd "$TARGET_DIR"/"$NAME" && pwd && git pull --ff-only)
    fi
 }
 
@@ -139,6 +138,7 @@ put_item handle_git
 put_item handle_ssh_agt
 put_item handle_ps1
 put_item screenrc
+put_item tmux
 put_item tmux.conf
 put_item vim
 put_item vimrc
@@ -168,10 +168,13 @@ mv -f ~/.contrib/bin/git-prompt-patched.sh ~/.contrib/bin/git-prompt.sh
 #RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/buzztaiki/tmux-mouse/master/tmux-mouse"
 chmod -R +x ~/.contrib/bin/
 
-# Vim Plugins
+# Plugins (vim)
 rm -f ~/.vim/autoload/pathogen.vim
 rm -rf ~/.vim/bundle/
-VimPut "autoload" "https://github.com/junegunn/vim-plug.git"
+ClonePut ~/.vim/autoload "https://github.com/junegunn/vim-plug.git"
+
+# Plugins (tmux)
+ClonePut ~/.tmux/plugins "https://github.com/tmux-plugins/tpm.git"
 
 # Install plugins non-interactively
 if which vim 1>/dev/null 2>/dev/null; then
