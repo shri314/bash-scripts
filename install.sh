@@ -161,7 +161,7 @@ RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/git/git/master/cont
 # Extra custom patch to revert one change in git-prompt.sh (it behviour changed after this commit - https://github.com/git/git/commit/51d2d677909c031969f82c1c5ef1cc261a9990b3)
 cat ~/.contrib/bin/git-prompt.sh | sed -e 's/"|u/" u/' > ~/.contrib/bin/git-prompt-patched.sh
 (set +e; diff -u ~/.contrib/bin/git-prompt.sh ~/.contrib/bin/git-prompt-patched.sh; exit 0)
-mv -f ~/.contrib/bin/git-prompt-patched.sh ~/.contrib/bin/git-prompt.sh
+mv -v -f ~/.contrib/bin/git-prompt-patched.sh ~/.contrib/bin/git-prompt.sh
 # END HACK
 
 #RawGetTool ~/.contrib/bin "https://raw.githubusercontent.com/shri314/beautify_bash/master/beautify_bash.py"
