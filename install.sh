@@ -186,6 +186,8 @@ if which nvim 1>/dev/null 2>/dev/null; then
 fi
 
 # Install/Update tmux plugins non-interactively
+~/.tmux/plugins/tpm/bin/clean_plugins all
+~/.tmux/plugins/tpm/bin/install_plugins all
 ~/.tmux/plugins/tpm/bin/update_plugins all
 
 # set version - we plan to use this for upgrades
