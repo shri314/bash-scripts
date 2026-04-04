@@ -18,6 +18,7 @@
     br = branch -vv
     gr = grep --untracked -In
     lg = log --graph --oneline
+    pushf = push --force-with-lease
     mt = mergetool --tool=vimdiff
     mtg = mergetool --tool=gvimdiff
     sreset = "!fn() { \
