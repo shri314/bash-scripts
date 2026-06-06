@@ -11,7 +11,7 @@
 " Display git-show for hash under cursor in a new window
 function! s:OpenGitShow(What)
    vert new
-   let git_output = system('git show ' . shellescape(a:What) . ' --')
+   let git_output = system('git show -p --stat ' . shellescape(a:What) . ' --')
    call setline(1, split(git_output, '\n'))
    setl filetype=git
    setl nolist
