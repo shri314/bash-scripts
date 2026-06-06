@@ -47,7 +47,7 @@
 #    log      = gvim --not-a-term -c 'silent! %sm/\\e.\\{-}m//g' +'set filetype=git' +1 -
 
 [merge]
-    conflictstyle = diff3
+    conflictstyle = zdiff3
     tool = gvimdiff
 
 [diff]
