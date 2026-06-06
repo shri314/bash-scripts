@@ -16,7 +16,7 @@ BEGIN {
 }
 
 {
-   if(ENVIRON["FORCE_COLOR"] == "1")
+   if(ENVIRON["FORCE_PAINT_COLOR"] == "1")
    {
    }
    else
@@ -107,7 +107,7 @@ BEGIN {
 
 {
    $0 = gensub(/(-o  *)([\/._a-zA-Z0-9-]*)/,      "\\1[01;32m\\2[00m", "g");
-   $0 = gensub(/-[a-zA-Z-][^ ]*/,                 "[01;35m&[00m", "g");
+   $0 = gensub(/[ ][ ]*-[a-zA-Z-][^ ]*/,          "[01;35m&[00m",    "g");
    $0 = gensub(/([\/.a-zA-Z_-]*\<gcc) /,          "[01;32m\\1[00m ", "g");
    $0 = gensub(/([\/.a-zA-Z_-]*\<gcj) /,          "[01;32m\\1[00m ", "g");
    $0 = gensub(/([\/.a-zA-Z_-]*\<g[+][+]) /,      "[01;32m\\1[00m ", "g");
